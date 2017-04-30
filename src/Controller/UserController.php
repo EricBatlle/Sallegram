@@ -9,10 +9,14 @@
 namespace SilexApp\Controller;
 
 
+use Doctrine\DBAL\Types\TextType;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 
 class UserController
@@ -52,8 +56,28 @@ class UserController
         );
 
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
-            ->add('name')
-            ->add('email')
+            ->add('name', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank(
+                        array(
+                            'message' => 'El nombre no puede estar vacío'
+                        )
+                    ),
+                    new Length(
+                        array(
+                            'min' => 5,
+                            'minMessage' => 'El nombre es demsasiado corto'
+                        )
+                    )
+                )
+            ))
+            ->add('email', TextType::class, array(
+                'constraints' => new Email(
+                    array(
+                        'message' => 'El formato del email no es válido'
+                    )
+                )
+            ))
             ->add('submit',SubmitType::class, [
                 'label' => 'Add user',
             ])

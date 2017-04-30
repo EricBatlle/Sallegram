@@ -43,3 +43,4 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 ));
 $app->register(new Silex\Provider\LocaleServiceProvider());
 /* també hauriem de registrar el TranslationServiceProvider & LocalServiceProvider? */
+$app->register(new Silex\Provider\ValidatorServiceProvider());
