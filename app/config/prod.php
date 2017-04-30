@@ -41,5 +41,5 @@ $app->register(new \Silex\Provider\FormServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'translator.domains' => array(),
 ));
-
+$app->register(new Silex\Provider\LocaleServiceProvider());
 /* també hauriem de registrar el TranslationServiceProvider & LocalServiceProvider? */

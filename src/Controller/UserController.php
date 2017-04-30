@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class UserController
 {
     public function getAction(Application $app, $id)
@@ -41,37 +42,53 @@ class UserController
         return $response;
     }
 
-    public function postAction(Application $app, Request $request){
+    public function postAction(Application $app, Request $request)
+    {
         $response = new Response();
-        if($request->isMethod('POST')){
-            //Validate
-            $name = $request->get('name');
-            $email = $request->get('email');
+
+        $data = array(
+            'name' => 'Your name',
+            'email' => 'Your email',
+        );
+
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
+            ->add('name')
+            ->add('email')
+            ->add('submit',SubmitType::class, [
+                'label' => 'Add user',
+            ])
+		    ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+            $data = $form->getData();
             try{
                 $app['db']->insert('user',[
-                    'name' => $name,
-                    'email' => $email
+                    'name' => $data['name'],
+                    'email' => $data['email']
                 ]
-                );
-                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');
-                $id = $lastInsertedId['id'];
-                $url = 'users/get/'.$id;
-                return new RedirectResponse($url);
-            }catch (Exception $e){
+            );
+            $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');
+            $id = $lastInsertedId['id'];
+            $url = '/users/get'.$id;
+            return new RedirectResponse($url);
+            }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('addUser.twig',[
-                    'errors' =>[
-                        'unexpected' => 'An error has ocurred, pleasse try it again later'
+                    'errors' => [
+                        'unexpected' => 'An error has ocurred, please try it again later'
                     ]
                 ]);
                 $response->setContent($content);
                 return $response;
             }
         }
-        $content = $app['twig']->render('addUser.twig', array('app' => [
-            'name' => $app['app.name']
-        ]));
+        /*
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('addUser.twig',array('form'=> $form->createView()));
         $response->setContent($content);
-        return $response;
+
+        return $response;*/
     }
 }
