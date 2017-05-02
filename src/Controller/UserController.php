@@ -9,8 +9,12 @@
 namespace SilexApp\Controller;
 
 
-use Doctrine\DBAL\Types\TextType;
+//use Doctrine\DBAL\Types\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Silex\Application;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,11 +112,11 @@ class UserController
                 return $response;
             }
         }
-        /*
+
         $response->setStatusCode(Response::HTTP_OK);
         $content = $app['twig']->render('addUser.twig',array('form'=> $form->createView()));
         $response->setContent($content);
 
-        return $response;*/
+        return $response;
     }
 }
