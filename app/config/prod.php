@@ -29,7 +29,7 @@ $app->register(new \SilexApp\Providers\HelloServiceProvider(), array(
 $app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver' => 'pdo_mysql',
-        'dbname' => 'db_ppwb',
+        'dbname' => 'pwgram',
         'user' => 'root',
         'password' => ''
     ),

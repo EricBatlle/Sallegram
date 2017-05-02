@@ -10,7 +10,9 @@ namespace SilexApp\Controller;
 
 
 //use Doctrine\DBAL\Types\TextType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Silex\Application;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -56,7 +58,7 @@ class UserController
 
         $data = array(
             'name' => 'Your name',
-            'email' => 'Your email',
+            'email' => 'Your email'
         );
 
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
@@ -82,6 +84,9 @@ class UserController
                     )
                 )
             ))
+            ->add('birthdate', BirthdayType::class)
+            ->add('password', TextType::class)
+            ->add('confirm_password', TextType::class)
             ->add('submit',SubmitType::class, [
                 'label' => 'Add user',
             ])
