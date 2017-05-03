@@ -9,8 +9,9 @@
 namespace SilexApp\Controller;
 
 
-//use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Silex\Application;
@@ -23,6 +24,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class UserController
@@ -57,8 +60,8 @@ class UserController
         $response = new Response();
 
         $data = array(
-            'name' => 'Your name',
-            'email' => 'Your email'
+            'name' => 'Yourname',
+            'email' => 'email@email.com'
         );
 
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
@@ -71,24 +74,48 @@ class UserController
                     ),
                     new Length(
                         array(
-                            'min' => 5,
-                            'minMessage' => 'El nombre es demsasiado corto'
+                            'max' => 20,
+                            'maxMessage' => 'El nombre es demsasiado largo'
                         )
-                    )
+                    ),
                 )
             ))
             ->add('email', TextType::class, array(
                 'constraints' => new Email(
                     array(
                         'message' => 'El formato del email no es válido'
+                    ),
+                    new NotBlank(
+                        array(
+                            'message' => 'El email no puede estar vacío'
+                        )
                     )
                 )
             ))
             ->add('birthdate', BirthdayType::class)
-            ->add('password', TextType::class)
-            ->add('confirm_password', TextType::class)
+            ->add('password', PasswordType::class, array(
+                'constraints' => new Regex(
+                    array(
+                        'pattern' => '/[a-z]/',
+                        'match' => true,
+                        'message' => 'La contraseña debe contener almenos una minuscula'
+                    ),
+                    array(
+                        'pattern' => '/[A-Z]/',
+                        'match' => true,
+                        'message' => 'La contraseña debe contener almenos una mayuscula'
+                    ),
+                    array(
+                        'pattern' => '/[0-9]/',
+                        'match' => true,
+                        'message' => 'La contraseña debe contener almenos un numero'
+                    )
+                )
+            ))
+            ->add('confirm_password', PasswordType::class)
+            ->add('image_profile', FileType::class)
             ->add('submit',SubmitType::class, [
-                'label' => 'Add user',
+                'label' => 'Send',
             ])
 		    ->getForm();
 
@@ -98,8 +125,11 @@ class UserController
             $data = $form->getData();
             try{
                 $app['db']->insert('user',[
-                    'name' => $data['name'],
-                    'email' => $data['email']
+                    'username' => $data['name'],
+                    'email' => $data['email'],
+                    'birthdate' => $data['birthdate']->format('Y-m-d'),
+                    'password' => $data['password'],
+                    'img_path' => $data['image_profile']
                 ]
             );
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');

@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-    {%  block head %}
-    <link rel="stylesheet" type="text/css" href="{{ asset('/style.css','css') }}">
-    <title>{% block title  %}{% endblock %} - My Webpage</title>
-    {% endblock %}
-</head>
-<body>
-<div id="content">{% block content %}{% endblock %}</div>
-<div id="footer">
-    {% block footer %}
-        Copyright 2017 - {#{{ app.name }}#}
-    {% endblock %}
-</div>
-{% block scripts %}
-    <script src="{{ asset('/app.js','js') }}" type="text/javascript" charset="utf-8"></script>
-{% endblock %}
-<div id="footer">
+    <head>
+        {%  block styles %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('/style.css','css') }}">
+        {% endblock %}
 
-</div>
-</body>
+        {% block title %}
+            <title> PWGRAM </title>
+        {% endblock %}
+
+    </head>
+    <body>
+        <div id="header">
+            {% block header %}
+                <ul>
+                    <a href="/">Home</a>
+                    <a href="/users/add">Register</a>
+                    <a href="/">Login</a>
+                </ul>
+            {% endblock %}
+        </div>
+
+        <div id="content">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+
+        <div id="footer">
+            {% block footer %}
+                <p>PWGRAM - Eric Batlle Clavero · Nuria Gómez Piedrafita</p>
+                <p>Copyright 2017</p> {#{{ app.name }}#}
+            {% endblock %}
+        </div>
+
+        {% block scripts %}
+            <script src="{{ asset('/app.js','js') }}" type="text/javascript" charset="utf-8"></script>
+        {% endblock %}
+    </body>
 </html>
