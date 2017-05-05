@@ -66,6 +66,10 @@ class UserController
             //'image_profile' => $user['img_path']
         );
 
+        $coso = $user['id'];
+        var_dump($id);
+
+
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
                 'constraints' => array(
@@ -90,8 +94,8 @@ class UserController
             ))
 
             ->add('birthdate', BirthdayType::class, array(
-                'input' => 'string',
-                'data' => $user['birthdate'],
+//                'input' => 'string',
+//                'data' => $user['birthdate'],
                 'constraints' => new Assert\Range(
                     array(
                         'max' => 'now',
@@ -144,28 +148,32 @@ class UserController
                 'label' => 'Save',
             ])
             ->getForm();
-
+        var_dump($id);
         $form->handleRequest($request);
-
+        var_dump($id);
 
         if($form->isValid()){
             $data = $form->getData();
+            var_dump($id);
             try{
-                $app['db']->insert('user',[
+                var_dump($id);
+                $sql = "SELECT * FROM user WHERE id = ?";
+                $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
+                var_dump((int)$id);
+                $app['db']->update('user',array(
                         'username' => $data['name'],
-                        'email' => $data['email'],
                         'birthdate' => $data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
-                        'img_path' => $data['image_profile']
-                    ]
+                        'img_path' => $data['image_profile']),
+                        array('id' => $id)
                 );
-                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');
-                $id = $lastInsertedId['id'];
+//                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');
+//                $id = $lastInsertedId['id'];
                 $url = '/users/get/'.$id;
                 return new RedirectResponse($url);
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-                $content = $app['twig']->render('addUser.twig',[
+                $content = $app['twig']->render('showUser.twig',[
                     'errors' => [
                         'unexpected' => 'An error has ocurred, please try it again later'
                     ]
