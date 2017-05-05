@@ -1,13 +1,21 @@
 {% extends "base.twig" %}
 
-{% block title %}User info{% endblock %}
+{#{% block title %}User info{% endblock %}#}
 
 {% block content %}
-    <h1>Info:</h1>
-    <dt>
-        <dt>Name:</dt>
-        <dt>{{  user.name }}</dt>
-        <dt>Email:</dt>
-        <dt>{{ user.email }}</dt>
-    </dt>
+    <h1>PROFILE</h1>
+    <form action="/users/get/{id}" METHOD="POST">
+        {{ form_widget(form) }}
+    </form>
+
+    {#<dt>#}
+        {#<dt>Name:</dt>#}
+        {#<dt>{{  user.username }}</dt>#}
+        {#<dt>Birthday:</dt>#}
+        {#<dt>{{ user.birthdate }}</dt>#}
+        {#<dt>Password:</dt>#}
+        {#<dt>{{ user.password }}</dt>#}
+        {#<dt>Image profile:</dt>#}
+        {#<dt>{{ user.img_path }}</dt>#}
+    {#</dt>#}
 {% endblock %}
