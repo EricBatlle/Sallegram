@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 $app->get('/hello/{name}', 'SilexApp\\Controller\\HelloController::indexAction');
 $app->get('/add/{num1}/{num2}', 'SilexApp\\Controller\\HelloController::addAction');
-$app->get('/users/get/{id}', 'SilexApp\Controller\UserController::getAction');
+$app->match('/users/get/{id}', 'SilexApp\Controller\UserController::getAction');
 $app->match('/users/add', 'SilexApp\Controller\UserController::postAction');
 // SESSION
 $before = function (Request $request, Application $app){
@@ -30,5 +30,5 @@ $app->get('/', 'SilexApp\Controller\BaseController::indexAction');
 $app->get('/admin', 'SilexApp\Controller\BaseController::adminAction')->before($before); /*Nomes accessible per usuaris logejats */
 // USER
 
-$app->get('/users/get/{id}', 'SilexApp\Controller\UserController::getAction');
-$app->get('/users/add', 'SilexApp\Controller\UserController::postAction');
+//$app->get('/users/get/{id}', 'SilexApp\Controller\UserController::getAction');
+//$app->get('/users/add', 'SilexApp\Controller\UserController::postAction');
