@@ -38,7 +38,7 @@ class UserController
 {
     public function getAction(Application $app, $id, Request $request)
     {
-        $sql = "SELECT * FROM user WHERE id = ?";
+        $sql = "SELECT * FROM users WHERE id = ?";
         $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
         $response = new Response();
 
@@ -65,10 +65,6 @@ class UserController
             'name' => $user['username'],
             //'image_profile' => $user['img_path']
         );
-
-        $coso = $user['id'];
-        var_dump($id);
-
 
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
@@ -148,27 +144,22 @@ class UserController
                 'label' => 'Save',
             ])
             ->getForm();
-        var_dump($id);
+
         $form->handleRequest($request);
-        var_dump($id);
+
 
         if($form->isValid()){
             $data = $form->getData();
-            var_dump($id);
             try{
-                var_dump($id);
-                $sql = "SELECT * FROM user WHERE id = ?";
-                $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
-                var_dump((int)$id);
-                $app['db']->update('user',array(
+                $app['db']->insert('users',[
                         'username' => $data['name'],
                         'birthdate' => $data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
                         'img_path' => $data['image_profile']),
                         array('id' => $id)
                 );
-//                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');
-//                $id = $lastInsertedId['id'];
+                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
+                $id = $lastInsertedId['id'];
                 $url = '/users/get/'.$id;
                 return new RedirectResponse($url);
             }catch(Exception $e){
@@ -209,11 +200,6 @@ class UserController
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
                 'constraints' => array(
-                    new NotBlank(
-                        array(
-                            'message' => 'El nombre no puede estar vacío'
-                        )
-                    ),
                     new Length(
                         array(
                             'max' => 20,
@@ -250,30 +236,6 @@ class UserController
                     )
                 )
             ))
-
-//            ->add('password', PasswordType::class, array(
-//                'constraints' => array(
-//                    new Regex(
-//                        array(
-//                            'pattern' => '/[a-z]/',
-//                            'match' => true,
-//                            'message' => 'La contraseña debe contener almenos una minuscula'
-//                    )),
-//                    new Regex(
-//                        array(
-//                            'pattern' => '/[A-Z]/',
-//                            'match' => true,
-//                            'message' => 'La contraseña debe contener almenos una mayuscula'
-//                    )),
-//                    new Regex(
-//                        array(
-//                            'pattern' => '/[0-9]/',
-//                            'match' => true,
-//                            'message' => 'La contraseña debe contener almenos un numero'
-//                    ))
-//                )
-//            ))
-//            ->add('confirm_password', PasswordType::class)
             ->add('password', RepeatedType::class, array(
                 'constraints' => array(
                     new Length(
@@ -321,7 +283,7 @@ class UserController
         if($form->isValid()){
             $data = $form->getData();
             try{
-                $app['db']->insert('user',[
+                $app['db']->insert('users',[
                     'username' => $data['name'],
                     'email' => $data['email'],
                     'birthdate' => $data['birthdate']->format('Y-m-d'),
@@ -329,7 +291,7 @@ class UserController
                     'img_path' => $data['image_profile']
                 ]
             );
-            $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');
+            $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
             $id = $lastInsertedId['id'];
             $url = '/users/get/'.$id;
             return new RedirectResponse($url);
@@ -356,7 +318,7 @@ class UserController
     public function loginUser(Application $app, Request $request)
     {
         $response = new Response();
-
+        $match = true;
         $data = array(
             'username-email' => 'Yourname',
         );
@@ -391,16 +353,27 @@ class UserController
             $data = $form->getData();
             try{
                 $login = $data['username-email'];
-                $pass = $data['password'];
+                $pass = md5($data['password']);
 
-                $match = $app['db']->fetchAssoc("SELECT * FROM user WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
-                if($match == false){
-                    $url = '/users/login';
+                $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
+                if($match == true){
+                    $url = '/users/home';
+                    return new RedirectResponse($url);
                 }else{
+                    $response->setStatusCode(Response::HTTP_OK);
+                    $content = $app['twig']->render('loginUser.twig',array(
+                        'form'=> $form->createView(),
+                        'logged' => $match
+                    ));
+                    $response->setContent($content);
+
+                    return $response;
+                }/*else{
                     //ToDo: Home
                     $url = '/users/home';
                 }
-                return new RedirectResponse($url);
+                return new RedirectResponse($url);*/
+
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('error.twig',[
@@ -414,7 +387,10 @@ class UserController
         }
 
         $response->setStatusCode(Response::HTTP_OK);
-        $content = $app['twig']->render('loginUser.twig',array('form'=> $form->createView()));
+        $content = $app['twig']->render('loginUser.twig',array(
+            'form'=> $form->createView(),
+            'logged' => $match
+        ));
         $response->setContent($content);
 
         return $response;
