@@ -42,5 +42,7 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'translator.domains' => array(),
 ));
 $app->register(new Silex\Provider\LocaleServiceProvider());
-/* també hauriem de registrar el TranslationServiceProvider & LocalServiceProvider? */
 $app->register(new Silex\Provider\ValidatorServiceProvider());
+
+//LOGIN VALIDATOR
+/*$app->register('app.contains_alphanumeric')*/

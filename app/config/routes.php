@@ -32,3 +32,6 @@ $app->get('/admin', 'SilexApp\Controller\BaseController::adminAction')->before($
 
 $app->get('/users/get/{id}', 'SilexApp\Controller\UserController::getAction');
 $app->get('/users/add', 'SilexApp\Controller\UserController::postAction');
+
+
+$app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');

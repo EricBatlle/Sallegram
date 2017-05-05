@@ -9,6 +9,8 @@
 namespace SilexApp\Controller;
 
 
+use SilexApp\Controller\Validations\CorrectPassword;
+use SilexApp\Controller\Validations\CorrectLogin;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -18,6 +20,7 @@ use Silex\Application;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +66,7 @@ class UserController
             'name' => 'Yourname',
             'email' => 'email@email.com'
         );
-
+        /** @var Form $form */
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
                 'constraints' => array(
@@ -150,6 +153,74 @@ class UserController
 
         $response->setStatusCode(Response::HTTP_OK);
         $content = $app['twig']->render('addUser.twig',array('form'=> $form->createView()));
+        $response->setContent($content);
+
+        return $response;
+    }
+
+
+    public function loginUser(Application $app, Request $request)
+    {
+        $response = new Response();
+
+        $data = array(
+            'username-email' => 'Yourname',
+        );
+
+        /** @var Form $form */
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
+            ->add('username-email', TextType::class, array(
+                'constraints' => array(
+                    'constraints' => new CorrectLogin(
+                        array(
+                            'message' => 'Invalid Login: Must contain alphanumeric values, and less than 20 characters (not HTML syntax)'
+                        )
+                    )
+                )
+            ))
+            ->add('password', PasswordType::class, array(
+                'constraints' => new CorrectPassword(
+                    array(
+                        'message' => 'Invalid Password: Must contain one minus, one mayus, one number, and 6 to 12 characters (not HTML syntax)'
+                    )
+                )
+            ))
+            ->add('submit',SubmitType::class, [
+                'label' => 'Send',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+
+            $data = $form->getData();
+            try{
+                $login = $data['username-email'];
+                $pass = $data['password'];
+
+                $match = $app['db']->fetchAssoc("SELECT * FROM user WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
+                if($match == false){
+                    $url = '/users/login';
+                }else{
+                    //ToDo: Home
+                    $url = '/users/home';
+                }
+                return new RedirectResponse($url);
+            }catch(Exception $e){
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+                $content = $app['twig']->render('error.twig',[
+                    'errors' => [
+                        'unexpected' => 'An error has ocurred, please try it again later'
+                    ]
+                ]);
+                $response->setContent($content);
+                return $response;
+            }
+        }
+
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('loginUser.twig',array('form'=> $form->createView()));
         $response->setContent($content);
 
         return $response;

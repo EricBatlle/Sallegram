@@ -1,6 +1,6 @@
 {% extends "base.twig" %}
 
-{#{% block title %}Register{% endblock %}#}
+{#{% block title %}Login{% endblock %}#}
 
 {% block head %}
     {{ parent() }}
@@ -10,9 +10,9 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Register </h1>
-    <form action="/users/add" METHOD="POST">
-    {{ form_widget(form) }}
-</form>
+    <h1>Login </h1>
+    <form action="/users/login" METHOD="POST">
+        {{ form_widget(form) }}
+    </form>
 {% endblock %}
 
