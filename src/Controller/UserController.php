@@ -38,7 +38,7 @@ class UserController
 {
     public function getAction(Application $app, $id, Request $request)
     {
-        $sql = "SELECT * FROM user WHERE id = ?";
+        $sql = "SELECT * FROM users WHERE id = ?";
         $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
         $response = new Response();
 
@@ -151,7 +151,7 @@ class UserController
         if($form->isValid()){
             $data = $form->getData();
             try{
-                $app['db']->insert('user',[
+                $app['db']->insert('users',[
                         'username' => $data['name'],
                         'email' => $data['email'],
                         'birthdate' => $data['birthdate']->format('Y-m-d'),
@@ -159,7 +159,7 @@ class UserController
                         'img_path' => $data['image_profile']
                     ]
                 );
-                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');
+                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
                 $id = $lastInsertedId['id'];
                 $url = '/users/get/'.$id;
                 return new RedirectResponse($url);
@@ -284,7 +284,7 @@ class UserController
         if($form->isValid()){
             $data = $form->getData();
             try{
-                $app['db']->insert('user',[
+                $app['db']->insert('users',[
                     'username' => $data['name'],
                     'email' => $data['email'],
                     'birthdate' => $data['birthdate']->format('Y-m-d'),
@@ -292,7 +292,7 @@ class UserController
                     'img_path' => $data['image_profile']
                 ]
             );
-            $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM user ORDER BY id DESC LIMIT 1');
+            $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
             $id = $lastInsertedId['id'];
             $url = '/users/get/'.$id;
             return new RedirectResponse($url);
@@ -354,9 +354,9 @@ class UserController
             $data = $form->getData();
             try{
                 $login = $data['username-email'];
-                $pass = $data['password'];
+                $pass = md5($data['password']);
 
-                $match = $app['db']->fetchAssoc("SELECT * FROM user WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
+                $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
                 if($match == true){
                     $url = '/users/home';
                     return new RedirectResponse($url);
