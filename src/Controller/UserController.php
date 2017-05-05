@@ -201,11 +201,6 @@ class UserController
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
                 'constraints' => array(
-                    new NotBlank(
-                        array(
-                            'message' => 'El nombre no puede estar vacío'
-                        )
-                    ),
                     new Length(
                         array(
                             'max' => 20,
@@ -242,30 +237,6 @@ class UserController
                     )
                 )
             ))
-
-//            ->add('password', PasswordType::class, array(
-//                'constraints' => array(
-//                    new Regex(
-//                        array(
-//                            'pattern' => '/[a-z]/',
-//                            'match' => true,
-//                            'message' => 'La contraseña debe contener almenos una minuscula'
-//                    )),
-//                    new Regex(
-//                        array(
-//                            'pattern' => '/[A-Z]/',
-//                            'match' => true,
-//                            'message' => 'La contraseña debe contener almenos una mayuscula'
-//                    )),
-//                    new Regex(
-//                        array(
-//                            'pattern' => '/[0-9]/',
-//                            'match' => true,
-//                            'message' => 'La contraseña debe contener almenos un numero'
-//                    ))
-//                )
-//            ))
-//            ->add('confirm_password', PasswordType::class)
             ->add('password', RepeatedType::class, array(
                 'constraints' => array(
                     new Length(
@@ -348,7 +319,7 @@ class UserController
     public function loginUser(Application $app, Request $request)
     {
         $response = new Response();
-
+        $match = true;
         $data = array(
             'username-email' => 'Yourname',
         );
@@ -386,13 +357,24 @@ class UserController
                 $pass = $data['password'];
 
                 $match = $app['db']->fetchAssoc("SELECT * FROM user WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
-                if($match == false){
-                    $url = '/users/login';
+                if($match == true){
+                    $url = '/users/home';
+                    return new RedirectResponse($url);
                 }else{
+                    $response->setStatusCode(Response::HTTP_OK);
+                    $content = $app['twig']->render('loginUser.twig',array(
+                        'form'=> $form->createView(),
+                        'logged' => $match
+                    ));
+                    $response->setContent($content);
+
+                    return $response;
+                }/*else{
                     //ToDo: Home
                     $url = '/users/home';
                 }
-                return new RedirectResponse($url);
+                return new RedirectResponse($url);*/
+
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('error.twig',[
@@ -406,7 +388,10 @@ class UserController
         }
 
         $response->setStatusCode(Response::HTTP_OK);
-        $content = $app['twig']->render('loginUser.twig',array('form'=> $form->createView()));
+        $content = $app['twig']->render('loginUser.twig',array(
+            'form'=> $form->createView(),
+            'logged' => $match
+        ));
         $response->setContent($content);
 
         return $response;
