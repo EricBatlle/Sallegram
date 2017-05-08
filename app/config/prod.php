@@ -43,6 +43,3 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 ));
 $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\ValidatorServiceProvider());
-
-//LOGIN VALIDATOR
-/*$app->register('app.contains_alphanumeric')*/
