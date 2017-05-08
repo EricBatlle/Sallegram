@@ -41,7 +41,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UserController extends BaseController
 {
     public function userPhotos (Application $app){
+        $response = new Response();
+        $content = $app['twig']->render('userPhotos.twig');
+        $response->setContent($content);
 
+        return $response;
     }
 
     public function mailValidation(Application $app){
@@ -59,8 +63,7 @@ class UserController extends BaseController
                     'active' => '1'],
                     array('id' => $user['id']));
 
-                echo var_dump($user);
-                    $userLogged = new User($user['id'],$user['username'],$user['email'],$user['birthdate'],$user['password'],$user['img_path'],$user['active']);
+                $userLogged = new User($user['id'],$user['username'],$user['email'],$user['birthdate'],$user['password'],$user['img_path'],$user['active']);
 
                 $this->logSession($app,$userLogged);
                 $url = '/';

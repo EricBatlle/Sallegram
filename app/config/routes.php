@@ -40,4 +40,4 @@ $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
 $app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
 
 $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailValidation');
-//$app->match('/users/photos', 'SilexApp\Controller\UserController::mailValidation');
+$app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos');
