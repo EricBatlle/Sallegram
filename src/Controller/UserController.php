@@ -254,19 +254,10 @@ class UserController extends BaseController
         /** @var Form $form */
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
-                'constraints' => array(
-                    new Length(
-                        array(
-                            'max' => 20,
-                            'maxMessage' => 'El nombre es demsasiado largo'
-                        )
-                    ),
-                    new Regex(
-                        array(
-                            'pattern' => '/^[a-zA-Z0-9]+$/',
-                            'match' => true,
-                            'message' => 'El nombre debe contener solo caracteres alfanumericos'
-                    ))
+                'constraints' => new CorrectLogin(
+                    array(
+                        'message' => 'Invalid Name: Must contain one minus, one mayus, one number, and 6 to 12 characters (not HTML syntax)'
+                    )
                 )
             ))
 
@@ -292,33 +283,10 @@ class UserController extends BaseController
                 )
             ))
             ->add('password', RepeatedType::class, array(
-                'constraints' => array(
-                    new Length(
-                        array(
-                            'min' => 6,
-                            'max' => 12,
-                            'minMessage' => 'La contraseña debe contener entre 6 y 12 caracteres',
-                            'maxMessage' => 'La contraseña debe contener entre 6 y 12 caracteres'
-                        )
-                    ),
-                    new Regex(
-                        array(
-                            'pattern' => '/[a-z]/',
-                            'match' => true,
-                            'message' => 'La contraseña debe contener almenos una minuscula'
-                    )),
-                    new Regex(
-                        array(
-                            'pattern' => '/[A-Z]/',
-                            'match' => true,
-                            'message' => 'La contraseña debe contener almenos una mayuscula'
-                    )),
-                    new Regex(
-                        array(
-                            'pattern' => '/[0-9]/',
-                            'match' => true,
-                            'message' => 'La contraseña debe contener almenos un numero'
-                    ))
+                'constraints' => new CorrectPassword(
+                    array(
+                        'message' => 'Invalid Password: Must contain one minus, one mayus, one number, and 6 to 12 characters (not HTML syntax)'
+                    )
                 ),
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les contrasenyes han de coincidir',
