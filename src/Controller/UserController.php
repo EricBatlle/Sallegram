@@ -47,8 +47,6 @@ class UserController extends BaseController
     public function mailValidation(Application $app){
         $response = new Response();
         $response->setStatusCode(Response::HTTP_OK);
-        $content = $app['twig']->render('mailValidation.twig');
-        $response->setContent($content);
 
         $host = $_SERVER["REQUEST_URI"];
         $id = explode ("/", $host);
@@ -60,6 +58,13 @@ class UserController extends BaseController
                 $app['db']->update('users', [
                     'active' => '1'],
                     array('id' => $user['id']));
+
+                    $userLogged = new User($id,$user['username'],$user['email'],$user['birthdate'],$user['password'],$user['img_path'],$user['active']);
+
+                $this->logSession($app,$userLogged);
+                $url = '/';
+                return new RedirectResponse($url);
+
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('error.twig',[
@@ -335,6 +340,7 @@ class UserController extends BaseController
             $data = $form->getData();
             //IMAGE
             $dir = 'assets/uploads';
+            //ToDo: If image=null -> take default image
             /** @var UploadedFile $someNewFilename */
             $someNewFilename = $data['image_profile'];
             $someNewFilename->move($dir, 'test.jpg');
@@ -372,12 +378,13 @@ class UserController extends BaseController
             ini_set("SMTP", $data['email']);
             ini_set('smtp_port', 25);
 
-            $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/ para activar su cuenta'.$id;
+            $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
             mail($data['email'], 'Confirmacion Pwgram', $message);
 
 
             //$url = '/users/get/'.$id;
             //return new RedirectResponse($url);
+            return $response;
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('addUser.twig',[
