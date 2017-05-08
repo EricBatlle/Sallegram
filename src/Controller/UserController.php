@@ -59,7 +59,8 @@ class UserController extends BaseController
                     'active' => '1'],
                     array('id' => $user['id']));
 
-                    $userLogged = new User($id,$user['username'],$user['email'],$user['birthdate'],$user['password'],$user['img_path'],$user['active']);
+                echo var_dump($user);
+                    $userLogged = new User($user['id'],$user['username'],$user['email'],$user['birthdate'],$user['password'],$user['img_path'],$user['active']);
 
                 $this->logSession($app,$userLogged);
                 $url = '/';
@@ -91,9 +92,11 @@ class UserController extends BaseController
         return $response;
     }
 
-    public function editProfile (Application $app, $id, Request $request)
+    public function editProfile (Application $app, Request $request)
     {
         $sql = "SELECT * FROM users WHERE id = ?";
+        $id = $app['session']->get('id');
+        var_dump($app['session']->get('id'));
         $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
         $response = new Response();
 
@@ -213,9 +216,9 @@ class UserController extends BaseController
                     'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
                         'img_path' => $data['image_profile']],
-                        array('id' => '55'));
+                        array('id' => $app['session']->get('id')));
 
-                $url = '/users/get/55';
+                $url = '/users/get';
                 return new RedirectResponse($url);
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);

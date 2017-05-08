@@ -32,7 +32,7 @@ $app->get('/admin', 'SilexApp\Controller\BaseController::adminAction')->before($
 
 // USER
 
-$app->match('/users/get/{id}', 'SilexApp\Controller\UserController::editProfile')->before($before);
+$app->match('/users/get', 'SilexApp\Controller\UserController::editProfile')->before($before);
 $app->match('/users/add', 'SilexApp\Controller\UserController::addUser');
 
 
@@ -40,4 +40,4 @@ $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
 $app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
 
 $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailValidation');
-$app->match('/users/photos/{id}', 'SilexApp\Controller\UserController::mailValidation');
+//$app->match('/users/photos', 'SilexApp\Controller\UserController::mailValidation');
