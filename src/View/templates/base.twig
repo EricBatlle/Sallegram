@@ -14,10 +14,12 @@
         <div id="header">
             {% block header %}
                 <ul>
+                    {% block links %}
                     <a href="/">Home</a>
                     <a href="/users/add">Register</a>
                     <a href="/users/login">Login</a>
                     <a href="/users/get/29">Profile</a>
+                    {% endblock %}
                 </ul>
             {% endblock %}
         </div>

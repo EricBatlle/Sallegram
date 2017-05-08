@@ -10,9 +10,14 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Register </h1>
-    <form action="/users/add" METHOD="POST" enctype="multipart/form-data">
-    {{ form_widget(form) }}
-</form>
+    <h1>Add Image </h1>
+    <form action="/addImg" METHOD="POST">
+        {{ form_widget(form) }}
+    </form>
+
+    {% if ok == false %}
+        <h3>Something goes wrong</h3>
+    {% endif %}
+
 {% endblock %}
 
