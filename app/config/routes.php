@@ -10,10 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-$app->get('/hello/{name}', 'SilexApp\\Controller\\HelloController::indexAction');
-$app->get('/add/{num1}/{num2}', 'SilexApp\\Controller\\HelloController::addAction');
-$app->match('/users/get/{id}', 'SilexApp\Controller\UserController::getAction');
-$app->match('/users/add', 'SilexApp\Controller\UserController::postAction');
+//$app->get('/hello/{name}', 'SilexApp\\Controller\\HelloController::indexAction');
+//$app->get('/add/{num1}/{num2}', 'SilexApp\\Controller\\HelloController::addAction');
+$app->match('/users/get/{id}', 'SilexApp\Controller\UserController::editProfile');
+$app->match('/users/add', 'SilexApp\Controller\UserController::addUser');
+
 // SESSION
 $before = function (Request $request, Application $app){
   if(!$app['session']->has('name')) {
@@ -35,3 +36,6 @@ $app->get('/admin', 'SilexApp\Controller\BaseController::adminAction')->before($
 
 
 $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
+
+$app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailValidation');
+$app->match('/users/photos/{id}', 'SilexApp\Controller\UserController::mailValidation');

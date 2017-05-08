@@ -13,6 +13,7 @@ use SilexApp\Controller\Validations\CorrectPassword;
 use SilexApp\Controller\Validations\CorrectLogin;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,7 +37,53 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserController
 {
-    public function getAction(Application $app, $id, Request $request)
+    public function userPhotos (Application $app){
+
+    }
+
+    public function mailValidation(Application $app){
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('mailValidation.twig');
+        $response->setContent($content);
+
+        $host = $_SERVER["REQUEST_URI"];
+        $id = explode ("/", $host);
+
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $user = $app['db']->fetchAssoc($sql, array((int)$id[3])); //llamando al servicio
+        if ($user != false){
+            try {
+                $app['db']->update('users', [
+                    'active' => '1'],
+                    array('id' => $user['id']));
+            }catch(Exception $e){
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+                $content = $app['twig']->render('error.twig',[
+                    'errors' => [
+                        'unexpected' => 'An error has ocurred, please try it again later'
+                    ]
+                ]);
+
+                $response->setContent($content);
+                return $response;
+            }
+        } else {
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $content = $app['twig']->render('error.twig',[
+                'errors' => [
+                    'unexpected' => 'An error has ocurred, please try it again later'
+                ]
+            ]);
+
+            $response->setContent($content);
+            return $response;
+        }
+
+        return $response;
+    }
+
+    public function editProfile (Application $app, $id, Request $request)
     {
         $sql = "SELECT * FROM users WHERE id = ?";
         $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
@@ -63,7 +110,6 @@ class UserController
 
         $data = array(
             'name' => $user['username'],
-            //'image_profile' => $user['img_path']
         );
 
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
@@ -90,8 +136,8 @@ class UserController
             ))
 
             ->add('birthdate', BirthdayType::class, array(
-//                'input' => 'string',
-//                'data' => $user['birthdate'],
+                'input' => 'datetime',
+                'data' => new \DateTime($user['birthdate']),
                 'constraints' => new Assert\Range(
                     array(
                         'max' => 'now',
@@ -151,20 +197,19 @@ class UserController
         if($form->isValid()){
             $data = $form->getData();
             try{
-                $app['db']->insert('users',[
+
+                $app['db']->update('users',[
                         'username' => $data['name'],
-                        'birthdate' => $data['birthdate']->format('Y-m-d'),
+                        'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
-                        'img_path' => $data['image_profile']),
-                        array('id' => $id)
-                );
-                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
-                $id = $lastInsertedId['id'];
-                $url = '/users/get/'.$id;
+                        'img_path' => $data['image_profile']],
+                        array('id' => '55'));
+
+                $url = '/users/get/55';
                 return new RedirectResponse($url);
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-                $content = $app['twig']->render('showUser.twig',[
+                $content = $app['twig']->render('error.twig',[
                     'errors' => [
                         'unexpected' => 'An error has ocurred, please try it again later'
                     ]
@@ -188,7 +233,7 @@ class UserController
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function postAction(Application $app, Request $request)
+    public function addUser (Application $app, Request $request)
     {
         $response = new Response();
 
@@ -293,8 +338,19 @@ class UserController
             );
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
             $id = $lastInsertedId['id'];
-            $url = '/users/get/'.$id;
-            return new RedirectResponse($url);
+
+            echo "<script type='text/javascript'>alert('Hemos enviado un email de confirmación a su correo para activar la cuenta.');</script>";
+
+            ini_set('sendmail_from', "nuria.gomezpiedrafita@gmail.com");
+            ini_set("SMTP", $data['email']);
+            ini_set('smtp_port', 25);
+
+            $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/ para activar su cuenta'.$id;
+            mail($data['email'], 'Confirmacion Pwgram', $message);
+
+
+            //$url = '/users/get/'.$id;
+            //return new RedirectResponse($url);
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('addUser.twig',[
