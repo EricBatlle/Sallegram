@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 $app->match('/', 'SilexApp\Controller\BaseController::redirectHome'); //Home
 // SESSION
 $before = function (Request $request, Application $app){
-  if(!$app['session']->has('name')) {
+  if(!$app['session']->has('id')) {
       $response = new Response();
       $content = $app['twig']->render('error.twig', [
           'message' => 'You must be logged'
@@ -32,7 +32,7 @@ $app->get('/admin', 'SilexApp\Controller\BaseController::adminAction')->before($
 
 // USER
 
-$app->match('/users/get/{id}', 'SilexApp\Controller\UserController::editProfile');
+$app->match('/users/get/{id}', 'SilexApp\Controller\UserController::editProfile')->before($before);
 $app->match('/users/add', 'SilexApp\Controller\UserController::addUser');
 
 
