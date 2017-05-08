@@ -22,7 +22,7 @@ class BaseController
             $app['session']->remove('name');
             return new Response('Session finished');
         }
-      
+
         $app['session']->set('id',$user->id);
         $content = 'Session started for the user '.$app['session']->get('name');
         return new Response($content);
