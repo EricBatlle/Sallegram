@@ -1,0 +1,15 @@
+{% extends "base.twig" %}
+{% block links %}
+    {{ parent() }}
+    {% if ( logged ) %}
+        <a href="/addImg">Add Image</a>
+    {% endif %}
+
+
+{% endblock %}
+
+{% block content %}
+    <h1>Home</h1>
+
+
+{% endblock %}

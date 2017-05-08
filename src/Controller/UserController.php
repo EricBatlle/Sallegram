@@ -8,7 +8,10 @@
 
 namespace SilexApp\Controller;
 
-
+use SilexApp\Model\Entity\User;
+use SilexApp\Model\Entity\UserType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SilexApp\Controller\Validations\CorrectPassword;
 use SilexApp\Controller\Validations\CorrectLogin;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -35,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 
-class UserController
+class UserController extends BaseController
 {
     public function userPhotos (Application $app){
 
@@ -112,6 +115,7 @@ class UserController
             'name' => $user['username'],
         );
 
+        /** @var Form $form */
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
                 'constraints' => array(
@@ -200,7 +204,8 @@ class UserController
 
                 $app['db']->update('users',[
                         'username' => $data['name'],
-                        'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
+                    //ToDo: Check if string is needed
+                    'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
                         'img_path' => $data['image_profile']],
                         array('id' => '55'));
@@ -316,6 +321,7 @@ class UserController
                 'second_options' => array('label' => 'Repeat Password'),
             ))
             ->add('image_profile', FileType::class, array(
+                //ToDo: Required false?
                 'required' => false
             ))
             ->add('submit',SubmitType::class, [
@@ -327,6 +333,13 @@ class UserController
 
         if($form->isValid()){
             $data = $form->getData();
+            //IMAGE
+            $dir = 'assets/uploads';
+            /** @var UploadedFile $someNewFilename */
+            $someNewFilename = $data['image_profile'];
+            $someNewFilename->move($dir, 'test.jpg');
+            //$myFile = $request->files->get('image_profile');
+            //$myFile->move($dir,$someNewFilename);
             try{
                 $app['db']->insert('users',[
                     'username' => $data['name'],
@@ -338,6 +351,20 @@ class UserController
             );
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
             $id = $lastInsertedId['id'];
+
+            //ToDo: Move to emailValidation function?
+            /*//$url = '/users/get/'.$id;
+
+            //ToDo: Change active according to the mail
+            $user = new User($id,$data['name'],$data['email'],$data['birthdate']->format('Y-m-d'),md5($data['password']),$data['image_profile'],0);
+            $this->logSession($app,$user);
+            echo 'hello';
+            //echo var_dump($app['user']);
+            $url = '/users/add'; //Debug Mode
+            //ToDo: Redirect to Main Page
+            //$url = '/';
+            //return new RedirectResponse($url);
+                return $response;*/
 
             echo "<script type='text/javascript'>alert('Hemos enviado un email de confirmación a su correo para activar la cuenta.');</script>";
 
@@ -412,8 +439,10 @@ class UserController
                 $pass = md5($data['password']);
 
                 $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
+
                 if($match == true){
-                    $url = '/users/home';
+                    $this->logSession($app);
+                    $url = '/';
                     return new RedirectResponse($url);
                 }else{
                     $response->setStatusCode(Response::HTTP_OK);
@@ -424,12 +453,7 @@ class UserController
                     $response->setContent($content);
 
                     return $response;
-                }/*else{
-                    //ToDo: Home
-                    $url = '/users/home';
                 }
-                return new RedirectResponse($url);*/
-
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('error.twig',[
@@ -446,6 +470,93 @@ class UserController
         $content = $app['twig']->render('loginUser.twig',array(
             'form'=> $form->createView(),
             'logged' => $match
+        ));
+        $response->setContent($content);
+
+        return $response;
+    }
+
+    public function addImg(Application $app, Request $request)
+    {
+        $response = new Response();
+        $ok = true;
+        $data = array(
+            'Private' =>  false,
+        );
+
+        /** @var Form $form */
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
+            ->add('Title', TextType::class, array(
+                'constraints' => array(
+                    'constraints' => new CorrectLogin(
+                        array(
+                            'message' => 'Invalid Title: Must contain alphanumeric values, and less than 20 characters (not HTML syntax)'
+                        )
+                    )
+                )
+            ))
+            ->add('New_Image', FileType::class, array(
+                'required' => true
+            ))
+            ->add('Private', CheckboxType::class, array(
+                'required' => false
+            ))
+            ->add('submit',SubmitType::class, [
+                'label' => 'Send',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+
+            $data = $form->getData();
+            try{
+                /*
+                 * LOGIC OF THE ADDIMG, SHOULD RETURN OK IF WORKS
+                 */
+                //ToDo: Find User ID
+                /*$app['db']->insert('images',[
+                        'title' => $data['Title'],
+                        //'user_id' => $data['email'],
+                        'img_path' => $data['New_Image'],
+                        'visits' => 0,
+                        'private' => $data['Private'],
+                    ]
+                );*/
+                /*
+                 */
+                var_dump($app['user']->id);
+                $ok = true; //DEBUG MODE
+                if($ok == true){
+                    $url = '/';
+                    return new RedirectResponse($url);
+                }else {
+                    $response->setStatusCode(Response::HTTP_OK);
+                    $content = $app['twig']->render('addImg.twig', array(
+                        'form' => $form->createView(),
+                        'ok' => $ok
+                    ));
+                    $response->setContent($content);
+
+                    return $response;
+                }
+            }catch(Exception $e){
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+                $content = $app['twig']->render('error.twig',[
+                    'errors' => [
+                        'unexpected' => 'An error has ocurred, please try it again later'
+                    ]
+                ]);
+                $response->setContent($content);
+                return $response;
+            }
+        }
+
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('addImg.twig',array(
+            'form'=> $form->createView(),
+            'ok' => $ok
         ));
         $response->setContent($content);
 

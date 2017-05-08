@@ -12,9 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 //$app->get('/hello/{name}', 'SilexApp\\Controller\\HelloController::indexAction');
 //$app->get('/add/{num1}/{num2}', 'SilexApp\\Controller\\HelloController::addAction');
-$app->match('/users/get/{id}', 'SilexApp\Controller\UserController::editProfile');
-$app->match('/users/add', 'SilexApp\Controller\UserController::addUser');
 
+$app->match('/', 'SilexApp\Controller\BaseController::redirectHome'); //Home
 // SESSION
 $before = function (Request $request, Application $app){
   if(!$app['session']->has('name')) {
@@ -27,15 +26,18 @@ $before = function (Request $request, Application $app){
       return $response;
   }
 };
-$app->get('/', 'SilexApp\Controller\BaseController::indexAction');
+$app->get('/log', 'SilexApp\Controller\BaseController::logSession'); //Logeja, si ja ho estás, deslogeja
+//$app->get('/log', 'SilexApp\Controller\BaseController::indexAction'); //Logeja, si ja ho estás, deslogeja
 $app->get('/admin', 'SilexApp\Controller\BaseController::adminAction')->before($before); /*Nomes accessible per usuaris logejats */
+
 // USER
 
-//$app->get('/users/get/{id}', 'SilexApp\Controller\UserController::getAction');
-//$app->get('/users/add', 'SilexApp\Controller\UserController::postAction');
+$app->match('/users/get/{id}', 'SilexApp\Controller\UserController::editProfile');
+$app->match('/users/add', 'SilexApp\Controller\UserController::addUser');
 
 
 $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
+$app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
 
 $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailValidation');
 $app->match('/users/photos/{id}', 'SilexApp\Controller\UserController::mailValidation');

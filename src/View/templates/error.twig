@@ -1,7 +1,10 @@
 {% extends "base.twig" %}
 
+{#Delete from base.twig#}
+{% block title %}{% endblock %}
+{% block header %}{% endblock %}
+
 {% block head %}
-    {{ parent() }}
     <style type="text/css">
         h1{ text-transform: uppercase;}
     </style>
