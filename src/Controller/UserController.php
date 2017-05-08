@@ -63,9 +63,7 @@ class UserController extends BaseController
                     'active' => '1'],
                     array('id' => $user['id']));
 
-                $userLogged = new User($user['id'],$user['username'],$user['email'],$user['birthdate'],$user['password'],$user['img_path'],$user['active']);
-
-                $this->logSession($app,$userLogged);
+                $this->logSession($app,$user['id']);
                 $url = '/';
                 return new RedirectResponse($url);
 
@@ -162,33 +160,10 @@ class UserController extends BaseController
             ))
 
             ->add('password', RepeatedType::class, array(
-                'constraints' => array(
-                    new Length(
-                        array(
-                            'min' => 6,
-                            'max' => 12,
-                            'minMessage' => 'La contraseña debe contener entre 6 y 12 caracteres',
-                            'maxMessage' => 'La contraseña debe contener entre 6 y 12 caracteres'
-                        )
-                    ),
-                    new Regex(
-                        array(
-                            'pattern' => '/[a-z]/',
-                            'match' => true,
-                            'message' => 'La contraseña debe contener almenos una minuscula'
-                        )),
-                    new Regex(
-                        array(
-                            'pattern' => '/[A-Z]/',
-                            'match' => true,
-                            'message' => 'La contraseña debe contener almenos una mayuscula'
-                        )),
-                    new Regex(
-                        array(
-                            'pattern' => '/[0-9]/',
-                            'match' => true,
-                            'message' => 'La contraseña debe contener almenos un numero'
-                        ))
+                'constraints' => new CorrectPassword(
+                    array(
+                        'message' => 'Invalid Password: Must contain one minus, one mayus, one number, and 6 to 12 characters (not HTML syntax)'
+                    )
                 ),
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les contrasenyes han de coincidir',
@@ -240,8 +215,6 @@ class UserController extends BaseController
         $response->setContent($content);
 
         return $response;
-
-
     }
 
     /**
@@ -332,20 +305,6 @@ class UserController extends BaseController
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
             $id = $lastInsertedId['id'];
 
-            //ToDo: Move to emailValidation function?
-            /*//$url = '/users/get/'.$id;
-
-            //ToDo: Change active according to the mail
-            $user = new User($id,$data['name'],$data['email'],$data['birthdate']->format('Y-m-d'),md5($data['password']),$data['image_profile'],0);
-            $this->logSession($app,$user);
-            echo 'hello';
-            //echo var_dump($app['user']);
-            $url = '/users/add'; //Debug Mode
-            //ToDo: Redirect to Main Page
-            //$url = '/';
-            //return new RedirectResponse($url);
-                return $response;*/
-
             echo "<script type='text/javascript'>alert('Hemos enviado un email de confirmación a su correo para activar la cuenta.');</script>";
 
             ini_set('sendmail_from', "nuria.gomezpiedrafita@gmail.com");
@@ -413,16 +372,15 @@ class UserController extends BaseController
         $form->handleRequest($request);
 
         if($form->isValid()){
-
             $data = $form->getData();
             try{
                 $login = $data['username-email'];
                 $pass = md5($data['password']);
 
                 $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
-
+                echo var_dump($match['id']);
                 if($match == true){
-                    $this->logSession($app);
+                    $this->logSession($app,$match['id']);
                     $url = '/';
                     return new RedirectResponse($url);
                 }else{

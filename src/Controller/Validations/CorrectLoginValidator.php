@@ -28,6 +28,7 @@ class CorrectLoginValidator extends ConstraintValidator
         $correct = false;
         //Html - string conversion
         $value = htmlentities($value);
+        //ToDo: only alphanumeric characters
 
         if(strlen($value) > 20) {
             $correct = true;

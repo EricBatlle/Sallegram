@@ -26,6 +26,8 @@ $before = function (Request $request, Application $app){
       return $response;
   }
 };
+$app->get('/unlog', 'SilexApp\Controller\BaseController::unlogSession'); //Logeja, si ja ho estás, deslogeja
+
 $app->get('/log', 'SilexApp\Controller\BaseController::logSession'); //Logeja, si ja ho estás, deslogeja
 //$app->get('/log', 'SilexApp\Controller\BaseController::indexAction'); //Logeja, si ja ho estás, deslogeja
 $app->get('/admin', 'SilexApp\Controller\BaseController::adminAction')->before($before); /*Nomes accessible per usuaris logejats */
