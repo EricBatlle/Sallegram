@@ -40,3 +40,4 @@ $app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos');
 //IMAGE
 $app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
 $app->match('/addComment', 'SilexApp\Controller\UserController::addComment')->before($before);
+$app->match('/allComments', 'SilexApp\Controller\UserController::allComments')->before($before);

@@ -21,6 +21,10 @@
                     <a href="/users/get">Profile</a>
                     <a href="/users/photos">My photos</a>
                     {% endblock %}
+                    {% if ( app.session.has('id') ) %}
+                        <a href="/addImg">Add Image
+                        <a href="/allComments">All Comments</a>
+                    {% endif %}
                 </ul>
             {% endblock %}
         </div>

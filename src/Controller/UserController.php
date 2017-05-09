@@ -316,7 +316,6 @@ class UserController extends BaseController
         return $response;
     }
 
-
     public function loginUser(Application $app, Request $request)
     {
         $response = new Response();
@@ -476,29 +475,20 @@ class UserController extends BaseController
 
     public function addComment(Application $app, Request $request)
     {
+
+    }
+    public function allComments(Application $app, Request $request)
+    {
         $response = new Response();
-        $data = array(
-            'Comment' =>  'Say something nice...',
-        );
-
-        /** @var Form $form */
-        $form = $app['form.factory']->createBuilder(FormType::class, $data)
-            ->add('Comment', TextareaType::class, array(
-
-            ))
-            ->add('submit',SubmitType::class, [
-                'label' => 'Send',
-            ])
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if($form->isValid()){
-        }
-
         $response->setStatusCode(Response::HTTP_OK);
-        $content = $app['twig']->render('home.twig',array(
-            'form'=> $form->createView(),
+
+        //Get all user comments
+        $idUser = $app['session']->get('id');
+        $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE id_user='$idUser'");
+        var_dump($userComments);
+
+        $content = $app['twig']->render('/allComments.twig',array(
+            'comments' => $userComments
         ));
         $response->setContent($content);
 

@@ -1,16 +1,11 @@
 {% extends "base.twig" %}
 {% block links %}
     {{ parent() }}
-    {% if ( logged ) %}
-        <a href="/addImg">Add Image</a>
-    {% endif %}
-
 
 {% endblock %}
 
 {% block content %}
     <h1>Home</h1>
-
 
     <h2>Top5</h2>
     {% for i in 1..top5|length if top5|length > 0%}
@@ -25,6 +20,7 @@
             <p>Visits {{ top5[i-1].visits }}</p>
         </div>
         {% if app.session.has('id') %}
+            {#ToDo: Comment is now not saved#}
             <form action="/" METHOD="POST" enctype="multipart/form-data">
                 {{ form_widget(form) }}
             </form>
