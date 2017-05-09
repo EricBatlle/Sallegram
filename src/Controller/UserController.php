@@ -91,30 +91,12 @@ class UserController extends BaseController
 
     public function editProfile (Application $app, Request $request)
     {
-        $sql = "SELECT * FROM users WHERE id = ?";
-        $id = $app['session']->get('id');
-        var_dump($app['session']->get('id'));
-        $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
         $response = new Response();
 
-//        if (!$user) {
-//            $response->setStatusCode(Response::HTTP_NOT_FOUND);
-//            $content = $app['twig']->render('error.twig', [
-//                    'message' => 'User not found'
-//                ]
-//            );
-//        } else {
-//            $response->setStatusCode(Response::HTTP_OK);
-//            $content = $app['twig']->render('showUser.twig', [
-//                    'user' => $user,
-//                    'app' => [
-//                        'username' => $app['app.name']
-//                    ]
-//                ]
-//            );
-//        }
-//        $response->setContent($content);
-//        return $response;
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $id = $app['session']->get('id');
+        //var_dump($app['session']->get('id'));
+        $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
 
         $data = array(
             'name' => $user['username'],
@@ -183,17 +165,18 @@ class UserController extends BaseController
         if($form->isValid()){
             $data = $form->getData();
             try{
-
                 $app['db']->update('users',[
                         'username' => $data['name'],
                     //ToDo: Check if string is needed
                     'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
                         'img_path' => $data['image_profile']],
-                        array('id' => $app['session']->get('id')));
+                        array('id' => $app['session']->get('id'))
+                );
 
-                $url = '/users/get';
+                $url = '/';
                 return new RedirectResponse($url);
+
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('error.twig',[
@@ -451,17 +434,15 @@ class UserController extends BaseController
                  * LOGIC OF THE ADDIMG, SHOULD RETURN OK IF WORKS
                  */
                 //ToDo: Find User ID
-                /*$app['db']->insert('images',[
+                $app['db']->insert('images',[
+                        'user_id' => $app['session']->get(id),
                         'title' => $data['Title'],
-                        //'user_id' => $data['email'],
                         'img_path' => $data['New_Image'],
                         'visits' => 0,
                         'private' => $data['Private'],
+                        'created_at' => date('Y-m-d H:i:s')
                     ]
-                );*/
-                /*
-                 */
-                var_dump($app['user']->id);
+                );
                 $ok = true; //DEBUG MODE
                 if($ok == true){
                     $url = '/';
