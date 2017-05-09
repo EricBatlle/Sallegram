@@ -41,7 +41,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UserController extends BaseController
 {
     public function userPhotos (Application $app){
+        $response = new Response();
+        $content = $app['twig']->render('userPhotos.twig');
+        $response->setContent($content);
 
+        return $response;
     }
 
     public function mailValidation(Application $app){
