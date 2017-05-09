@@ -171,8 +171,8 @@ class UserController extends BaseController
             try{
                 $app['db']->update('users',[
                         'username' => $data['name'],
-                    //ToDo: Check if string is needed
-                    'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
+                        //ToDo: Check if string is needed
+                        'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
                         'img_path' => $data['image_profile']],
                         array('id' => $app['session']->get('id'))
@@ -273,10 +273,7 @@ class UserController extends BaseController
             //ToDo: If image=null -> take default image
             /** @var UploadedFile $someNewFilename */
             $someNewFilename = $data['image_profile'];
-            var_dump($someNewFilename);
             $someNewFilename->move($dir, $someNewFilename->getClientOriginalName());
-            //$myFile = $request->files->get('image_profile');
-            //$myFile->move($dir,$someNewFilename);
             try{
                 $app['db']->insert('users',[
                     'username' => $data['name'],
@@ -298,9 +295,6 @@ class UserController extends BaseController
             $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
             mail($data['email'], 'Confirmacion Pwgram', $message);
 
-
-            //$url = '/users/get/'.$id;
-            //return new RedirectResponse($url);
             return $response;
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
@@ -434,34 +428,31 @@ class UserController extends BaseController
         if($form->isValid()){
 
             $data = $form->getData();
+            //IMAGE
+            $dir = 'assets/uploads';
+            //ToDo: If image=null -> take default image
+            /** @var UploadedFile $filename */
+            $filename = $data['New_Image'];
+            $filename->move($dir, $filename->getClientOriginalName());
+
+            var_dump($data);
+            var_dump($filename);
+
+            //ToDo: check upload_Images names (paths)
+            //var_dump($data);
             try{
-                /*
-                 * LOGIC OF THE ADDIMG, SHOULD RETURN OK IF WORKS
-                 */
-                //ToDo: Find User ID
                 $app['db']->insert('images',[
-                        'user_id' => $app['session']->get(id),
+                        'user_id' => $app['session']->get('id'),
                         'title' => $data['Title'],
-                        'img_path' => $data['New_Image'],
+                        'img_path' => $filename->getClientOriginalName(),
                         'visits' => 0,
                         'private' => $data['Private'],
                         'created_at' => date('Y-m-d H:i:s')
                     ]
                 );
-                $ok = true; //DEBUG MODE
-                if($ok == true){
-                    $url = '/';
-                    return new RedirectResponse($url);
-                }else {
-                    $response->setStatusCode(Response::HTTP_OK);
-                    $content = $app['twig']->render('addImg.twig', array(
-                        'form' => $form->createView(),
-                        'ok' => $ok
-                    ));
-                    $response->setContent($content);
+                $url = '/';
+                return new RedirectResponse($url);
 
-                    return $response;
-                }
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('error.twig',[
