@@ -11,6 +11,7 @@ namespace SilexApp\Controller;
 use SilexApp\Model\Entity\User;
 use SilexApp\Model\Entity\UserType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SilexApp\Controller\Validations\CorrectPassword;
 use SilexApp\Controller\Validations\CorrectLogin;
@@ -472,4 +473,36 @@ class UserController extends BaseController
 
         return $response;
     }
+
+    public function addComment(Application $app, Request $request)
+    {
+        $response = new Response();
+        $data = array(
+            'Comment' =>  'Say something nice...',
+        );
+
+        /** @var Form $form */
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
+            ->add('Comment', TextareaType::class, array(
+
+            ))
+            ->add('submit',SubmitType::class, [
+                'label' => 'Send',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+        }
+
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('home.twig',array(
+            'form'=> $form->createView(),
+        ));
+        $response->setContent($content);
+
+        return $response;
+    }
+
 }

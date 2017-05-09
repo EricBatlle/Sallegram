@@ -11,6 +11,7 @@
 {% block content %}
     <h1>Home</h1>
 
+
     <h2>Top5</h2>
     {% for i in 1..top5|length if top5|length > 0%}
         <div>
@@ -23,6 +24,11 @@
             <p>Likes {{ top5[i-1].likes }}</p>
             <p>Visits {{ top5[i-1].visits }}</p>
         </div>
+        {% if app.session.has('id') %}
+            <form action="/" METHOD="POST" enctype="multipart/form-data">
+                {{ form_widget(form) }}
+            </form>
+        {% endif %}
     {% endfor %}
 
     <h2>Last5</h2>

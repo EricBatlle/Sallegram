@@ -10,6 +10,10 @@ namespace SilexApp\Controller;
 
 use Silex\Application;
 use SilexApp\Model\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,11 +69,32 @@ class BaseController
         //$plz = $app['db']->fetchAll("SELECT i.id, u.id, username, user_id,title,img_path,visits,private,created_at,likes, FROM images as i and users as u  WHERE u.id = user_id ORDER BY visits DESC LIMIT 5");
         $top5 = $app['db']->fetchAll("SELECT * FROM images ORDER BY visits DESC LIMIT 5");
         $last5 = $app['db']->fetchAll("SELECT * FROM images ORDER BY created_at DESC LIMIT 5");
-//var_dump($top5);
+
+        $data = array(
+            'Comment' =>  'Say something nice...',
+        );
+
+        /** @var Form $form */
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
+            ->add('Comment', TextareaType::class, array(
+
+            ))
+            ->add('submit',SubmitType::class, [
+                'label' => 'Send',
+            ])
+            ->getForm();
+
+        //$form->handleRequest($request);
+
+        if($form->isValid()){
+        }
+
         $content = $app['twig']->render('home.twig',[
                 'logged' => $app['session']->has('id'),
                 'top5' => $top5,
-                'last5' => $last5
+                'last5' => $last5,
+                'form'=> $form->createView()
+
         ]);
         $response->setContent($content);
 
