@@ -438,8 +438,6 @@ class UserController extends BaseController
             var_dump($data);
             var_dump($filename);
 
-            //ToDo: check upload_Images names (paths)
-            //var_dump($data);
             try{
                 $app['db']->insert('images',[
                         'user_id' => $app['session']->get('id'),
