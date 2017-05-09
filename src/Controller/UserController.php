@@ -273,7 +273,8 @@ class UserController extends BaseController
             //ToDo: If image=null -> take default image
             /** @var UploadedFile $someNewFilename */
             $someNewFilename = $data['image_profile'];
-            $someNewFilename->move($dir, 'test.jpg');
+            var_dump($someNewFilename);
+            $someNewFilename->move($dir, $someNewFilename->getClientOriginalName());
             //$myFile = $request->files->get('image_profile');
             //$myFile->move($dir,$someNewFilename);
             try{
@@ -282,7 +283,7 @@ class UserController extends BaseController
                     'email' => $data['email'],
                     'birthdate' => $data['birthdate']->format('Y-m-d'),
                     'password' => md5($data['password']),
-                    'img_path' => $data['image_profile']
+                    'img_path' => $someNewFilename->getClientOriginalName()
                 ]
             );
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
@@ -361,7 +362,7 @@ class UserController extends BaseController
                 $pass = md5($data['password']);
 
                 $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
-                echo var_dump($match['id']);
+                //echo var_dump($match['id']);
                 if($match == true){
                     $this->logSession($app,$match['id']);
                     $url = '/';

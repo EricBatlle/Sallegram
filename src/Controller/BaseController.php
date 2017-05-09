@@ -60,8 +60,16 @@ class BaseController
         //var_dump($app['user']);
         $response = new Response();
         $response->setStatusCode(Response::HTTP_OK);
+
+        //Find 5 more visits images
+        //$plz = $app['db']->fetchAll("SELECT i.id, u.id, username, user_id,title,img_path,visits,private,created_at,likes, FROM images as i and users as u  WHERE u.id = user_id ORDER BY visits DESC LIMIT 5");
+        $top5 = $app['db']->fetchAll("SELECT * FROM images ORDER BY visits DESC LIMIT 5");
+        $last5 = $app['db']->fetchAll("SELECT * FROM images ORDER BY created_at DESC LIMIT 5");
+var_dump($top5);
         $content = $app['twig']->render('home.twig',[
-                'logged' => $app['session']->has('id')
+                'logged' => $app['session']->has('id'),
+                'top5' => $top5,
+                'last5' => $last5
         ]);
         $response->setContent($content);
 
