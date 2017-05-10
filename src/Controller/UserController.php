@@ -11,6 +11,7 @@ namespace SilexApp\Controller;
 use SilexApp\Model\Entity\User;
 use SilexApp\Model\Entity\UserType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SilexApp\Controller\Validations\CorrectPassword;
 use SilexApp\Controller\Validations\CorrectLogin;
@@ -95,11 +96,12 @@ class UserController extends BaseController
 
     public function editProfile (Application $app, Request $request)
     {
+        $response = new Response();
+
         $sql = "SELECT * FROM users WHERE id = ?";
         $id = $app['session']->get('id');
-        var_dump($app['session']->get('id'));
+        //var_dump($app['session']->get('id'));
         $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
-        $response = new Response();
 
         $data = array(
             'name' => $user['username'],
@@ -168,17 +170,18 @@ class UserController extends BaseController
         if($form->isValid()){
             $data = $form->getData();
             try{
-
                 $app['db']->update('users',[
                         'username' => $data['name'],
-                    //ToDo: Check if string is needed
-                    'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
+                        //ToDo: Check if string is needed
+                        'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
                         'img_path' => $data['image_profile']],
-                        array('id' => $app['session']->get('id')));
+                        array('id' => $app['session']->get('id'))
+                );
 
-                $url = '/users/get';
+                $url = '/';
                 return new RedirectResponse($url);
+
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('error.twig',[
@@ -271,16 +274,14 @@ class UserController extends BaseController
             //ToDo: If image=null -> take default image
             /** @var UploadedFile $someNewFilename */
             $someNewFilename = $data['image_profile'];
-            $someNewFilename->move($dir, 'test.jpg');
-            //$myFile = $request->files->get('image_profile');
-            //$myFile->move($dir,$someNewFilename);
+            $someNewFilename->move($dir, $someNewFilename->getClientOriginalName());
             try{
                 $app['db']->insert('users',[
                     'username' => $data['name'],
                     'email' => $data['email'],
                     'birthdate' => $data['birthdate']->format('Y-m-d'),
                     'password' => md5($data['password']),
-                    'img_path' => $data['image_profile']
+                    'img_path' => $someNewFilename->getClientOriginalName()
                 ]
             );
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
@@ -295,9 +296,6 @@ class UserController extends BaseController
             $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
             mail($data['email'], 'Confirmacion Pwgram', $message);
 
-
-            //$url = '/users/get/'.$id;
-            //return new RedirectResponse($url);
             return $response;
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
@@ -317,7 +315,6 @@ class UserController extends BaseController
 
         return $response;
     }
-
 
     public function loginUser(Application $app, Request $request)
     {
@@ -359,7 +356,7 @@ class UserController extends BaseController
                 $pass = md5($data['password']);
 
                 $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
-                echo var_dump($match['id']);
+                //echo var_dump($match['id']);
                 if($match == true){
                     $this->logSession($app,$match['id']);
                     $url = '/';
@@ -431,36 +428,29 @@ class UserController extends BaseController
         if($form->isValid()){
 
             $data = $form->getData();
+            //IMAGE
+            $dir = 'assets/uploads';
+            //ToDo: If image=null -> take default image
+            /** @var UploadedFile $filename */
+            $filename = $data['New_Image'];
+            $filename->move($dir, $filename->getClientOriginalName());
+
+            var_dump($data);
+            var_dump($filename);
+
             try{
-                /*
-                 * LOGIC OF THE ADDIMG, SHOULD RETURN OK IF WORKS
-                 */
-                //ToDo: Find User ID
-                /*$app['db']->insert('images',[
+                $app['db']->insert('images',[
+                        'user_id' => $app['session']->get('id'),
                         'title' => $data['Title'],
-                        //'user_id' => $data['email'],
-                        'img_path' => $data['New_Image'],
+                        'img_path' => $filename->getClientOriginalName(),
                         'visits' => 0,
                         'private' => $data['Private'],
+                        'created_at' => date('Y-m-d H:i:s')
                     ]
-                );*/
-                /*
-                 */
-                var_dump($app['user']->id);
-                $ok = true; //DEBUG MODE
-                if($ok == true){
-                    $url = '/';
-                    return new RedirectResponse($url);
-                }else {
-                    $response->setStatusCode(Response::HTTP_OK);
-                    $content = $app['twig']->render('addImg.twig', array(
-                        'form' => $form->createView(),
-                        'ok' => $ok
-                    ));
-                    $response->setContent($content);
+                );
+                $url = '/';
+                return new RedirectResponse($url);
 
-                    return $response;
-                }
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('error.twig',[
@@ -482,4 +472,27 @@ class UserController extends BaseController
 
         return $response;
     }
+
+    public function addComment(Application $app, Request $request)
+    {
+
+    }
+    public function allComments(Application $app, Request $request)
+    {
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
+
+        //Get all user comments
+        $idUser = $app['session']->get('id');
+        $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE id_user='$idUser'");
+        var_dump($userComments);
+
+        $content = $app['twig']->render('/allComments.twig',array(
+            'comments' => $userComments
+        ));
+        $response->setContent($content);
+
+        return $response;
+    }
+
 }

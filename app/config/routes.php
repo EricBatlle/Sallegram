@@ -27,19 +27,17 @@ $before = function (Request $request, Application $app){
   }
 };
 $app->get('/unlog', 'SilexApp\Controller\BaseController::unlogSession'); //Logeja, si ja ho estás, deslogeja
-
 $app->get('/log', 'SilexApp\Controller\BaseController::logSession'); //Logeja, si ja ho estás, deslogeja
-//$app->get('/log', 'SilexApp\Controller\BaseController::indexAction'); //Logeja, si ja ho estás, deslogeja
 $app->get('/admin', 'SilexApp\Controller\BaseController::adminAction')->before($before); /*Nomes accessible per usuaris logejats */
 
 // USER
-
 $app->match('/users/get', 'SilexApp\Controller\UserController::editProfile')->before($before);
 $app->match('/users/add', 'SilexApp\Controller\UserController::addUser');
-
-
 $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
-$app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
 
 $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailValidation');
-$app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos')->before($before);
+$app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos');
+//IMAGE
+$app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
+$app->match('/addComment', 'SilexApp\Controller\UserController::addComment')->before($before);
+$app->match('/allComments', 'SilexApp\Controller\UserController::allComments')->before($before);

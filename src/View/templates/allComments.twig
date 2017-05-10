@@ -1,0 +1,16 @@
+{% extends "base.twig" %}
+{% block links %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block content %}
+    <h1>All Comments</h1>
+    {% for i in 1..comments|length if comments|length > 0%}
+        <p> {{ comments[i-1].comment }}</p>
+        <a href="/comment/remove/{{ comments[i-1].id }}">Remove</a>
+
+    {% endfor %}
+    <h2>Comments</h2>
+
+{% endblock %}

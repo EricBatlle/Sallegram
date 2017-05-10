@@ -11,8 +11,8 @@
 
 {% block content %}
     <h1>Add Image </h1>
-    <form action="/addImg" METHOD="POST">
-        {{ form_widget(form) }}
+    <form action="/addImg" METHOD="POST" enctype="multipart/form-data">
+        {{ form_widget(form, {'attr': {'id': 'src'}}) }}
     </form>
 
     {% if ok == false %}
