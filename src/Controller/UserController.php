@@ -101,25 +101,6 @@ class UserController extends BaseController
         $user = $app['db']->fetchAssoc($sql, array((int)$id)); //llamando al servicio
         $response = new Response();
 
-//        if (!$user) {
-//            $response->setStatusCode(Response::HTTP_NOT_FOUND);
-//            $content = $app['twig']->render('error.twig', [
-//                    'message' => 'User not found'
-//                ]
-//            );
-//        } else {
-//            $response->setStatusCode(Response::HTTP_OK);
-//            $content = $app['twig']->render('showUser.twig', [
-//                    'user' => $user,
-//                    'app' => [
-//                        'username' => $app['app.name']
-//                    ]
-//                ]
-//            );
-//        }
-//        $response->setContent($content);
-//        return $response;
-
         $data = array(
             'name' => $user['username'],
         );
