@@ -41,9 +41,124 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserController extends BaseController
 {
+
+    public function removePhoto (Application $app, $id){
+
+        $response = new Response();
+
+        try {
+            $app['db']->exec("DELETE FROM images WHERE id = $id");
+
+
+            $url = '/';
+            return new RedirectResponse($url);
+        } catch (Exception $e){
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $content = $app['twig']->render('error.twig',[
+                'errors' => [
+                    'unexpected' => 'An error has ocurred, please try it again later'
+                ]
+            ]);
+
+            $response->setContent($content);
+            return $response;
+        }
+        return $response;
+    }
+
+    public function editPhoto (Application $app, $id, Request $request){
+
+        $response = new Response();
+        $ok = true;
+        $data = array(
+            'Private' =>  false,
+        );
+
+        /** @var Form $form */
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
+            ->add('Title', TextType::class, array(
+                'constraints' => array(
+                    'constraints' => new CorrectLogin(
+                        array(
+                            'message' => 'Invalid Title: Must contain alphanumeric values, and less than 20 characters (not HTML syntax)'
+                        )
+                    )
+                )
+            ))
+            ->add('New_Image', FileType::class, array(
+                'required' => true
+            ))
+            ->add('Private', CheckboxType::class, array(
+                'required' => false
+            ))
+            ->add('submit',SubmitType::class, [
+                'label' => 'Send',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+
+            $data = $form->getData();
+            //IMAGE
+            $dir = 'assets/uploads';
+            //ToDo: If image=null -> take default image
+            /** @var UploadedFile $filename */
+            $filename = $data['New_Image'];
+            $filename->move($dir, $filename->getClientOriginalName());
+
+            var_dump($data);
+            var_dump($filename);
+
+            try{
+                $app['db']->insert('images',[
+                        'user_id' => $app['session']->get('id'),
+                        'title' => $data['Title'],
+                        'img_path' => $filename->getClientOriginalName(),
+                        'visits' => 0,
+                        'private' => $data['Private'],
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]
+                );
+                $url = '/';
+                return new RedirectResponse($url);
+
+            }catch(Exception $e){
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+                $content = $app['twig']->render('error.twig',[
+                    'errors' => [
+                        'unexpected' => 'An error has ocurred, please try it again later'
+                    ]
+                ]);
+                $response->setContent($content);
+                return $response;
+            }
+        }
+
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('editImg.twig',array(
+            'form'=> $form->createView(),
+            'ok' => $ok
+        ));
+        $response->setContent($content);
+
+        return $response;
+    }
+
     public function userPhotos (Application $app){
         $response = new Response();
-        $content = $app['twig']->render('userPhotos.twig');
+
+        $id = $app['session']->get('id');
+
+        $sql = "SELECT * FROM images WHERE user_id = '$id' ORDER BY created_at DESC";
+        $id = $app['session']->get('id');
+        $photos = $app['db']->fetchAll($sql);
+
+        $content = $app['twig']->render('userPhotos.twig',[
+            'photos' => $photos,
+        ]);
+
         $response->setContent($content);
 
         return $response;
@@ -156,7 +271,6 @@ class UserController extends BaseController
 
             ->add('image_profile', FileType::class, array(
                 'required' => false
-
             ))
 
             ->add('submit',SubmitType::class, [
@@ -170,14 +284,23 @@ class UserController extends BaseController
         if($form->isValid()){
             $data = $form->getData();
             try{
-                $app['db']->update('users',[
+                if($data['image_profile'] == NULL){
+                    $app['db']->update('users',[
+                        'username' => $data['name'],
+                        'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
+                        'password' => md5($data['password'])],
+                        array('id' => $app['session']->get('id'))
+                    );
+                } else {
+                    $app['db']->update('users', [
                         'username' => $data['name'],
                         //ToDo: Check if string is needed
                         'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
                         'img_path' => $data['image_profile']],
                         array('id' => $app['session']->get('id'))
-                );
+                    );
+                }
 
                 $url = '/';
                 return new RedirectResponse($url);
@@ -201,12 +324,7 @@ class UserController extends BaseController
         return $response;
     }
 
-    /**
-     * @param Application $app
-     * @param Request $request
-     * @return RedirectResponse|Response
-     */
-    public function addUser (Application $app, Request $request)
+    public function registerUser (Application $app, Request $request)
     {
         $response = new Response();
 
@@ -477,6 +595,7 @@ class UserController extends BaseController
     {
 
     }
+
     public function allComments(Application $app, Request $request)
     {
         $response = new Response();

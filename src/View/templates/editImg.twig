@@ -1,7 +1,5 @@
 {% extends "base.twig" %}
 
-{#{% block title %}Register{% endblock %}#}
-
 {% block head %}
     {{ parent() }}
     <style type="text/css">
@@ -10,8 +8,8 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Add Image </h1>
-    <form action="/edit/{id}'" METHOD="POST" enctype="multipart/form-data">
+    <h1>Edit Image </h1>
+    <form action="/edit/" METHOD="POST" enctype="multipart/form-data">
         {{ form_widget(form, {'attr': {'id': 'src'}}) }}
     </form>
 
@@ -20,4 +18,3 @@
     {% endif %}
 
 {% endblock %}
-

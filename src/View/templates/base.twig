@@ -16,14 +16,16 @@
                 <ul>
                     {% block links %}
                     <a href="/">Home</a>
-                    <a href="/users/add">Register</a>
-                    <a href="/users/login">Login</a>
-                    <a href="/users/get">Profile</a>
-                    <a href="/users/photos">My photos</a>
+
                     {% endblock %}
                     {% if ( app.session.has('id') ) %}
-                        <a href="/addImg">Add Image
+                        <a href="/users/get">Profile</a>
+                        <a href="/addImg">Add Image</a>
+                        <a href="/users/photos">My photos</a>
                         <a href="/allComments">All Comments</a>
+                        {% else  %}
+                            <a href="/users/login">Login</a>
+                            <a href="/users/register">Register</a>
                     {% endif %}
                 </ul>
             {% endblock %}
