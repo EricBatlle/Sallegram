@@ -28,6 +28,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -258,7 +259,8 @@ class UserController extends BaseController
             ))
             ->add('image_profile', FileType::class, array(
                 //ToDo: Required false?
-                'required' => false
+                'required' => false,
+                'label_attr' => ['id' => 'imgInp']
             ))
             ->add('submit',SubmitType::class, [
                 'label' => 'Send',
@@ -287,11 +289,6 @@ class UserController extends BaseController
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
             $id = $lastInsertedId['id'];
 
-            echo "<script type='text/javascript'>alert('Hemos enviado un email de confirmación a su correo para activar la cuenta.');</script>";
-
-            ini_set('sendmail_from', "nuria.gomezpiedrafita@gmail.com");
-            ini_set("SMTP", $data['email']);
-            ini_set('smtp_port', 25);
 
             $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
             mail($data['email'], 'Confirmacion Pwgram', $message);
@@ -473,10 +470,64 @@ class UserController extends BaseController
         return $response;
     }
 
-    public function addComment(Application $app, Request $request)
+    public function addComment(Application $app, Request $request, $id)
     {
+        return new JsonResponse([
+            0 => 'image1',
+            1 => 'image2',
+            3 => 'image3',
+        ]);
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
+        $idUser = $app['session']->get('id');
+        //Find if the user has commented on the img
+        $match = $app['db']->fetchAssoc("SELECT * FROM comments WHERE user_id='$idUser' AND image_id='$idUser'");
+        var_dump($match);
+        if($match == true){
+            //Can't add the comment
+            //ToDo: what to do? Redirect to home again?
+            $url = '/';
+            return new RedirectResponse($url);
 
+        }else{
+            //Add the comment to the image on db
+            try{
+                $app['db']->insert('comments',[
+                        'user_id' => $app['session']->get('id'),
+                        //ToDo: Como recupero la info del form? :S
+/*                        'comment' => $data['Title'],*/
+                        'image_id' => $id
+                    ]
+                );
+                $url = '/';
+                return new RedirectResponse($url);
+
+            }catch(Exception $e){
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+                $content = $app['twig']->render('error.twig',[
+                    'errors' => [
+                        'unexpected' => 'An error has ocurred, please try it again later'
+                    ]
+                ]);
+                $response->setContent($content);
+                return $response;
+            }
+        }
+
+    return $response;
     }
+
+    public function removeComment(Application $app, Request $request, $id)
+    {
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
+
+        $userComment = $app['db']->exec("DELETE FROM comments WHERE id='$id'");
+
+        $url = '/allComments';
+        return new RedirectResponse($url);
+    }
+
     public function allComments(Application $app, Request $request)
     {
         $response = new Response();
@@ -484,10 +535,21 @@ class UserController extends BaseController
 
         //Get all user comments
         $idUser = $app['session']->get('id');
-        $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE id_user='$idUser'");
+        $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE user_id='$idUser'");
         var_dump($userComments);
 
+        //ToDo: Substituir-ho pels <a> però no em deixa fer mes d'1 form
+        /** @var Form $form */
+        $form = $app['form.factory']->createBuilder(FormType::class)
+            ->add('submit',SubmitType::class, [
+                'label' => 'Remove',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
         $content = $app['twig']->render('/allComments.twig',array(
+            'form'=> $form->createView(),
             'comments' => $userComments
         ));
         $response->setContent($content);

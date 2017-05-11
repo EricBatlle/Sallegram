@@ -39,5 +39,8 @@ $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailV
 $app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos');
 //IMAGE
 $app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
-$app->match('/addComment', 'SilexApp\Controller\UserController::addComment')->before($before);
+//COMMENTS
+$app->match('/addComment/{id}', 'SilexApp\Controller\UserController::addComment')->before($before);
 $app->match('/allComments', 'SilexApp\Controller\UserController::allComments')->before($before);
+//ToDo: change match to post
+$app->match('/comment/remove/{id}', 'SilexApp\Controller\UserController::removeComment')->before($before);
