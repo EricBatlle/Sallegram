@@ -12,6 +12,7 @@ use SilexApp\Model\Entity\User;
 use SilexApp\Model\Entity\UserType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SilexApp\Controller\Validations\CorrectPassword;
 use SilexApp\Controller\Validations\CorrectLogin;
@@ -394,8 +395,15 @@ class UserController extends BaseController
             //ToDo: If image=null -> take default image
             /** @var UploadedFile $someNewFilename */
             $someNewFilename = $data['image_profile'];
-            $someNewFilename->move($dir, $someNewFilename->getClientOriginalName());
-            var_dump($someNewFilename);
+            if($data['image_profile'] == null){
+                //$filename = "default.jpg";
+                $someNewFilename = new File('assets/uploads/default.jpg');
+                $filename = $someNewFilename->getFilename();
+            }else{
+                $filename = $someNewFilename->getClientOriginalName();
+            }
+
+            $someNewFilename->move($dir, $filename);
 
             try{
                 $app['db']->insert('users',[
@@ -403,7 +411,7 @@ class UserController extends BaseController
                     'email' => $data['email'],
                     'birthdate' => $data['birthdate']->format('Y-m-d'),
                     'password' => md5($data['password']),
-                    'img_path' => $someNewFilename->getClientOriginalName()
+                    'img_path' => $filename
                 ]
             );
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');

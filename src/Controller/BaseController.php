@@ -35,6 +35,9 @@ class BaseController
     {
         if($app['session']->has('id')){
             $app['session']->remove('id');
+            $app['session']->remove('name');
+            $app['session']->remove('img');
+
             return new Response('Session finished');
         }
 
