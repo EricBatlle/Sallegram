@@ -180,7 +180,7 @@ class UserController extends BaseController
                     'active' => '1'],
                     array('id' => $user['id']));
 
-                $this->logSession($app,$user['id']);
+                $this->logSession($app,$user['id'],$user['username'],$user['img_path']);
                 $url = '/';
                 return new RedirectResponse($url);
 
@@ -395,6 +395,8 @@ class UserController extends BaseController
             /** @var UploadedFile $someNewFilename */
             $someNewFilename = $data['image_profile'];
             $someNewFilename->move($dir, $someNewFilename->getClientOriginalName());
+            var_dump($someNewFilename);
+
             try{
                 $app['db']->insert('users',[
                     'username' => $data['name'],
@@ -406,7 +408,6 @@ class UserController extends BaseController
             );
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
             $id = $lastInsertedId['id'];
-
 
             $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
             mail($data['email'], 'Confirmacion Pwgram', $message);
@@ -473,7 +474,7 @@ class UserController extends BaseController
                 $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
                 //echo var_dump($match['id']);
                 if($match == true){
-                    $this->logSession($app,$match['id']);
+                    $this->logSession($app,$match['id'],$match['username'],$match['img_path']);
                     $url = '/';
                     return new RedirectResponse($url);
                 }else{
@@ -549,9 +550,6 @@ class UserController extends BaseController
             /** @var UploadedFile $filename */
             $filename = $data['New_Image'];
             $filename->move($dir, $filename->getClientOriginalName());
-
-            var_dump($data);
-            var_dump($filename);
 
             try{
                 $app['db']->insert('images',[

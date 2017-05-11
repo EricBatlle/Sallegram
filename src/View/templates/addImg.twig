@@ -11,7 +11,7 @@
 
 {% block content %}
     <h1>Add Image </h1>
-    <form action="/edit/{id}'" METHOD="POST" enctype="multipart/form-data">
+    <form class="form_filetype" action="/edit/{id}'" METHOD="POST" enctype="multipart/form-data">
         {{ form_widget(form, {'attr': {'id': 'src'}}) }}
     </form>
 
@@ -19,5 +19,10 @@
         <h3>Something goes wrong</h3>
     {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('/app.js','js') }}" type="text/javascript" charset="utf-8"></script>
 {% endblock %}
 

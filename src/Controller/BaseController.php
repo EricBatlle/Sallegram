@@ -31,7 +31,7 @@ class BaseController
         $content = 'Session started for the user '.$app['session']->get('id');
         return new Response($content);
     }*/
-    public function logSession(Application $app, $id)
+    public function logSession(Application $app, $id,$username,$img)
     {
         if($app['session']->has('id')){
             $app['session']->remove('id');
@@ -39,6 +39,8 @@ class BaseController
         }
 
         $app['session']->set('id',$id);
+        $app['session']->set('name',$username);
+        $app['session']->set('img',$img);
         $content = 'Session started for the user '.$app['session']->get('id');
         return new Response($content);
     }

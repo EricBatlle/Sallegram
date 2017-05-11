@@ -2,6 +2,14 @@
  * Created by Erik on 30/03/2017.
  */
 
+function validateForm() {
+    var x = document.forms["myForm"]["fname"].value;
+    if (x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+}
+
 function readURL(input) {
 
     if (input.files && input.files[0]) {
@@ -14,8 +22,13 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
 //ToDo: CSS to hide the img
 $("#form_image_profile").change(function(){
     console.log("Debug");
     readURL(this);
+});
+
+$('#form_submit').click(function(){
+    console.log("warap");
 });
