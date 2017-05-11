@@ -87,10 +87,10 @@ class BaseController
         //$form->handleRequest($request);
 
         if($form->isValid()){
+
         }
 
         $content = $app['twig']->render('home.twig',[
-                'logged' => $app['session']->has('id'),
                 'top5' => $top5,
                 'last5' => $last5,
                 'form'=> $form->createView()
@@ -99,6 +99,6 @@ class BaseController
         $response->setContent($content);
 
         return $response;
-
     }
+
 }

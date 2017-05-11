@@ -8,8 +8,15 @@
     <h1>All Comments</h1>
     {% for i in 1..comments|length if comments|length > 0%}
         <p> {{ comments[i-1].comment }}</p>
-        <a href="/comment/remove/{{ comments[i-1].id }}">Remove</a>
-
+{#
+        //ToDo: do form better than <a
+#}
+{#
+        <a href="/comment/remove/">Remove</a>
+#}
+        <form action="/comment/remove/{{ comments[i-1].id }}"  METHOD="POST" enctype="multipart/form-data">
+            {{ form_widget(form) }}
+        </form>
     {% endfor %}
     <h2>Comments</h2>
 
