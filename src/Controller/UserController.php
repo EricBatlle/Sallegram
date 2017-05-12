@@ -12,6 +12,7 @@ use SilexApp\Model\Entity\User;
 use SilexApp\Model\Entity\UserType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SilexApp\Controller\Validations\CorrectPassword;
 use SilexApp\Controller\Validations\CorrectLogin;
@@ -49,9 +50,7 @@ class UserController extends BaseController
 
         try {
             $app['db']->exec("DELETE FROM images WHERE id = $id");
-
-
-            $url = '/';
+            $url = '/users/photos';
             return new RedirectResponse($url);
         } catch (Exception $e){
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
@@ -70,12 +69,22 @@ class UserController extends BaseController
     public function editPhoto (Application $app, $id, Request $request){
 
         $response = new Response();
+
+        $sql = "SELECT * FROM images WHERE id = $id";
+        $id = $app['session']->get('id');
+
+        $image = $app['db']->fetchAssoc($sql); //llamando al servicio
+
+        $data = array(
+            'Title' => $image['title'],
+        );
+
         $ok = true;
+
         $data = array(
             'Private' =>  false,
         );
 
-        /** @var Form $form */
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('Title', TextType::class, array(
                 'constraints' => array(
@@ -104,8 +113,7 @@ class UserController extends BaseController
             $data = $form->getData();
             //IMAGE
             $dir = 'assets/uploads';
-            //ToDo: If image=null -> take default image
-            /** @var UploadedFile $filename */
+
             $filename = $data['New_Image'];
             $filename->move($dir, $filename->getClientOriginalName());
 
@@ -221,7 +229,11 @@ class UserController extends BaseController
 
         $data = array(
             'name' => $user['username'],
+            //'image_profile' => $user['img_path'],
+            'image_profile' => new File('assets/uploads/'.$user['img_path'])
         );
+
+
 
         /** @var Form $form */
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
@@ -271,14 +283,14 @@ class UserController extends BaseController
             ))
 
             ->add('image_profile', FileType::class, array(
-                'required' => false
+                'required' => false,
+                'label_attr' => array('file_path' => 'test')
             ))
 
             ->add('submit',SubmitType::class, [
                 'label' => 'Save',
             ])
             ->getForm();
-
         $form->handleRequest($request);
 
 
