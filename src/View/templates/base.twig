@@ -13,6 +13,10 @@
     <body>
         <div id="header">
             {% block header %}
+            {% if ( app.session.has('id') ) %}
+                <a href="/users/get">{{ app.session.get('name') }}</a>
+                <img src="/assets/uploads/{{ app.session.get('img') }}" width="100px" height="100px">
+            {% endif %}
                 <ul>
                     {% block links %}
                     <a href="/">Home</a>

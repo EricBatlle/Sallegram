@@ -30,9 +30,14 @@ class CorrectLoginValidator extends ConstraintValidator
         $value = htmlentities($value);
         //ToDo: only alphanumeric characters
         //First check if it's mail filter_var (VALIDATE_EMAIL)
-        if(strlen($value) > 20) {
-            $correct = true;
+        if(filter_var($value,FILTER_VALIDATE_EMAIL)){
+            return $correct;
         }
-        return $correct;
+        else{
+            if(strlen($value) > 20) {
+                $correct = true;
+            }
+            return $correct;
+        }
     }
 }

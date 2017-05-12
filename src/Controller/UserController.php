@@ -188,7 +188,7 @@ class UserController extends BaseController
                     'active' => '1'],
                     array('id' => $user['id']));
 
-                $this->logSession($app,$user['id']);
+                $this->logSession($app,$user['id'],$user['username'],$user['img_path']);
                 $url = '/';
                 return new RedirectResponse($url);
 
@@ -406,19 +406,27 @@ class UserController extends BaseController
             //ToDo: If image=null -> take default image
             /** @var UploadedFile $someNewFilename */
             $someNewFilename = $data['image_profile'];
-            $someNewFilename->move($dir, $someNewFilename->getClientOriginalName());
+            if($data['image_profile'] == null){
+                //$filename = "default.jpg";
+                $someNewFilename = new File('assets/uploads/default.jpg');
+                $filename = $someNewFilename->getFilename();
+            }else{
+                $filename = $someNewFilename->getClientOriginalName();
+            }
+
+            $someNewFilename->move($dir, $filename);
+
             try{
                 $app['db']->insert('users',[
                     'username' => $data['name'],
                     'email' => $data['email'],
                     'birthdate' => $data['birthdate']->format('Y-m-d'),
                     'password' => md5($data['password']),
-                    'img_path' => $someNewFilename->getClientOriginalName()
+                    'img_path' => $filename
                 ]
             );
             $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
             $id = $lastInsertedId['id'];
-
 
             $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
             mail($data['email'], 'Confirmacion Pwgram', $message);
@@ -485,7 +493,7 @@ class UserController extends BaseController
                 $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
                 //echo var_dump($match['id']);
                 if($match == true){
-                    $this->logSession($app,$match['id']);
+                    $this->logSession($app,$match['id'],$match['username'],$match['img_path']);
                     $url = '/';
                     return new RedirectResponse($url);
                 }else{
@@ -561,9 +569,6 @@ class UserController extends BaseController
             /** @var UploadedFile $filename */
             $filename = $data['New_Image'];
             $filename->move($dir, $filename->getClientOriginalName());
-
-            var_dump($data);
-            var_dump($filename);
 
             try{
                 $app['db']->insert('images',[
