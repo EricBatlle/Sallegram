@@ -71,18 +71,16 @@ class UserController extends BaseController
         $response = new Response();
 
         $sql = "SELECT * FROM images WHERE id = $id";
-        $id = $app['session']->get('id');
+
+        //$id = $app['session']->get('id');
 
         $image = $app['db']->fetchAssoc($sql); //llamando al servicio
-
-        $data = array(
-            'Title' => $image['title'],
-        );
 
         $ok = true;
 
         $data = array(
-            'Private' =>  false,
+            'Title' => $image['title'],
+            'Private' => boolval($image['private']),
         );
 
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
@@ -96,15 +94,17 @@ class UserController extends BaseController
                 )
             ))
             ->add('New_Image', FileType::class, array(
-                'required' => true
-            ))
-            ->add('Private', CheckboxType::class, array(
                 'required' => false
             ))
+
+            ->add('Private', CheckboxType::class, array(
+                'required' => false,
+            ))
             ->add('submit',SubmitType::class, [
-                'label' => 'Send',
+                'label' => 'Save',
             ])
             ->getForm();
+
 
         $form->handleRequest($request);
 
@@ -114,23 +114,29 @@ class UserController extends BaseController
             //IMAGE
             $dir = 'assets/uploads';
 
-            $filename = $data['New_Image'];
-            $filename->move($dir, $filename->getClientOriginalName());
-
-            var_dump($data);
-            var_dump($filename);
-
+            
             try{
-                $app['db']->insert('images',[
-                        'user_id' => $app['session']->get('id'),
-                        'title' => $data['Title'],
-                        'img_path' => $filename->getClientOriginalName(),
-                        'visits' => 0,
-                        'private' => $data['Private'],
-                        'created_at' => date('Y-m-d H:i:s')
-                    ]
-                );
-                $url = '/';
+                if($data['New_Image'] == NULL) {
+                    $app['db']->update('images', [
+                            'title' => $data['Title'],
+                            'private' => $data['Private']],
+                        array('user_id' => $app['session']->get('id'))
+                    );
+
+                } else {
+                    $filename = $data['New_Image'];
+                    $filename->move($dir, $filename->getClientOriginalName());
+
+                    $app['db']->update('images',[
+                            'title' => $data['Title'],
+                            'img_path' => $filename->getClientOriginalName(),
+                            'private' => $data['Private'],
+                            'created_at' => date('Y-m-d H:i:s')],
+                        array('user_id' => $app['session']->get('id'))
+                    );
+                }
+
+                $url = '/users/photos';
                 return new RedirectResponse($url);
 
             }catch(Exception $e){
@@ -148,7 +154,8 @@ class UserController extends BaseController
         $response->setStatusCode(Response::HTTP_OK);
         $content = $app['twig']->render('editImg.twig',array(
             'form'=> $form->createView(),
-            'ok' => $ok
+            'ok' => $ok,
+            'photos' => $image,
         ));
         $response->setContent($content);
 
@@ -425,13 +432,15 @@ class UserController extends BaseController
                     'img_path' => $filename
                 ]
             );
-            $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
-            $id = $lastInsertedId['id'];
+                $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
+                $id = $lastInsertedId['id'];
 
-            $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
-            mail($data['email'], 'Confirmacion Pwgram', $message);
+                echo"<script>alert('Hemos enviado un mensaje de confirmacion a su cuenta de correo')</script>";
 
-            return $response;
+                $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
+                mail($data['email'], 'Confirmacion Pwgram', $message);
+
+                return $response;
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('addUser.twig',[
