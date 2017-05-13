@@ -9,11 +9,29 @@
 
     <h1>Photos</h1>
     <form action="/profile/{{ profile.id }}" method = "POST">
-        <select name = "options">
-            <option value="1">Creation date</option>
-            <option value="2">Likes</option>
-            <option value="3">Comments</option>
-            <option value="4">Visits</option>
+        <select name="options" class="orderSort">
+            {% if option == 1 %}
+                <option value="1">Creation date</option>
+                <option value="2">Likes</option>
+                <option value="3">Comments</option>
+                <option value="4">Visits</option>
+            {% elseif option == 2 %}
+                <option value="2">Likes</option>
+                <option value="1">Creation date</option>
+                <option value="3">Comments</option>
+                <option value="4">Visits</option>
+            {% elseif option == 3 %}
+                <option value="3">Comments</option>
+                <option value="1">Creation date</option>
+                <option value="2">Likes</option>
+                <option value="4">Visits</option>
+            {% elseif option == 4 %}
+                <option value="4">Visits</option>
+                <option value="1">Creation date</option>
+                <option value="2">Likes</option>
+                <option value="3">Comments</option>
+            {% endif %}
+
         </select>
         <input type="submit" value="Send">
     </form>
@@ -24,3 +42,11 @@
     {% endfor %}
 
 {% endblock %}
+
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('/select.js','js') }}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
+

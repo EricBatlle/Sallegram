@@ -51,7 +51,7 @@ class UserController extends BaseController
         $response = new Response();
 
         $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
-
+        var_dump($_POST['options']);
         if (isset($_POST['options'])) {
             switch ($_POST['options']){
                 case 1:
@@ -80,6 +80,7 @@ class UserController extends BaseController
             'profile' => $profile,
             'photos' => $photos,
             'comments' => $userComments,
+            'option' => $_POST['options']
         ));
         $response->setContent($content);
 
