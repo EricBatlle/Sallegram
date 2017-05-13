@@ -20,17 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BaseController
 {
-    /*public function logSession(Application $app, User $user)
-    {
-        if($app['session']->has('id')){
-            $app['session']->remove('id');
-            return new Response('Session finished');
-        }
-
-        $app['session']->set('id',$user->id);
-        $content = 'Session started for the user '.$app['session']->get('id');
-        return new Response($content);
-    }*/
     public function logSession(Application $app, $id,$username,$img)
     {
         if($app['session']->has('id')){
@@ -58,12 +47,6 @@ class BaseController
         $content = 'Session started for the user '.$app['session']->get('id');
         return new Response($content);
     }
-
-    /*public function adminAction(Application $app)
-    {
-        $content = "Welcome back ".$app['session']->get('name');
-        return new Response($content);
-    }*/
 
     public function redirectHome(Application $app){
         //var_dump($app['user']);

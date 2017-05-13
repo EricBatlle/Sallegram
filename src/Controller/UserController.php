@@ -88,123 +88,6 @@ class UserController extends BaseController
 
     }
 
-    public function removePhoto (Application $app, $id){
-
-        $response = new Response();
-
-        try {
-            $app['db']->exec("DELETE FROM images WHERE id = $id");
-            $url = '/users/photos';
-            return new RedirectResponse($url);
-        } catch (Exception $e){
-            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-            $content = $app['twig']->render('error.twig',[
-                'errors' => [
-                    'unexpected' => 'An error has ocurred, please try it again later'
-                ]
-            ]);
-
-            $response->setContent($content);
-            return $response;
-        }
-        return $response;
-    }
-
-    public function editPhoto (Application $app, $id, Request $request){
-
-        $response = new Response();
-
-        $sql = "SELECT * FROM images WHERE id = $id";
-
-        //$id = $app['session']->get('id');
-
-        $image = $app['db']->fetchAssoc($sql); //llamando al servicio
-
-        $ok = true;
-
-        $data = array(
-            'Title' => $image['title'],
-            'Private' => boolval($image['private']),
-        );
-
-        $form = $app['form.factory']->createBuilder(FormType::class, $data)
-            ->add('Title', TextType::class, array(
-                'constraints' => array(
-                    'constraints' => new CorrectLogin(
-                        array(
-                            'message' => 'Invalid Title: Must contain alphanumeric values, and less than 20 characters (not HTML syntax)'
-                        )
-                    )
-                )
-            ))
-            ->add('New_Image', FileType::class, array(
-                'required' => false
-            ))
-
-            ->add('Private', CheckboxType::class, array(
-                'required' => false,
-            ))
-            ->add('submit',SubmitType::class, [
-                'label' => 'Save',
-            ])
-            ->getForm();
-
-
-        $form->handleRequest($request);
-
-        if($form->isValid()){
-
-            $data = $form->getData();
-            //IMAGE
-            $dir = 'assets/uploads';
-
-            try{
-                if($data['New_Image'] == NULL) {
-                    $app['db']->update('images', [
-                            'title' => $data['Title'],
-                            'private' => $data['Private']],
-                        array('id' => $id)
-                    );
-
-                } else {
-                    $filename = $data['New_Image'];
-                    $filename->move($dir, $filename->getClientOriginalName());
-
-                    $app['db']->update('images',[
-                            'title' => $data['Title'],
-                            'img_path' => $filename->getClientOriginalName(),
-                            'private' => $data['Private'],
-                            'created_at' => date('Y-m-d H:i:s')],
-                        array('id' => $id)
-                    );
-                }
-
-                $url = '/users/photos';
-                return new RedirectResponse($url);
-
-            }catch(Exception $e){
-                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-                $content = $app['twig']->render('error.twig',[
-                    'errors' => [
-                        'unexpected' => 'An error has ocurred, please try it again later'
-                    ]
-                ]);
-                $response->setContent($content);
-                return $response;
-            }
-        }
-
-        $response->setStatusCode(Response::HTTP_OK);
-        $content = $app['twig']->render('editImg.twig',array(
-            'form'=> $form->createView(),
-            'ok' => $ok,
-            'photos' => $image,
-        ));
-        $response->setContent($content);
-
-        return $response;
-    }
-
     public function userPhotos (Application $app){
         $response = new Response();
 
@@ -689,64 +572,6 @@ class UserController extends BaseController
         return $response;
     }
 
-    public function addComment(Application $app, Request $request, $id)
-    {
-        return new JsonResponse([
-            0 => 'image1',
-            1 => 'image2',
-            3 => 'image3',
-        ]);
-        $response = new Response();
-        $response->setStatusCode(Response::HTTP_OK);
-        $idUser = $app['session']->get('id');
-        //Find if the user has commented on the img
-        $match = $app['db']->fetchAssoc("SELECT * FROM comments WHERE user_id='$idUser' AND image_id='$idUser'");
-        var_dump($match);
-        if($match == true){
-            //Can't add the comment
-            //ToDo: what to do? Redirect to home again?
-            $url = '/';
-            return new RedirectResponse($url);
-
-        }else{
-            //Add the comment to the image on db
-            try{
-                $app['db']->insert('comments',[
-                        'user_id' => $app['session']->get('id'),
-                        //ToDo: Como recupero la info del form? :S
-/*                        'comment' => $data['Title'],*/
-                        'image_id' => $id
-                    ]
-                );
-                $url = '/';
-                return new RedirectResponse($url);
-
-            }catch(Exception $e){
-                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-                $content = $app['twig']->render('error.twig',[
-                    'errors' => [
-                        'unexpected' => 'An error has ocurred, please try it again later'
-                    ]
-                ]);
-                $response->setContent($content);
-                return $response;
-            }
-        }
-
-    return $response;
-    }
-
-    public function removeComment(Application $app, Request $request, $id)
-    {
-        $response = new Response();
-        $response->setStatusCode(Response::HTTP_OK);
-
-        $userComment = $app['db']->exec("DELETE FROM comments WHERE id='$id'");
-
-        $url = '/allComments';
-        return new RedirectResponse($url);
-    }
-
     public function allComments(Application $app, Request $request)
     {
         $response = new Response();
@@ -755,7 +580,6 @@ class UserController extends BaseController
         //Get all user comments
         $idUser = $app['session']->get('id');
         $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE user_id='$idUser'");
-        var_dump($userComments);
 
         //ToDo: Substituir-ho pels <a> però no em deixa fer mes d'1 form
         /** @var Form $form */
