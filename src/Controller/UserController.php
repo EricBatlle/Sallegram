@@ -114,7 +114,7 @@ class UserController extends BaseController
             //IMAGE
             $dir = 'assets/uploads';
 
-            
+
             try{
                 if($data['New_Image'] == NULL) {
                     $app['db']->update('images', [
@@ -240,8 +240,6 @@ class UserController extends BaseController
             'image_profile' => new File('assets/uploads/'.$user['img_path'])
         );
 
-
-
         /** @var Form $form */
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
@@ -305,6 +303,19 @@ class UserController extends BaseController
 
         if($form->isValid()){
             $data = $form->getData();
+
+            if($data['image_profile'] != NULL){
+                $dir = 'assets/uploads';
+
+                /** @var UploadedFile $someNewFilename */
+                $someNewFilename = $data['image_profile'];
+
+                $filename = $someNewFilename->getClientOriginalName();
+                $someNewFilename->move($dir, $filename);
+
+                $app['session']->set('img',$filename);
+            }
+
             try{
                 if($data['image_profile'] == NULL){
                     $app['db']->update('users',[
@@ -316,10 +327,9 @@ class UserController extends BaseController
                 } else {
                     $app['db']->update('users', [
                         'username' => $data['name'],
-                        //ToDo: Check if string is needed
                         'birthdate' => (string)$data['birthdate']->format('Y-m-d'),
                         'password' => md5($data['password']),
-                        'img_path' => $data['image_profile']],
+                        'img_path' => $filename],
                         array('id' => $app['session']->get('id'))
                     );
                 }
