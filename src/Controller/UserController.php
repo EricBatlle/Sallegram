@@ -47,9 +47,28 @@ class UserController extends BaseController
     public function publicProfile(Application $app, $id){
         $response = new Response();
 
-        $profile = $app['db']->fetchAssoc("SELECT * FROM users WHERE id = $id");
-
         $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
+
+        if (isset($_POST['options'])) {
+            switch ($_POST['options']){
+                case 1:
+                    $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
+                    break;
+
+                case 2:
+                    $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY likes ASC");
+                    break;
+
+                case 3:
+                    $photos = $app['db']->fetchAll("SELECT * FROM images, comments WHERE user_id = $id and id = id GROUP by ");
+                    break;
+
+                case 4:
+                    $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY visits ASC");
+            }
+        }
+
+        $profile = $app['db']->fetchAssoc("SELECT * FROM users WHERE id = $id");
 
         $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE user_id = $id");
 
@@ -135,13 +154,12 @@ class UserController extends BaseController
             //IMAGE
             $dir = 'assets/uploads';
 
-
             try{
                 if($data['New_Image'] == NULL) {
                     $app['db']->update('images', [
                             'title' => $data['Title'],
                             'private' => $data['Private']],
-                        array('user_id' => $app['session']->get('id'))
+                        array('id' => $id)
                     );
 
                 } else {
@@ -153,7 +171,7 @@ class UserController extends BaseController
                             'img_path' => $filename->getClientOriginalName(),
                             'private' => $data['Private'],
                             'created_at' => date('Y-m-d H:i:s')],
-                        array('user_id' => $app['session']->get('id'))
+                        array('id' => $id)
                     );
                 }
 
