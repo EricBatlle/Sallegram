@@ -583,16 +583,16 @@ class UserController extends BaseController
 
         //ToDo: Substituir-ho pels <a> però no em deixa fer mes d'1 form
         /** @var Form $form */
-        $form = $app['form.factory']->createBuilder(FormType::class)
+        /*$form = $app['form.factory']->createBuilder(FormType::class)
             ->add('submit',SubmitType::class, [
                 'label' => 'Remove',
             ])
             ->getForm();
 
-        $form->handleRequest($request);
+        $form->handleRequest($request);*/
 
         $content = $app['twig']->render('/allComments.twig',array(
-            'form'=> $form->createView(),
+            //'form'=> $form->createView(),
             'comments' => $userComments
         ));
         $response->setContent($content);

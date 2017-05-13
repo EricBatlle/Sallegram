@@ -12,6 +12,7 @@ namespace SilexApp\Controller;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 use Imagine\Imagick\Imagine;
+use SilexApp\Controller\Validations\CorrectComment;
 use SilexApp\Model\Entity\User;
 use SilexApp\Model\Entity\UserType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -102,6 +103,75 @@ class CommentController extends BaseController
 
         $url = '/allComments';
         return new RedirectResponse($url);
+    }
+
+    public function editComment(Application $app, Request $request, $id)
+    {
+        $response = new Response();
+
+        $sql = "SELECT * FROM comments WHERE id = $id";
+
+        $comment = $app['db']->fetchAssoc($sql); //llamando al servicio
+
+        $ok = true;
+
+        $data = array(
+            'Comment' => $comment['comment'],
+        );
+
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
+            ->add('Comment', TextType::class, array(
+                'constraints' => array(
+                    'constraints' => new CorrectComment(
+                        array(
+                            'message' => 'Invalid Title: Must contain alphanumeric values, and less than 20 characters (not HTML syntax)'
+                        )
+                    )
+                )
+            ))
+            ->add('submit',SubmitType::class, [
+                'label' => 'Save',
+            ])
+            ->getForm();
+
+
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+
+            $data = $form->getData();
+
+            try{
+                $app['db']->update('comments',[
+                    'comment' => $data['Comment']
+                    ],
+                    array('id' => $id)
+                );
+
+                $url = '/allComments';
+                return new RedirectResponse($url);
+
+            }catch(Exception $e){
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+                $content = $app['twig']->render('error.twig',[
+                    'errors' => [
+                        'unexpected' => 'An error has ocurred, please try it again later'
+                    ]
+                ]);
+                $response->setContent($content);
+                return $response;
+            }
+        }
+
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('editComment.twig',array(
+            'form'=> $form->createView(),
+
+            'comment' => $comment,
+        ));
+        $response->setContent($content);
+
+        return $response;
     }
 
 

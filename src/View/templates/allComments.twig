@@ -14,9 +14,12 @@
 {#
         <a href="/comment/remove/">Remove</a>
 #}
-        <form action="/comment/remove/{{ comments[i-1].id }}"  METHOD="POST" enctype="multipart/form-data">
+        {#<form action="/comment/remove/{{ comments[i-1].id }}"  METHOD="POST" enctype="multipart/form-data">
             {{ form_widget(form) }}
-        </form>
+        </form>#}
+        <a href="/comment/remove/{{ comments[i-1].id }}">Remove</a>
+        <a href="/comment/edit/{{ comments[i-1].id }}">Edit</a>
+
     {% endfor %}
     <h2>Comments</h2>
 
