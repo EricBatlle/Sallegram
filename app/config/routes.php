@@ -39,7 +39,7 @@ $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailV
 
 
 //COMMENTS
-$app->match('/addComment/{id}', 'SilexApp\Controller\CommentController::addComment')->before($before);
+$app->match('/addComment/{id}/{comment}', 'SilexApp\Controller\CommentController::addComment')->before($before);
 //ToDo: change match to post
 $app->match('/comment/remove/{id}', 'SilexApp\Controller\CommentController::removeComment')->before($before);
 

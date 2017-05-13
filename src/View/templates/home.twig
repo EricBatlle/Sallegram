@@ -24,8 +24,8 @@
         {% if app.session.has('id') %}
             {#ToDo: Comment is now not saved#}
             {#<form action="/addComment/{{ app.session.get('id') }}" METHOD="POST" enctype="multipart/form-data">#}
-            <form  class="comment_form" action="" METHOD="POST" enctype="multipart/form-data">
-                <textarea name="comment" class="comment"></textarea>
+            <form  id="{{ top5[i-1].id }}" class="comment_form" action="" METHOD="POST" enctype="multipart/form-data">
+                <textarea id="{{ top5[i-1].id }}" name="comment" class="comment"></textarea>
                 <input type="submit">
             </form>
         {% endif %}
@@ -48,5 +48,5 @@
 {% endblock %}
 {% block scripts %}
     {{ parent() }}
-    <script src="{{ asset('/ajax.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/ajax_v3.js','js') }}" type="text/javascript" charset="utf-8"></script>
 {% endblock %}

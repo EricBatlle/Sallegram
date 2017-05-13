@@ -48,19 +48,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CommentController extends BaseController
 {
 
-    public function addComment(Application $app, Request $request, $id)
+    public function addComment(Application $app, Request $request, $id, $comment)
     {
-        return new JsonResponse([
+        /*return new JsonResponse([
             0 => 'image1',
             1 => 'image2',
             3 => 'image3',
-        ]);
+        ]);*/
         $response = new Response();
         $response->setStatusCode(Response::HTTP_OK);
         $idUser = $app['session']->get('id');
         //Find if the user has commented on the img
-        $match = $app['db']->fetchAssoc("SELECT * FROM comments WHERE user_id='$idUser' AND image_id='$idUser'");
-        var_dump($match);
+        $match = $app['db']->fetchAssoc("SELECT * FROM comments WHERE user_id='$idUser' AND image_id='$id'");
         if($match == true){
             //Can't add the comment
             //ToDo: what to do? Redirect to home again?
@@ -72,8 +71,7 @@ class CommentController extends BaseController
             try{
                 $app['db']->insert('comments',[
                         'user_id' => $app['session']->get('id'),
-                        //ToDo: Como recupero la info del form? :S
-                        /*                        'comment' => $data['Title'],*/
+                        'comment' => $comment,
                         'image_id' => $id
                     ]
                 );

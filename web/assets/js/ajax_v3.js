@@ -5,9 +5,9 @@
 $(".comment_form").submit(function(e) {
     e.preventDefault();
     var comment = $(this).children('.comment').val();
-    var id = $(this).children('.comment').attr('id');
-    //console.log(id);
-    var url = "/addComment/80"; // the script where you handle the form input.
+    var image_id = $(this).children('.comment').attr('id');
+    console.log(image_id);
+    var url = "/addComment/"+image_id+"/"+comment; // the script where you handle the form input.
 
     $.ajax({
         type: "POST",
