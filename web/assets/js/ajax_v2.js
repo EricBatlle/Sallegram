@@ -4,7 +4,9 @@
 // this is the id of the form
 $(".comment_form").submit(function(e) {
     e.preventDefault();
-    console.log($(this).children('.comment').val());
+    var comment = $(this).children('.comment').val();
+    var id = $(this).children('.comment').attr('id');
+    //console.log(id);
     var url = "/addComment/80"; // the script where you handle the form input.
 
     $.ajax({
