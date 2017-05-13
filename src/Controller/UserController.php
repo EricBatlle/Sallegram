@@ -8,6 +8,9 @@
 
 namespace SilexApp\Controller;
 
+use Imagine\Image\Box;
+use Imagine\Image\Point;
+use Imagine\Imagick\Imagine;
 use SilexApp\Model\Entity\User;
 use SilexApp\Model\Entity\UserType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -631,6 +634,24 @@ class UserController extends BaseController
             /** @var UploadedFile $filename */
             $filename = $data['New_Image'];
             $filename->move($dir, $filename->getClientOriginalName());
+
+
+            $imgFilename = $filename->getClientOriginalName();
+
+            /*//Path dónde está la imágen
+            $imgPath = $dir.'/'.$imgFilename;
+            $imgPathDest = $dir.'/'.'_resized.jpg'; //ToDo: $imgfFilename.'_resized' delete the extension .jpg
+            //Tamaño de la imagen
+            $imgSize = getimagesize($imgPath);
+            var_dump($imgSize);
+
+            //Copiar el fichero
+            copy($imgPath,$imgPathDest);
+            $imagine = new Imagine();
+
+            $image = $imagine->open($imgPathDest);
+
+            $image->resize(new Box(200,200));*/
 
             try{
                 $app['db']->insert('images',[
