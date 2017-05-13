@@ -44,6 +44,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UserController extends BaseController
 {
 
+    public function publicProfile(Application $app, $id){
+        $response = new Response();
+
+        $profile = $app['db']->fetchAssoc("SELECT * FROM users WHERE id = $id");
+
+        $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
+
+        $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE user_id = $id");
+
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('publicProfile.twig',array(
+            'profile' => $profile,
+            'photos' => $photos,
+            'comments' => $userComments,
+        ));
+        $response->setContent($content);
+
+        return $response;
+
+    }
+
     public function removePhoto (Application $app, $id){
 
         $response = new Response();

@@ -45,5 +45,6 @@ $app->match('/allComments', 'SilexApp\Controller\UserController::allComments')->
 
 $app->match('/remove/{id}', 'SilexApp\Controller\UserController::removePhoto')->before($before);
 $app->match('/edit/{id}', 'SilexApp\Controller\UserController::editPhoto')->before($before);
+$app->match('/profile/{id}', 'SilexApp\Controller\UserController::publicProfile');
 //ToDo: change match to post
 $app->match('/comment/remove/{id}', 'SilexApp\Controller\UserController::removeComment')->before($before);
