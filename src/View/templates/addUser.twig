@@ -19,11 +19,14 @@
     {#<form action="/users/register" METHOD="POST" onsubmit="return validateForm()" enctype="multipart/form-data">#}
     <form action="" METHOD="POST" onsubmit="return validateForm()" enctype="multipart/form-data">
     {{ form_widget(form) }}
-        <img id="blah" src="#" width="200" height="200"  />
+        <img id="thumbnail" src="#" width="200" height="200"  />
     </form>
 {% endblock %}
 {% block scripts %}
     {{ parent() }}
-    <script src="{{ asset('/app.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/thumbnail.js','js') }}" type="text/javascript" charset="utf-8"></script>
+
+  {#  <script src="{{ asset('/app.js','js') }}" type="text/javascript" charset="utf-8"></script>
+#}
 {% endblock %}
 

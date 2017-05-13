@@ -13,6 +13,7 @@
     <h1>Add Image </h1>
     <form class="form_filetype" action="/addImg" METHOD="POST" enctype="multipart/form-data">
         {{ form_widget(form, {'attr': {'id': 'src'}}) }}
+        <img id="thumbnail" src="#" width="200" height="200"  />
     </form>
 
     {% if ok == false %}
@@ -23,6 +24,7 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script src="{{ asset('/app.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/thumbnail.js','js') }}" type="text/javascript" charset="utf-8"></script>
+
 {% endblock %}
 

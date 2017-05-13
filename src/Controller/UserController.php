@@ -310,7 +310,9 @@ class UserController extends BaseController
 
             ->add('image_profile', FileType::class, array(
                 'required' => false,
-                'label_attr' => array('file_path' => 'test')
+                'label_attr' => array('file_path' => 'test'),
+                'attr' => ['class'=>'form_thumbnail']
+
             ))
 
             ->add('submit',SubmitType::class, [
@@ -428,7 +430,8 @@ class UserController extends BaseController
             ->add('image_profile', FileType::class, array(
                 //ToDo: Required false?
                 'required' => false,
-                'label_attr' => ['id' => 'imgInp']
+                'label_attr' => ['id' => 'imgInp'],
+                'attr' => ['class'=>'form_thumbnail']
             ))
             ->add('submit',SubmitType::class, [
                 'label' => 'Send',
@@ -588,7 +591,8 @@ class UserController extends BaseController
                 )
             ))
             ->add('New_Image', FileType::class, array(
-                'required' => true
+                'required' => true,
+                'attr' => ['class'=>'form_thumbnail']
             ))
             ->add('Private', CheckboxType::class, array(
                 'required' => false
