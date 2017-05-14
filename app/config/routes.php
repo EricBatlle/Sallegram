@@ -30,7 +30,7 @@ $app->get('/log', 'SilexApp\Controller\BaseController::logSession'); //Logeja, s
 $app->match('/users/get', 'SilexApp\Controller\UserController::editProfile')->before($before);
 $app->match('/users/register', 'SilexApp\Controller\UserController::registerUser');
 $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
-$app->match('/profile/{id}', 'SilexApp\Controller\UserController::publicProfile');
+$app->match('/profile/{id}', 'SilexApp\Controller\UserController::publicProfile')->before($before);
 $app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos')->before($before);
 $app->match('/allComments', 'SilexApp\Controller\UserController::allComments')->before($before);
 $app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
