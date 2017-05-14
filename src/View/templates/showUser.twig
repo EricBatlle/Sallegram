@@ -4,8 +4,14 @@
 
 {% block content %}
     <h1>PROFILE</h1>
-    <form action="/profile" METHOD="POST" enctype="multipart/form-data">
-        {{ form_widget(form) }}
+    <form action="/users/get" METHOD="POST" enctype="multipart/form-data">
+        <img id="thumbnail" src="/assets/uploads/{{ photo }}" width="200" height="200"  />
+        {{ form_widget(form, {'attr': {'id': 'src'}} ) }}
     </form>
 
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('/thumbnail.js','js') }}" type="text/javascript" charset="utf-8"></script>
 {% endblock %}

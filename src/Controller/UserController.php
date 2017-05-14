@@ -286,7 +286,10 @@ class UserController extends BaseController
         }
 
         $response->setStatusCode(Response::HTTP_OK);
-        $content = $app['twig']->render('showUser.twig',array('form'=> $form->createView()));
+        $content = $app['twig']->render('showUser.twig',array(
+            'form'=> $form->createView(),
+            'photo' => $user['img_path'])
+        );
         $response->setContent($content);
 
         return $response;
@@ -528,6 +531,7 @@ class UserController extends BaseController
             //ToDo: If image=null -> take default image
             /** @var UploadedFile $filename */
             $filename = $data['New_Image'];
+
             $filename->move($dir, $filename->getClientOriginalName());
 
 
