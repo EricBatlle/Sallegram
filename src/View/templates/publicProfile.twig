@@ -20,7 +20,10 @@
     {% for i in 1..photos|length if photos|length > 0%}
             <img src="/assets/uploads/{{ photos[i-1].img_path }}">
             <h3>Title <a href="">{{ photos[i-1].title }}</a></h3>
-        </div>
+    {% endfor %}
+    {% for i in 1..photos1|length if photos1|length > 0%}
+        <img src="/assets/uploads/{{ photos1[i-1].img_path }}">
+        <h3>Title <a href="">{{ photos1[i-1].title }}</a></h3>
     {% endfor %}
 
 {% endblock %}

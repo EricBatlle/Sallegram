@@ -51,34 +51,40 @@ class UserController extends BaseController
         $response = new Response();
 
         $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
+        $photos1 = NULL;
 
         if (isset($_POST['options'])) {
             switch ($_POST['options']){
                 case 1:
                     $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
+                    $photos1 = NULL;
                     break;
 
                 case 2:
-                    $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY likes ASC");
+                    $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY likes DESC");
+                    $photos1 = NULL;
                     break;
 
                 case 3:
-                    $photos = $app['db']->fetchAll("SELECT * FROM images, comments WHERE user_id = $id and id = id GROUP by ");
+                    $photos = $app['db']->fetchAll("SELECT images.id, images.title, images.img_path, count(comments.id) FROM images, comments WHERE images.id = image_id and images.user_id = $id GROUP BY image_id ORDER BY count(comments.id) DESC");
+                    $photos1 = $app['db']->fetchAll("SELECT * FROM images WHERE images.user_id = $id and id NOT IN (SELECT image_id FROM comments, images WHERE image_id = images.id)");
                     break;
 
                 case 4:
-                    $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY visits ASC");
+                    $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY visits DESC");
+                    $photos1 = NULL;
             }
         }
 
         $profile = $app['db']->fetchAssoc("SELECT * FROM users WHERE id = $id");
 
-        $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE user_id = $id");
+        $userComments = $app['db']->fetchAll("SELECT * FROM comments, images WHERE image_id = images.id and images.user_id = $id");
 
         $response->setStatusCode(Response::HTTP_OK);
         $content = $app['twig']->render('publicProfile.twig',array(
             'profile' => $profile,
             'photos' => $photos,
+            'photos1' => $photos1,
             'comments' => $userComments,
         ));
         $response->setContent($content);
