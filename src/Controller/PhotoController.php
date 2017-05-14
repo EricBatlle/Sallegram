@@ -97,7 +97,8 @@ class PhotoController extends BaseController
                 )
             ))
             ->add('New_Image', FileType::class, array(
-                'required' => false
+                'required' => false,
+                'attr' => ['class'=>'form_thumbnail']
             ))
 
             ->add('Private', CheckboxType::class, array(

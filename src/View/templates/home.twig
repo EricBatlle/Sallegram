@@ -16,7 +16,7 @@
             <img src="assets/uploads/{{ top5[i-1].img_path }}" width="200" height="200">
             <p>Title {{ top5[i-1].title }}</p>
             {#ToDo: Change user_id to name#}
-            <p>UserName<a href="/profile/{{ top5[i-1].user_id }}">{{ top5[i-1].user_id }}</a></p>
+            <p>UserName<a href="/profile/{{ top5[i-1].user_id }}">{{ top5[i-1].username }}</a></p>
             <p>Date {{ top5[i-1].created_at }}</p>
             <p>Likes {{ top5[i-1].likes }}</p>
             <p>Visits {{ top5[i-1].visits }}</p>
@@ -38,7 +38,7 @@
             <img src="assets/uploads/{{ last5[i-1].img_path }}">
             <p>Title {{ last5[i-1].title }}</p>
             {#ToDo: Change user_id to name#}
-            <p>UserName<a href="/profile/{{ top5[i-1].user_id }}">{{ top5[i-1].user_id }}</a></p>
+            <p>UserName<a href="/profile/{{ top5[i-1].user_id }}">{{ top5[i-1].username }}</a></p>
             <p>Date {{ last5[i-1].created_at }}</p>
             <p>Likes {{ last5[i-1].likes }}</p>
             <p>Visits {{ last5[i-1].visits }}</p>
