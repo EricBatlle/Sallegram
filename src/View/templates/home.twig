@@ -14,7 +14,7 @@
             ToDo: No need to show img_path
 #}
             <img src="assets/uploads/{{ top5[i-1].img_path }}" width="200" height="200">
-            <p>Title {{ top5[i-1].title }}</p>
+            <p>Title <a href="/photo/{{ top5[i-1].id }}">{{ top5[i-1].title }}</a></p>
             {#ToDo: Change user_id to name#}
             <p>UserName<a href="/profile/{{ top5[i-1].user_id }}">{{ top5[i-1].user_id }}</a></p>
             <p>Date {{ top5[i-1].created_at }}</p>

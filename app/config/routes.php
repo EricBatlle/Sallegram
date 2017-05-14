@@ -37,13 +37,14 @@ $app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($be
 
 $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailValidation');
 
-
 //COMMENTS
 $app->match('/addComment/{id}/{comment}', 'SilexApp\Controller\CommentController::addComment')->before($before);
 //ToDo: change match to post
 $app->match('/comment/remove/{id}', 'SilexApp\Controller\CommentController::removeComment')->before($before);
 $app->match('/comment/edit/{id}', 'SilexApp\Controller\CommentController::editComment')->before($before);
-//Photos
+
+//Photos/Images
 $app->match('/myphotos/remove/{id}', 'SilexApp\Controller\PhotoController::removePhoto')->before($before);
 $app->match('/myphotos/edit/{id}', 'SilexApp\Controller\PhotoController::editPhoto')->before($before);
+$app->match('/photo/{id}', 'SilexApp\Controller\PhotoController::viewPhoto');
 

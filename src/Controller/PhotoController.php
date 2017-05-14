@@ -164,4 +164,62 @@ class PhotoController extends BaseController
         return $response;
     }
 
+    public function viewPhoto (Application $app, $id){
+
+        $response = new Response();
+
+        //Check if it's public
+
+        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = $id"); //llamando al servicio
+
+        if($image['private'] == 0){ //Public
+            //Incrementar el num de visites de la imatge
+            $app['db']->update('images',[
+                'visits' => $image['visits']+1],
+                array('id' => $id)
+            );
+            //Display INFO
+            //Nom del user que l'ha pujat (ha de ser un link al seu profile)
+            $userId = $image['user_id'];
+            $user = $app['db']->fetchAssoc("SELECT * FROM users WHERE id = $userId"); //llamando al servicio
+            //Titol
+            //Imatge (400x300)
+
+            //Dies que han pasat des de la pujada (dia actual - dia pujada)
+            $today = new \DateTime(date('Y-m-d H:i:s'));
+            $uploadedDay = new \DateTime($image['created_at']);
+            $interval = date_diff($today,$uploadedDay);
+            $interval->format(('Y-m-d H:i:s'));
+
+            //Comentaris publicats de la imatge (default 3)
+            $comments = $app['db']->fetchAll("SELECT * FROM comments WHERE image_id = $id"); //llamando al servicio
+
+            //Afegir botó AJAX per carregar-ne 3 més
+            //Num Visits
+            //Num Likes
+        }else{ //Private
+            //Redirect to Error 403
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $content = $app['twig']->render('error.twig',[
+                'errors' => [
+                    'unexpected' => 'An error has ocurred, please try it again later'
+                ]
+            ]);
+
+            $response->setContent($content);
+            return $response;
+        }
+
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('showImg.twig',array(
+            'user' => $user['username'],
+            'image' => $image,
+            'interval' => $interval->d,
+            'comments' => $comments
+        ));
+        $response->setContent($content);
+
+        return $response;
+    }
+
 }
