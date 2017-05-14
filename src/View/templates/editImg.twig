@@ -10,8 +10,8 @@
 {% block content %}
     <h1>Edit Image </h1>
     <form action="/myphotos/edit/{{ photos.id }}" METHOD="POST" enctype="multipart/form-data">
+        <img id="thumbnail" src="/assets/uploads/{{ photos.img_path }}" width="200" height="200"  />
         {{ form_widget(form, {'attr': {'id': 'src'}}) }}
-        <img id="thumbnail" src="#" width="200" height="200"  />
     </form>
 
     {% if ok == false %}

@@ -23,7 +23,7 @@ $before = function (Request $request, Application $app){
       return $response;
   }
 };
-$app->get('/unlog', 'SilexApp\Controller\BaseController::unlogSession'); //deslogeja
+$app->get('/unlog', 'SilexApp\Controller\BaseController::unlogSession')->before($before); //deslogeja
 $app->get('/log', 'SilexApp\Controller\BaseController::logSession'); //Logeja, si ja ho estás, deslogeja
 
 // USER - Pages

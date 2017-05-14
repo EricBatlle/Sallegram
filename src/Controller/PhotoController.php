@@ -9,6 +9,7 @@
 namespace SilexApp\Controller;
 
 
+use DateTime;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 use Imagine\Imagick\Imagine;
@@ -186,11 +187,20 @@ class PhotoController extends BaseController
             //Titol
             //Imatge (400x300)
 
+
             //Dies que han pasat des de la pujada (dia actual - dia pujada)
-            $today = new \DateTime(date('Y-m-d H:i:s'));
-            $uploadedDay = new \DateTime($image['created_at']);
-            $interval = date_diff($today,$uploadedDay);
-            $interval->format(('Y-m-d H:i:s'));
+            $actual_date = date("d-m-Y", time());
+            $image_date = date("d-m-Y", (new DateTime($image['created_at']))->getTimestamp());
+
+            $actual = explode ("-", $actual_date);
+            $d_image = explode ("-", $image_date);
+
+            $t1 = mktime(0,0,0, $actual[1], $actual[0], $actual[2]);
+            $t2 = mktime(0,0,0, $d_image[1], $d_image[0], $d_image[2]);
+
+            $seg = $t1 - $t2;
+
+            $dias = $seg/(60*60*24);
 
             //Comentaris publicats de la imatge (default 3)
             $comments = $app['db']->fetchAll("SELECT * FROM comments WHERE image_id = $id"); //llamando al servicio
@@ -215,7 +225,7 @@ class PhotoController extends BaseController
         $content = $app['twig']->render('showImg.twig',array(
             'user' => $user['username'],
             'image' => $image,
-            'interval' => $interval->d,
+            'interval' => $dias,
             'comments' => $comments
         ));
         $response->setContent($content);

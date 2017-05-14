@@ -41,11 +41,12 @@ class BaseController
     {
         if($app['session']->has('id')){
             $app['session']->remove('id');
-            return new Response('Session finished');
+            $url = '/';
+            return new RedirectResponse($url);
         }
 
-        $content = 'Session started for the user '.$app['session']->get('id');
-        return new Response($content);
+        $url = '/';
+        return new RedirectResponse($url);
     }
 
     public function redirectHome(Application $app){
@@ -55,8 +56,8 @@ class BaseController
 
         //Find 5 more visits images
         //$plz = $app['db']->fetchAll("SELECT i.id, u.id, username, user_id,title,img_path,visits,private,created_at,likes, FROM images as i and users as u  WHERE u.id = user_id ORDER BY visits DESC LIMIT 5");
-        $top5 = $app['db']->fetchAll("SELECT * FROM images, users WHERE user_id = users.id ORDER BY visits DESC LIMIT 5");
-        $last5 = $app['db']->fetchAll("SELECT * FROM images, users WHERE user_id = users.id ORDER BY created_at DESC LIMIT 5");
+        $top5 = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits DESC LIMIT 5");
+        $last5 = $app['db']->fetchAll("SELECT images.*, users.username  FROM images, users WHERE user_id = users.id ORDER BY created_at DESC LIMIT 5");
 
         $data = array(
             'Comment' =>  'Say something nice...',
