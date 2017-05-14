@@ -50,8 +50,8 @@ class UserController extends BaseController
     public function publicProfile(Application $app, $id){
         $response = new Response();
 
-        $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
-        $photos1 = NULL;
+//        $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
+//        $photos1 = NULL;
 
         if (isset($_POST['options'])) {
             switch ($_POST['options']){
@@ -74,6 +74,10 @@ class UserController extends BaseController
                     $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY visits DESC");
                     $photos1 = NULL;
             }
+        } else {
+            $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
+            $photos1 = NULL;
+            $_POST['options'] = '1';
         }
 
         $profile = $app['db']->fetchAssoc("SELECT * FROM users WHERE id = $id");
