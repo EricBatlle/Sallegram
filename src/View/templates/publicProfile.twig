@@ -37,7 +37,7 @@
     </form>
     {% for i in 1..photos|length if photos|length > 0%}
             <img src="/assets/uploads/{{ photos[i-1].img_path }}">
-            <h3>Title <a href="">{{ photos[i-1].title }}</a></h3>
+            <h3>Title <a href="/photo/{{ photos[i-1].id }}">{{ photos[i-1].title }}</a></h3>
     {% endfor %}
     {% for i in 1..photos1|length if photos1|length > 0%}
         <img src="/assets/uploads/{{ photos1[i-1].img_path }}">
