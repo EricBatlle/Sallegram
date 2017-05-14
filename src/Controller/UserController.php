@@ -384,12 +384,13 @@ class UserController extends BaseController
                 $lastInsertedId = $app['db']->fetchAssoc('SELECT id FROM users ORDER BY id DESC LIMIT 1');
                 $id = $lastInsertedId['id'];
 
-                echo"<script>alert('Hemos enviado un mensaje de confirmacion a su cuenta de correo')</script>";
-
                 $message = 'Gracias por registrarte en Pwgram. Acceda al link siguiente http://silexapp.dev/users/validation/'.$id;
                 mail($data['email'], 'Confirmacion Pwgram', $message);
 
+                $content = $app['twig']->render('emailSend.twig');
+                $response->setContent($content);
                 return $response;
+
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
                 $content = $app['twig']->render('addUser.twig',[
