@@ -49,3 +49,6 @@ $app->match('/myphotos/remove/{id}', 'SilexApp\Controller\PhotoController::remov
 $app->match('/myphotos/edit/{id}', 'SilexApp\Controller\PhotoController::editPhoto')->before($before);
 $app->match('/photo/{id}', 'SilexApp\Controller\PhotoController::viewPhoto');
 
+//Likes - Notificatinos
+$app->match('/like/{id_image}/{id_user}', 'SilexApp\Controller\LikeController::like');
+
