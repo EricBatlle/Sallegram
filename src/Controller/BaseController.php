@@ -41,9 +41,7 @@ class BaseController
     {
         if($app['session']->has('id')){
             $app['session']->remove('id');
-            $url = '/';
-            return new RedirectResponse($url);
-        }
+            }
 
         $url = '/';
         return new RedirectResponse($url);

@@ -4,10 +4,11 @@
 /**
  * Created by Erik on 11/05/2017.
  */
-// this is the id of the form
 $(".more_comment_form").submit(function(e) {
     e.preventDefault();
     var image_id = $('.more_comment_input').attr('id');
+    var id = parseInt($('.more_comment_form').attr('id')) + 1
+    $('.more_comment_form').attr('id',id);
     var clicks = $('.more_comment_form').attr('id');
 
     var url = "/comment/add/"+image_id+"/"+clicks; // the script where you handle the form input.
@@ -22,14 +23,18 @@ $(".more_comment_form").submit(function(e) {
             var array = $.map(data, function(value, index) {
                 return [value];
             });
-            console.log(array); // show response from the php script.
-            if(array[0] == false){
-                console.log('do nothing')
-            }else{
-                console.log('do this')
+            //console.log(array); // show response from the php script.
+            if(array[0] == true){
                 //eliminar el contenedor de comentarios actual
-                $("#comments").empty();
-                //añadir el nuevo
+                $("#coments").empty();
+                //llenar el contenedor con los nuevos comentarios
+                for(var i = 0; i < array[1].length;i++){
+                    var txt = document.createElement("p");
+                    txt.innerHTML = array[1][i].comment;
+                    //añadir el nuevo
+                    $("#coments").append(txt);
+                }
+
             }
         },
         error: function(error)

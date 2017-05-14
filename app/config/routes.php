@@ -42,6 +42,7 @@ $app->match('/addComment/{id}/{comment}', 'SilexApp\Controller\CommentController
 //ToDo: change match to post
 $app->match('/comment/remove/{id}', 'SilexApp\Controller\CommentController::removeComment')->before($before);
 $app->match('/comment/edit/{id}', 'SilexApp\Controller\CommentController::editComment')->before($before);
+$app->match('/comment/add/{image_id}/{clicks}', 'SilexApp\Controller\CommentController::addMoreComments')->before($before);
 
 //Photos/Images
 $app->match('/myphotos/remove/{id}', 'SilexApp\Controller\PhotoController::removePhoto')->before($before);

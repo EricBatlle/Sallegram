@@ -172,8 +172,7 @@ class PhotoController extends BaseController
 
         //Check if it's public
 
-        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = $id"); //llamando al servicio
-
+        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = '$id'"); //llamando al servicio
         if($image['private'] == 0){ //Public
             //Incrementar el num de visites de la imatge
             $app['db']->update('images',[
@@ -183,7 +182,8 @@ class PhotoController extends BaseController
             //Display INFO
             //Nom del user que l'ha pujat (ha de ser un link al seu profile)
             $userId = $image['user_id'];
-            $user = $app['db']->fetchAssoc("SELECT * FROM users WHERE id = $userId"); //llamando al servicio
+
+            $user = $app['db']->fetchAssoc("SELECT * FROM users WHERE id='$userId'"); //llamando al servicio
             //Titol
             //Imatge (400x300)
 
@@ -203,7 +203,7 @@ class PhotoController extends BaseController
             $dias = $seg/(60*60*24);
 
             //Comentaris publicats de la imatge (default 3)
-            $comments = $app['db']->fetchAll("SELECT * FROM comments WHERE image_id = $id"); //llamando al servicio
+            $comments = $app['db']->fetchAll("SELECT * FROM comments WHERE image_id ='$id'"); //llamando al servicio
 
             //Afegir botó AJAX per carregar-ne 3 més
             //Num Visits

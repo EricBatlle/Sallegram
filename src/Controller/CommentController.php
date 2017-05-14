@@ -174,5 +174,33 @@ class CommentController extends BaseController
         return $response;
     }
 
+    public function addMoreComments(Application $app, Request $request, $image_id, $clicks)
+    {
+        $ok = false;
 
+        //Mirar si la imagen tiene + de 3 comentarios
+        $match = $app['db']->fetchAll("SELECT * FROM comments WHERE image_id='$image_id'");
+
+        //If yes
+        if(count($match) > 3){
+            $ok = true;
+            //Mirar el valor de clicks de más comentarios
+            $comentarios = 3*$clicks;
+
+            //Sacar de la DB tantos comentarios de la imagen LIMIT Comentarios
+            $comments = $app['db']->fetchAll("SELECT * FROM comments WHERE image_id='$image_id' LIMIT $comentarios");
+
+            //Devolverlos al javascript
+            return new JsonResponse([
+            0 => $ok,
+            1 => $comments
+            ]);
+        }else{//si tiene menos de 3
+            //No hacer nada y devolver un false
+            return new JsonResponse([
+                0 => $ok
+            ]);
+        }
+
+    }
 }
