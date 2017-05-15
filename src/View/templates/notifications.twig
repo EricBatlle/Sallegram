@@ -1,0 +1,23 @@
+{% extends "base.twig" %}
+
+{#{% block title %}User info{% endblock %}#}
+
+{% block content %}
+    <h1> NOTIFICATIONS</h1>
+    <p>Images </p>
+    <p>Comments</p>
+
+    <h1>Photos</h1>
+
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('/select.js','js') }}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
+

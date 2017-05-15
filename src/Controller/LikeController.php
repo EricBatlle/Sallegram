@@ -53,4 +53,14 @@ class LikeController extends BaseController
 
     }
 
+    public function showNotifications (Application $app)
+    {
+        $response = new Response();
+
+        $content = $app['twig']->render('notifications.twig');
+        $response->setContent($content);
+
+        return $response;
+    }
+
 }
