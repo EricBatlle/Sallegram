@@ -5,7 +5,7 @@
 
 {% block content %}
     <h1>Home</h1>
-
+    <div id="top5">
     <h2>Top5</h2>
     {% for i in 1..top5|length if top5|length > 0%}
         <div>
@@ -33,7 +33,13 @@
             </form>
         {% endif %}
     {% endfor %}
+    </div>
+    <form  id="0" class="more_top5_form"  action="" METHOD="POST" enctype="multipart/form-data">
+        {#<input id="{{ image.id }}" class="more_comment_input" type="submit" value="Más comentarios">#}
+        <input id="" class="more_top5_input" type="submit" value="Más imágenes">
+    </form>
 
+    <div>
     <h2>Last5</h2>
     {% for i in 1..last5|length if last5|length > 0%}
         <div>
@@ -46,11 +52,14 @@
             <p>Visits {{ last5[i-1].visits }}</p>
         </div>
     {% endfor %}
-
+    </div>
 {% endblock %}
+
 {% block scripts %}
     {{ parent() }}
     <script src="{{ asset('/ajax_v3.js','js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('/like.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/moreTop5_v2.js','js') }}" type="text/javascript" charset="utf-8"></script>
+
 
 {% endblock %}

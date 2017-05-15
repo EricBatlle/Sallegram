@@ -54,12 +54,10 @@ class BaseController
 
         //Find 5 more visits images
         //$plz = $app['db']->fetchAll("SELECT i.id, u.id, username, user_id,title,img_path,visits,private,created_at,likes, FROM images as i and users as u  WHERE u.id = user_id ORDER BY visits DESC LIMIT 5");
-/*      $top5 = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits DESC LIMIT 5");*/
-        $top5 = $app['db']->fetchAll("SELECT images.*, users.username, likes.liked FROM images, users, likes WHERE users.id = likes.user_id AND images.id = likes.image_id ORDER BY visits DESC LIMIT 5");
+        $top5 = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits DESC LIMIT 5");
+        //$top5 = $app['db']->fetchAll("SELECT images.*, users.username, likes.liked FROM images, users, likes WHERE users.id = likes.user_id AND images.id = likes.image_id ORDER BY visits DESC LIMIT 5");
         $last5 = $app['db']->fetchAll("SELECT images.*, users.username  FROM images, users WHERE user_id = users.id ORDER BY created_at DESC LIMIT 5");
 
-        var_dump($top5);
-        die();
         $data = array(
             'Comment' =>  'Say something nice...',
         );
