@@ -22,10 +22,6 @@ $app->register(new Silex\Provider\AssetServiceProvider(),array(
     ),
 ));
 
-$app->register(new \SilexApp\Providers\HelloServiceProvider(), array(
-    'hello.default_name' => 'Eric',
-));
-
 $app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver' => 'pdo_mysql',

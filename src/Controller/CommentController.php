@@ -177,7 +177,11 @@ class CommentController extends BaseController
     public function addMoreComments(Application $app, Request $request, $image_id, $clicks)
     {
         $ok = false;
-
+        return new JsonResponse([
+            0 => $ok,
+            1 => 'bla'
+        ]);
+        die();
         //Mirar si la imagen tiene + de 3 comentarios
         $match = $app['db']->fetchAll("SELECT * FROM comments WHERE image_id='$image_id'");
 

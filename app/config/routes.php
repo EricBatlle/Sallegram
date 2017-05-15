@@ -42,12 +42,14 @@ $app->match('/addComment/{id}/{comment}', 'SilexApp\Controller\CommentController
 //ToDo: change match to post
 $app->match('/comment/remove/{id}', 'SilexApp\Controller\CommentController::removeComment')->before($before);
 $app->match('/comment/edit/{id}', 'SilexApp\Controller\CommentController::editComment')->before($before);
-$app->match('/comment/add/{image_id}/{clicks}', 'SilexApp\Controller\CommentController::addMoreComments')->before($before);
+$app->match('/comment/add/{image_id}/{clicks}', 'SilexApp\Controller\CommentController::addMoreComments');
 
 //Photos/Images
 $app->match('/myphotos/remove/{id}', 'SilexApp\Controller\PhotoController::removePhoto')->before($before);
 $app->match('/myphotos/edit/{id}', 'SilexApp\Controller\PhotoController::editPhoto')->before($before);
 $app->match('/photo/{id}', 'SilexApp\Controller\PhotoController::viewPhoto');
+$app->match('/add/top5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreTop5');
+$app->match('/photo/add/last5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreLast5');
 
 //Likes - Notificatinos
 $app->match('/like/{id_image}/{id_user}', 'SilexApp\Controller\LikeController::like');
