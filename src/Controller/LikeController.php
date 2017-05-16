@@ -48,9 +48,59 @@ use Symfony\Component\Validator\Constraints as Assert;
 class LikeController extends BaseController
 {
 
-    public function like(Application $app, Request $request, $id_image, $id_user)
+    public function like(Application $app, Request $request,$status ,$id_image)
     {
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
 
+        $id = $app['session']->get('id');
+        $image = $app['db']->fetchAssoc("SELECT * FROM images where id = $id_image");
+
+        try{
+
+
+            if($status !='Like'){
+                //ELIMINAR AQUÍ
+                $likes = $image['likes'] - 1;
+                $app['db']->exec("DELETE FROM likes WHERE image_id = $id_image and user_id = $id");
+                $do = 0;
+            }else{
+                $likes = $image['likes'] + 1;
+
+                $do = 1;
+                $app['db']->insert('likes', [
+                        'image_id' => $id_image,
+                        'user_id' => $id,
+                        'liked' => $do
+                    ]
+                );
+
+                $app['db']->insert('notifications', [
+                        'img_id' => $id_image,
+                        'user_id' => $app['session']->get('id'),
+                        'type' => 'l',
+                    ]
+                );
+            }
+            $app['db']->update('images',[
+                'likes' =>  $likes],
+                array('id' => $id_image)
+            );
+
+        }catch(Exception $e){
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $content = $app['twig']->render('error.twig',[
+                'errors' => [
+                    'unexpected' => 'An error has ocurred, please try it again later'
+                ]
+            ]);
+            $response->setContent($content);
+            return $response;
+        }
+        //Devolverlos al javascript
+        return new JsonResponse([
+            0 => $do
+        ]);
     }
 
     public function removeNotification (Application $app, $id){

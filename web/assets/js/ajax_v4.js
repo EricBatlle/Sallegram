@@ -3,6 +3,7 @@
  */
 // this is the id of the form
 $(".comment_form").submit(function(e) {
+    console.log('envio comment')
     e.preventDefault();
     var comment = $(this).children('.comment').val();
     var image_id = $(this).children('.comment').attr('id');

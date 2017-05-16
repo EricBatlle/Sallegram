@@ -6,13 +6,18 @@
  */
 // this is the id of the form
 $(".like_form").submit(function(e) {
+    console.log('ieeeep');
     e.preventDefault();
 
     //Check if value is Like or Dislike
-    var id_img
-    var id_user
+    var form_name = $(this).attr('name');
+    var form_id = $(this).attr('id');
 
-    var url = "/addComment/"+image_id+"/"+comment; // the script where you handle the form input.
+    //Cojer el mismo id del form para encontrar el input
+    //var button = $('input[id='+form_id+']').attr('Value','Like');  --> Setear el valor del boton
+    var input_value = $('input[id='+form_id+']').attr('Value');
+        console.log(input_value);
+    var url = "/like/"+input_value+"/"+form_id; // the script where you handle the form input.
 
 
     $.ajax({
@@ -26,6 +31,14 @@ $(".like_form").submit(function(e) {
                 return [value];
             });
             console.log(array); // show response from the php script.
+
+            //Si estaba en like me devuelve un dislike
+            //Dislike = 1
+            if(array[0] == 1){
+                $('input[id='+form_id+']').attr('Value','Dislike');
+            }else{
+                $('input[id='+form_id+']').attr('Value','Like');
+            }
         },
         error: function(error)
         {

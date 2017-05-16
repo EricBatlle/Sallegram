@@ -44,25 +44,47 @@ $(".more_top5_form").submit(function(e) {
                     date.innerHTML = "Date "+array[1][i].created_at;
                 var likes = document.createElement("p");
                     likes.innerHTML = "Likes "+array[1][i].likes;
-                //ToDo: like_form
+                var form_like = $(document.createElement("form"));
+                    form_like.attr('id',array[1][i].id);
+                    form_like.attr('class','like_form');
+                    form_like.attr('METHOD','POST');
+                    form_like.attr('enctype','multipart/form-data');
+                var input = $(document.createElement(("input")));
+                    input.attr('type','submit');
+                    //Mirar si la imagen esta en la lista de likes
+                    if(isLiked(array[1][i].id,array[2])){
+                        input.attr('value','Like');
+                    }else{
+                        input.attr('value','Dislike');
+                    }
+                form_like.append(input);
+
                 var visits = document.createElement("p");
                     visits.innerHTML = "Visits "+array[1][i].visits;
 
                 if(array[2] == true){
                     //ToDo: Doing second form, the comments, check possible errors confusion with 2 forms
-                    var form = $(document.createElement("form"));
-                        form.attr('id',array[1][i].id);
-                        form.attr('class','comment_form');
-                        form.attr('METHOD','POST');
-                        form.attr('enctype','multipart/form-data');
+                    var form_comment = $(document.createElement("form"));
+                        form_comment.attr('id',array[1][i].id);
+                        form_comment.attr('class','comment_form');
+                        form_comment.attr('METHOD','POST');
+                        form_comment.attr('enctype','multipart/form-data');
+                        form_comment.attr('action','');
+                    var textarea = $(document.createElement(("textarea")));
+                        textarea.attr('id',array[1][i].id);
+                        textarea.attr('name','comment');
+                        textarea.attr('class','comment');
                     var input = $(document.createElement(("input")));
                         input.attr('type','submit');
-                    form.append(input);
+                        input.submit();
+                    form_comment.append(textarea);
+                    form_comment.append(input);
                 }
 
                 //añadir el nuevo
-                $("#top5").after(form);
+                $("#top5").after(form_comment);
                 $("#top5").after(visits);
+                $("#top5").after(form_like);
                 $("#top5").after(likes);
                 $("#top5").after(date);
                 $("#top5").after(username);
@@ -80,3 +102,15 @@ $(".more_top5_form").submit(function(e) {
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
 });
+
+function isLiked(id, liked) {
+    itIs = false;
+
+    for(var j=0;(j<liked.length) && (liked.length > 0);j++){
+        if(id == liked[j-1].id){
+            return itIs = true;
+        }
+    }
+    return itIs;
+}
+
