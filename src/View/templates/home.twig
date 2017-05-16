@@ -9,10 +9,6 @@
     <h2>Top5</h2>
     {% for i in 1..top5|length if top5|length > 0%}
         <div>
-            <h3>Img {{ top5[i-1].img_path }}</h3>
-{#
-            ToDo: No need to show img_path
-#}
             <img src="assets/uploads/{{ top5[i-1].img_path }}" width="200" height="200">
             <p>Title <a href="/photo/{{ top5[i-1].id }}">{{ top5[i-1].title }}</a></p>
             <p>UserName <a href="/profile/{{ top5[i-1].user_id }}">{{ top5[i-1].username }}</a></p>
@@ -59,7 +55,7 @@
     {{ parent() }}
     <script src="{{ asset('/ajax_v3.js','js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('/like.js','js') }}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ asset('/moreTop5_v2.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/moreTop5_v3.js','js') }}" type="text/javascript" charset="utf-8"></script>
 
 
 {% endblock %}

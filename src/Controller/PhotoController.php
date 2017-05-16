@@ -248,7 +248,7 @@ class PhotoController extends BaseController
             $offset = 5*$clicks;
 
             //Sacar de la DB tantos comentarios de la imagen LIMIT Comentarios
-            $images = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits LIMIT 5 OFFSET $offset");
+            $images = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits DESC LIMIT 5 OFFSET $offset");
 
 
             //Devolverlos al javascript

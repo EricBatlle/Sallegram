@@ -24,7 +24,7 @@ $(".more_comment_form").submit(function(e) {
                 return [value];
             });
             //console.log(array); // show response from the php script.
-            //array[2] = true if logged
+
             if(array[0] == true){
                 //eliminar el contenedor de comentarios actual
                 $("#coments").empty();
