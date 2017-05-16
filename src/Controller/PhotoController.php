@@ -173,6 +173,9 @@ class PhotoController extends BaseController
         //Check if it's public
 
         $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = '$id'"); //llamando al servicio
+        $liked = $app['db']->fetchAll("SELECT images.id FROM (likes LEFT JOIN users ON users.id = likes.user_id) LEFT JOIN images ON likes.image_id = images.id WHERE likes.user_id = $id");
+
+
         if($image['private'] == 0){ //Public
             //Incrementar el num de visites de la imatge
             $app['db']->update('images',[

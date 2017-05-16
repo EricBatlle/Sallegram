@@ -9,6 +9,10 @@ $(".like_form").submit(function(e) {
     e.preventDefault();
 
     //Check if value is Like or Dislike
+    var i = $(".input_like").attr('value');
+    $(".like_input").attr('value', 'holita');
+
+    console.log(i);
     var id_img
     var id_user
 

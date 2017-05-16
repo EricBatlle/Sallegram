@@ -50,7 +50,44 @@ class LikeController extends BaseController
 
     public function like(Application $app, Request $request, $id_image, $id_user)
     {
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
 
+        $id = $app['session']->get('id');
+        $image = $app['db']->fetchAssoc("SELECT * FROM images where id = $id_image");
+        $likes = $image['likes'] + 1;
+
+        try{
+            $app['db']->update('images',[
+                'likes' =>  $likes,
+                array('id' => $id_image)]
+            );
+
+            $app['db']->insert('images', [
+                    'image_id' => $id_image,
+                    'user_id' => $app['session']->get('id'),
+                    'liked' => '1'
+                ]
+            );
+
+            $app['db']->insert('notifications', [
+                    'img_id' => $id_image,
+                    'user_id' => $app['session']->get('id'),
+                    'type' => 'l',
+                ]
+            );
+
+        }catch(Exception $e){
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $content = $app['twig']->render('error.twig',[
+                'errors' => [
+                    'unexpected' => 'An error has ocurred, please try it again later'
+                ]
+            ]);
+            $response->setContent($content);
+            return $response;
+        }
+        return $response;
     }
 
     public function removeNotification (Application $app, $id){
