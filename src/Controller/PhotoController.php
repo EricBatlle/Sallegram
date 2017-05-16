@@ -171,8 +171,10 @@ class PhotoController extends BaseController
         $response = new Response();
 
         //Check if it's public
+        $user_id = $app['session']->get('id');
+        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id='$id'"); //llamando al servicio
+        $like = $app['db']->fetchAssoc("SELECT * FROM likes WHERE image_id='$id' AND user_id='$user_id'");
 
-        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = '$id'"); //llamando al servicio
         if($image['private'] == 0){ //Public
             //Incrementar el num de visites de la imatge
             $app['db']->update('images',[
@@ -186,7 +188,6 @@ class PhotoController extends BaseController
             $user = $app['db']->fetchAssoc("SELECT * FROM users WHERE id='$userId'"); //llamando al servicio
             //Titol
             //Imatge (400x300)
-
 
             //Dies que han pasat des de la pujada (dia actual - dia pujada)
             $actual_date = date("d-m-Y", time());
@@ -226,7 +227,8 @@ class PhotoController extends BaseController
             'user' => $user['username'],
             'image' => $image,
             'interval' => $dias,
-            'comments' => $comments
+            'comments' => $comments,
+            'like' => $like['liked']
         ));
         $response->setContent($content);
 

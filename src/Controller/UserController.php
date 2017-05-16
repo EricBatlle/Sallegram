@@ -396,7 +396,7 @@ class UserController extends BaseController
 
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-                $content = $app['twig']->render('addUser.twig',[
+                $content = $app['twig']->render('registerUser.twig',[
                     'errors' => [
                         'unexpected' => 'An error has ocurred, please try it again later'
                     ]
@@ -407,7 +407,7 @@ class UserController extends BaseController
         }
 
         $response->setStatusCode(Response::HTTP_OK);
-        $content = $app['twig']->render('addUser.twig',array('form'=> $form->createView()));
+        $content = $app['twig']->render('registerdUser.twig',array('form'=> $form->createView()));
         $response->setContent($content);
 
         return $response;

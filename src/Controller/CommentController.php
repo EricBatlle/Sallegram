@@ -72,7 +72,7 @@ class CommentController extends BaseController
             try{
                 $app['db']->insert('comments',[
                         'user_id' => $app['session']->get('id'),
-                        'comment' => $comment,
+                        'comment' => htmlentities($comment),
                         'image_id' => $id
                     ]
                 );
