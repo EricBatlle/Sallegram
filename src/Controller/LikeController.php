@@ -53,4 +53,41 @@ class LikeController extends BaseController
 
     }
 
+    public function removeNotification (Application $app, $id){
+        $response = new Response();
+
+        try {
+            $app['db']->exec("DELETE FROM notifications WHERE id = $id");
+            $url = '/notifications';
+            return new RedirectResponse($url);
+        } catch (Exception $e){
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $content = $app['twig']->render('error.twig',[
+                'errors' => [
+                    'unexpected' => 'An error has ocurred, please try it again later'
+                ]
+            ]);
+
+            $response->setContent($content);
+            return $response;
+        }
+        return $response;
+    }
+
+    public function showNotifications (Application $app)
+    {
+        $response = new Response();
+
+        $id = $app['session']->get('id');
+
+        $notifications = $app['db']->fetchAll("SELECT users.username, notifications.*, images.title, images.img_path FROM users, notifications, images WHERE images.id = notifications.img_id and users.id = images.user_id and images.user_id = $id ORDER BY notifications.time DESC ");
+
+
+        $content = $app['twig']->render('notifications.twig', [
+            'notifications' => $notifications]);
+        $response->setContent($content);
+
+        return $response;
+    }
+
 }

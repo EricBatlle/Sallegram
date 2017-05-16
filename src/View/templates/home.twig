@@ -7,7 +7,9 @@
     <h1>Home</h1>
     <div id="top5">
     <h2>Top5</h2>
+
     {% for i in 1..top5|length if top5|length > 0%}
+        {% set foo = 0 %}
         <div>
             <img src="assets/uploads/{{ top5[i-1].img_path }}" width="200" height="200">
             <p>Title <a href="/photo/{{ top5[i-1].id }}">{{ top5[i-1].title }}</a></p>
@@ -15,8 +17,16 @@
             <p>Date {{ top5[i-1].created_at }}</p>
             <p>Likes {{ top5[i-1].likes }}</p>
             <form id="{{ top5[i-1].id }}" class="like_form" action="" METHOD="POST" enctype="multipart/form-data">
-                {#<input type="submit" value="{{ top5[i-1].like }}">#}
-                <input type="submit" value="Like">
+                {% for j in 1..liked|length if liked|length > 0 %}
+                    {% if top5[i-1].id == liked[j-1].id %}
+                        <input type="submit" value="Dislike">
+                        {% set foo = 1 %}
+                    {% endif %}
+                {% endfor %}
+                {% if foo == 0 %}
+                    <input type="submit" value="Like">
+                {% endif %}
+
             </form>
             <p>Visits {{ top5[i-1].visits }}</p>
         </div>

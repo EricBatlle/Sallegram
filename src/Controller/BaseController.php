@@ -52,10 +52,16 @@ class BaseController
         $response = new Response();
         $response->setStatusCode(Response::HTTP_OK);
 
+        $id = $app['session']->get('id');
+
         //Find 5 more visits images
         //$plz = $app['db']->fetchAll("SELECT i.id, u.id, username, user_id,title,img_path,visits,private,created_at,likes, FROM images as i and users as u  WHERE u.id = user_id ORDER BY visits DESC LIMIT 5");
         $top5 = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits DESC LIMIT 5");
-        //$top5 = $app['db']->fetchAll("SELECT images.*, users.username, likes.liked FROM images, users, likes WHERE users.id = likes.user_id AND images.id = likes.image_id ORDER BY visits DESC LIMIT 5");
+        //$top5 = $app['db']->fetchAll("SELECT users.username, images.title, images.id, likes.liked FROM (users LEFT JOIN images ON users.id = images.user_id) LEFT JOIN likes ON users.id = likes.user_id");
+        //$top5 = $app['db']->fetchAll("SELECT users.username, likes.image_id, likes.liked FROM users LEFT JOIN likes ON users.id = likes.user_id");
+        //$top5 = $app['db']->fetchAll("SELECT users.username, images.*, likes.liked FROM (users LEFT JOIN likes ON users.id = likes.user_id) RIGHT JOIN images ON likes.image_id = images.id");
+        $liked = $app['db']->fetchAll("SELECT images.id FROM (likes LEFT JOIN users ON users.id = likes.user_id) LEFT JOIN images ON likes.image_id = images.id WHERE likes.user_id = $id");
+
         $last5 = $app['db']->fetchAll("SELECT images.*, users.username  FROM images, users WHERE user_id = users.id ORDER BY created_at DESC LIMIT 5");
 
         $data = array(
@@ -81,6 +87,7 @@ class BaseController
         $content = $app['twig']->render('home.twig',[
                 'top5' => $top5,
                 'last5' => $last5,
+                'liked' => $liked,
                 'form'=> $form->createView()
 
         ]);

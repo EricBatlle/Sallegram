@@ -22,11 +22,12 @@
                         <a href="/addImg">Add Image</a>
                         <a href="/users/photos">My photos</a>
                         <a href="/allComments">All Comments</a>
+                        <a href="/notifications">Notifications</a>
                         <img src="/assets/uploads/{{ app.session.get('img') }}" width="100px" height="100px">
                         <a href="/users/get">{{ app.session.get('name') }}</a>
-                        {% else  %}
-                            <a href="/users/login">Login</a>
-                            <a href="/users/register">Register</a>
+                    {% else  %}
+                        <a href="/users/login">Login</a>
+                        <a href="/users/register">Register</a>
                     {% endif %}
                 </ul>
             {% endblock %}

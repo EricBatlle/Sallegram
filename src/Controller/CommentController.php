@@ -76,6 +76,15 @@ class CommentController extends BaseController
                         'image_id' => $id
                     ]
                 );
+
+                $app['db']->insert('notifications', [
+                    'img_id' => $id,
+                    'user_id' => $app['session']->get('id'),
+                    'type' => 'c',
+                    //'date' => new \DateTime()
+                    ]
+                );
+
                 $url = '/';
                 return new RedirectResponse($url);
 
