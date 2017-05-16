@@ -52,6 +52,6 @@ $app->match('/add/top5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreT
 $app->match('/photo/add/last5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreLast5');
 
 //Likes - Notificatinos
-$app->match('/like/{status}/{id_image}', 'SilexApp\Controller\LikeController::like');
+$app->match('/like/{status}/{id_image}', 'SilexApp\Controller\LikeController::like')->before($before);
 $app->match('/notifications', 'SilexApp\Controller\LikeController::showNotifications')->before($before);
 $app->match('/notification/remove/{id}', 'SilexApp\Controller\LikeController::removeNotification')->before($before);
