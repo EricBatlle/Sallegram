@@ -172,9 +172,15 @@ class PhotoController extends BaseController
 
         //Check if it's public
 
-        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = '$id'"); //llamando al servicio
-        $liked = $app['db']->fetchAll("SELECT images.id FROM (likes LEFT JOIN users ON users.id = likes.user_id) LEFT JOIN images ON likes.image_id = images.id WHERE likes.user_id = $id");
+//        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = '$id'"); //llamando al servicio
+//        $liked = $app['db']->fetchAll("SELECT images.id FROM (likes LEFT JOIN users ON users.id = likes.user_id) LEFT JOIN images ON likes.image_id = images.id WHERE likes.user_id = $id");
 
+
+        $user_id = $app['session']->get('id');
+        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id='$id'"); //llamando al servicio
+        //ToDo: this DB call should be done up there
+        $image_thumb = $app['db']->fetchAssoc("SELECT * FROM thumbs WHERE image_id='$id' AND width=400"); //llamando al servicio
+        $like = $app['db']->fetchAssoc("SELECT * FROM likes WHERE image_id='$id' AND user_id='$user_id'");
 
         if($image['private'] == 0){ //Public
             //Incrementar el num de visites de la imatge
@@ -189,7 +195,6 @@ class PhotoController extends BaseController
             $user = $app['db']->fetchAssoc("SELECT * FROM users WHERE id='$userId'"); //llamando al servicio
             //Titol
             //Imatge (400x300)
-
 
             //Dies que han pasat des de la pujada (dia actual - dia pujada)
             $actual_date = date("d-m-Y", time());
@@ -229,7 +234,9 @@ class PhotoController extends BaseController
             'user' => $user['username'],
             'image' => $image,
             'interval' => $dias,
-            'comments' => $comments
+            'comments' => $comments,
+            'like' => $like['liked'],
+            'thumb' => $image_thumb['img_path']
         ));
         $response->setContent($content);
 

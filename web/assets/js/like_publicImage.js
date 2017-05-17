@@ -1,4 +1,7 @@
 /**
+ * Created by Erik on 17/05/2017.
+ */
+/**
  * Created by Erik on 14/05/2017.
  */
 /**
@@ -16,7 +19,7 @@ $(".like_form").submit(function(e) {
     //Cojer el mismo id del form para encontrar el input
     //var button = $('input[id='+form_id+']').attr('Value','Like');  --> Setear el valor del boton
     var input_value = $('input[id='+form_id+']').attr('Value');
-        console.log(input_value);
+    console.log(input_value);
     var url = "/like/"+input_value+"/"+form_id; // the script where you handle the form input.
 
 
@@ -30,14 +33,15 @@ $(".like_form").submit(function(e) {
             var array = $.map(data, function(value, index) {
                 return [value];
             });
+
             console.log(array); // show response from the php script.
 
             //Si estaba en like me devuelve un dislike
             //Dislike = 1
             if(array[0] == 1){
-                $('input[id='+form_id+']').attr('Value','Dislike');
+                $('input[class=like_input]').attr('Value','Dislike');
             }else{
-                $('input[id='+form_id+']').attr('Value','Like');
+                $('input[class=like_input]').attr('Value','Like');
             }
         },
         error: function(error)

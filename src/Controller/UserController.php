@@ -11,8 +11,6 @@ namespace SilexApp\Controller;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 use Imagine\Imagick\Imagine;
-use SilexApp\Model\Entity\User;
-use SilexApp\Model\Entity\UserType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\File\File;
@@ -352,7 +350,6 @@ class UserController extends BaseController
                 'second_options' => array('label' => 'Repeat Password'),
             ))
             ->add('image_profile', FileType::class, array(
-                //ToDo: Required false?
                 'required' => false,
                 'label_attr' => ['id' => 'imgInp'],
                 'attr' => ['class'=>'form_thumbnail']
@@ -368,7 +365,6 @@ class UserController extends BaseController
             $data = $form->getData();
             //IMAGE
             $dir = 'assets/uploads';
-            //ToDo: If image=null -> take default image
             /** @var UploadedFile $someNewFilename */
             $someNewFilename = $data['image_profile'];
             if($data['image_profile'] == null){
@@ -402,7 +398,7 @@ class UserController extends BaseController
 
             }catch(Exception $e){
                 $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-                $content = $app['twig']->render('addUser.twig',[
+                $content = $app['twig']->render('registerUser.twig',[
                     'errors' => [
                         'unexpected' => 'An error has ocurred, please try it again later'
                     ]
@@ -413,7 +409,7 @@ class UserController extends BaseController
         }
 
         $response->setStatusCode(Response::HTTP_OK);
-        $content = $app['twig']->render('addUser.twig',array('form'=> $form->createView()));
+        $content = $app['twig']->render('registerUser.twig',array('form'=> $form->createView()));
         $response->setContent($content);
 
         return $response;
@@ -540,23 +536,9 @@ class UserController extends BaseController
 
             $filename->move($dir, $filename->getClientOriginalName());
 
-
-            $imgFilename = $filename->getClientOriginalName();
-
-            /*//Path dónde está la imágen
-            $imgPath = $dir.'/'.$imgFilename;
-            $imgPathDest = $dir.'/'.'_resized.jpg'; //ToDo: $imgfFilename.'_resized' delete the extension .jpg
-            //Tamaño de la imagen
-            $imgSize = getimagesize($imgPath);
-            var_dump($imgSize);
-
-            //Copiar el fichero
-            copy($imgPath,$imgPathDest);
-            $imagine = new Imagine();
-
-            $image = $imagine->open($imgPathDest);
-
-            $image->resize(new Box(200,200));*/
+            /////RESIZE//////
+            $filename_400 = $this->resizeAndCopy($filename,$dir,400,300);
+            $filename_100 = $this->resizeAndCopy($filename,$dir,100,100);
 
             try{
                 $app['db']->insert('images',[
@@ -568,6 +550,26 @@ class UserController extends BaseController
                         'created_at' => date('Y-m-d H:i:s')
                     ]
                 );
+                $pathMainImage = $filename->getClientOriginalName();
+                $mainImage = $app['db']->fetchAssoc("SELECT * FROM images WHERE img_path='$pathMainImage'");
+                $app['db']->insert('thumbs',[
+                        'image_id' => $mainImage['id'],
+                        'user_id' => $app['session']->get('id'),
+                        'title' => $data['Title'],
+                        'img_path' => $filename_400,
+                        'width' => 400
+                    ]
+                );
+
+                $app['db']->insert('thumbs',[
+                        'image_id' => $mainImage['id'],
+                        'user_id' => $app['session']->get('id'),
+                        'title' => $data['Title'],
+                        'img_path' => $filename_100,
+                        'width' => 100
+                        ]
+                );
+
                 $url = '/';
                 return new RedirectResponse($url);
 
@@ -593,6 +595,22 @@ class UserController extends BaseController
         return $response;
     }
 
+    public function resizeAndCopy($filename,$dir,$nuevo_ancho,$nuevo_alto){
+        $imgFilename = $filename->getClientOriginalName();
+        $nombreFichero = $dir.'/'.$imgFilename;
+
+        $thumb = imagecreatetruecolor($nuevo_ancho,$nuevo_alto);
+        $origen = imagecreatefromjpeg($nombreFichero); //ToDo: better from string?
+
+        $width = imagesx($origen);
+        $height = imagesy($origen);
+
+        imagecopyresized($thumb,$origen,0,0,0,0,$nuevo_ancho,$nuevo_alto,$width,$height);
+        $newNameFile = $nombreFichero.$nuevo_ancho.'x'.$nuevo_alto.'.jpeg';
+        imagejpeg($thumb,$newNameFile);
+        return $newNameFile;
+    }
+
     public function allComments(Application $app, Request $request)
     {
         $response = new Response();
@@ -601,16 +619,6 @@ class UserController extends BaseController
         //Get all user comments
         $idUser = $app['session']->get('id');
         $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE user_id='$idUser'");
-
-        //ToDo: Substituir-ho pels <a> però no em deixa fer mes d'1 form
-        /** @var Form $form */
-        /*$form = $app['form.factory']->createBuilder(FormType::class)
-            ->add('submit',SubmitType::class, [
-                'label' => 'Remove',
-            ])
-            ->getForm();
-
-        $form->handleRequest($request);*/
 
         $content = $app['twig']->render('/allComments.twig',array(
             //'form'=> $form->createView(),

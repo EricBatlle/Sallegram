@@ -4,11 +4,29 @@
 {% endblock %}
 
 {% block content %}
-    <img src="/assets/uploads/{{ image.img_path }}" class="img-responsive img-thumbnail" alt="Responsive image">
-    <p class="text-center"><a href = "/profile/{{ image.user_id }}">{{ user }}:</a> {{ image.title }}</p>
+    <img src="/{{ thumb }}" class="img-responsive img-thumbnail" alt="Responsive image">
+    <p class="text-center"><a href = "/profile/{{ image.user_id }}">{{ user }}:</a> {{ image.title }} </p>
     <p class="text-center">{{ image.likes }} likes     |    {{ image.visits }} visits</p>
     <p class="text-center">{{ interval }} day ago</p>
 
+    {% if app.session.has('id') %}
+        {% if like == 1 %}
+            <form id="{{ image.id }}" class="like_form" name="Dislike" action="" METHOD="POST" enctype="multipart/form-data">
+            <input id="{{ image.id }}" class="like_input" type="submit" value="Dislike">
+        {% else %}
+            <form id="{{ image.id }}" class="like_form" name="Like" action="" METHOD="POST" enctype="multipart/form-data">
+            <input id="{{ image.id }}" class="like_input" type="submit" value="Like">
+        {% endif %}
+            </form>
+    {% endif %}
+    {% if app.session.has('id') %}
+            {#ToDo: Comment is now not saved#}
+            {#<form action="/addComment/{{ app.session.get('id') }}" METHOD="POST" enctype="multipart/form-data">#}
+            <form  id="{{ image.id }}" class="comment_form" action="" METHOD="POST" enctype="multipart/form-data">
+                <textarea id="{{ image.id }}" name="comment" class="comment"></textarea>
+                <input type="submit">
+            </form>
+        {% endif %}
     <h3 class="text-center">Comments</h3>
     <div id="coments">
         {% if comments|length < 3 %}
@@ -30,4 +48,7 @@
 {% block scripts %}
     {{ parent() }}
     <script src="{{ asset('/moreComments_v2.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/like_publicImage.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/comment.js','js') }}" type="text/javascript" charset="utf-8"></script>
+
 {% endblock %}

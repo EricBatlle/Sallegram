@@ -19,9 +19,6 @@
             <p class="text-center">{{ top5[i-1].likes }} likes    |    {{ top5[i-1].visits }} visits</p>
             <p class="text-center" >{{ top5[i-1].created_at }}</p>
             {% if app.session.has('id') %}
-{#
-            <form id="{{ top5[i-1].id }}" class="like_form" name="" action="" METHOD="POST" enctype="multipart/form-data">
-#}
                 {% for j in 1..liked|length if liked|length > 0 and foo == 0 %}
                     {% if top5[i-1].id == liked[j-1].id %}
                         <form id="{{ top5[i-1].id }}" class="like_form" name="Dislike" action="" METHOD="POST" enctype="multipart/form-data">
@@ -72,9 +69,7 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script src="{{ asset('/ajax_v4.js','js') }}" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ asset('/like_v4.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/comment.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/like_home.js','js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('/moreTop5_v6.js','js') }}" type="text/javascript" charset="utf-8"></script>
-
-
 {% endblock %}
