@@ -171,6 +171,11 @@ class PhotoController extends BaseController
         $response = new Response();
 
         //Check if it's public
+
+//        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = '$id'"); //llamando al servicio
+//        $liked = $app['db']->fetchAll("SELECT images.id FROM (likes LEFT JOIN users ON users.id = likes.user_id) LEFT JOIN images ON likes.image_id = images.id WHERE likes.user_id = $id");
+
+
         $user_id = $app['session']->get('id');
         $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id='$id'"); //llamando al servicio
         //ToDo: this DB call should be done up there
