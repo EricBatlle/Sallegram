@@ -7,6 +7,7 @@ $(".comment_form").submit(function(e) {
     e.preventDefault();
     var comment = $(this).children('.comment').val();
     var image_id = $(this).children('.comment').attr('id');
+
     console.log(image_id);
     var url = "/addComment/"+image_id+"/"+comment; // the script where you handle the form input.
 
