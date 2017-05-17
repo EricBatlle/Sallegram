@@ -530,9 +530,9 @@ class UserController extends BaseController
 
             $filename->move($dir, $filename->getClientOriginalName());
 
-            /////RESIZE400x300//////
-            $this->resizeAndCopy($filename,$dir,400,300);
-            $this->resizeAndCopy($filename,$dir,100,100);
+            /////RESIZE//////
+            $filename_400 = $this->resizeAndCopy($filename,$dir,400,300);
+            $filename_100 = $this->resizeAndCopy($filename,$dir,100,100);
 
             try{
                 $app['db']->insert('images',[
@@ -544,6 +544,26 @@ class UserController extends BaseController
                         'created_at' => date('Y-m-d H:i:s')
                     ]
                 );
+                $pathMainImage = $filename->getClientOriginalName();
+                $mainImage = $app['db']->fetchAssoc("SELECT * FROM images WHERE img_path='$pathMainImage'");
+                $app['db']->insert('thumbs',[
+                        'image_id' => $mainImage['id'],
+                        'user_id' => $app['session']->get('id'),
+                        'title' => $data['Title'],
+                        'img_path' => $filename_400,
+                        'width' => 400
+                    ]
+                );
+
+                $app['db']->insert('thumbs',[
+                        'image_id' => $mainImage['id'],
+                        'user_id' => $app['session']->get('id'),
+                        'title' => $data['Title'],
+                        'img_path' => $filename_100,
+                        'width' => 100
+                        ]
+                );
+
                 $url = '/';
                 return new RedirectResponse($url);
 
@@ -570,12 +590,8 @@ class UserController extends BaseController
     }
 
     public function resizeAndCopy($filename,$dir,$nuevo_ancho,$nuevo_alto){
-        /////RESIZE400x300//////
         $imgFilename = $filename->getClientOriginalName();
         $nombreFichero = $dir.'/'.$imgFilename;
-
-/*        $nuevo_ancho = 400;
-        $nuevo_alto = 300;*/
 
         $thumb = imagecreatetruecolor($nuevo_ancho,$nuevo_alto);
         $origen = imagecreatefromjpeg($nombreFichero); //ToDo: better from string?
@@ -584,7 +600,9 @@ class UserController extends BaseController
         $height = imagesy($origen);
 
         imagecopyresized($thumb,$origen,0,0,0,0,$nuevo_ancho,$nuevo_alto,$width,$height);
-        imagejpeg($thumb,$nombreFichero.$nuevo_ancho.'x'.$nuevo_alto.'.jpeg');
+        $newNameFile = $nombreFichero.$nuevo_ancho.'x'.$nuevo_alto.'.jpeg';
+        imagejpeg($thumb,$newNameFile);
+        return $newNameFile;
     }
 
     public function allComments(Application $app, Request $request)

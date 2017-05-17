@@ -6,7 +6,7 @@
 {% block content %}
     <h2><a href = "/profile/{{ image.user_id }}">{{ user }}</a></h2>
     <h1>{{ image.title }}</h1>
-    <img src="/assets/uploads/{{ image.img_path }}" width="400" height="300">
+    <img src="/{{ thumb }}" width="400" height="300">
     <p>Days since the publication: {{ interval }}</p>
     <p>Visits: {{ image.visits }}</p>
     <p>Likes: {{ image.likes }}</p>

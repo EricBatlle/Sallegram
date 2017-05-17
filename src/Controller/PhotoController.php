@@ -173,6 +173,8 @@ class PhotoController extends BaseController
         //Check if it's public
         $user_id = $app['session']->get('id');
         $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id='$id'"); //llamando al servicio
+        //ToDo: this DB call should be done up there
+        $image_thumb = $app['db']->fetchAssoc("SELECT * FROM thumbs WHERE image_id='$id' AND width=400"); //llamando al servicio
         $like = $app['db']->fetchAssoc("SELECT * FROM likes WHERE image_id='$id' AND user_id='$user_id'");
 
         if($image['private'] == 0){ //Public
@@ -228,7 +230,8 @@ class PhotoController extends BaseController
             'image' => $image,
             'interval' => $dias,
             'comments' => $comments,
-            'like' => $like['liked']
+            'like' => $like['liked'],
+            'thumb' => $image_thumb['img_path']
         ));
         $response->setContent($content);
 
