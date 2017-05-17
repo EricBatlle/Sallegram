@@ -249,16 +249,19 @@ class PhotoController extends BaseController
             $session = $app['session']->has('id');
             //Mirar el valor de clicks de más imágenes
             $offset = 5*$clicks;
+            $id = $app['session']->get('id');
 
             //Sacar de la DB tantos comentarios de la imagen LIMIT Comentarios
-            $images = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits LIMIT 5 OFFSET $offset");
+            $images = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits DESC LIMIT 5 OFFSET $offset");
+            $liked = $app['db']->fetchAll("SELECT images.id FROM (likes LEFT JOIN users ON users.id = likes.user_id) LEFT JOIN images ON likes.image_id = images.id WHERE likes.user_id = $id ");
 
 
             //Devolverlos al javascript
             return new JsonResponse([
                 0 => $ok,
                 1 => $images,
-                2 => $session
+                2 => $session,
+                3 => $liked
             ]);
         }else{//si tiene menos de 5
             //No hacer nada y devolver un false

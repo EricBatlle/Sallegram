@@ -1,13 +1,15 @@
 {% extends "base.twig" %}
 
 {% block content %}
-    <h1>Your photos</h1>
+    <h2 class="text-center">My photos</h2>
     {% for i in 1..photos|length if photos|length > 0%}
         <div>
-            <img src="/assets/uploads/{{ photos[i-1].img_path }}">
-            <h3>Title {{ photos[i-1].title }}</h3>
-            <a href="/myphotos/remove/{{ photos[i-1].id }}" onclick="return confirm('¿Seguro que desea eliminar esta imagen?')">Remove</a>
-            <a href="/myphotos/edit/{{ photos[i-1].id }}">Edit</a>
+            <img src="/assets/uploads/{{ photos[i-1].img_path }}" class="img-responsive img-thumbnail" alt="Responsive image">
+            <h3 class="text-center">{{ photos[i-1].title }}</h3>
+            <p class="text-center">
+                <a id="edit" href="/myphotos/remove/{{ photos[i-1].id }}" onclick="return confirm('¿Seguro que desea eliminar esta imagen?')">Remove</a>
+                <a id="edit" href="/myphotos/edit/{{ photos[i-1].id }}">Edit</a>
+            </p>
         </div>
     {% endfor %}
 {% endblock %}

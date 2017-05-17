@@ -5,22 +5,26 @@
 {% endblock %}
 
 {% block content %}
-    <h1>All Comments</h1>
+    <h1 class="text-center">All Comments</h1>
     {% for i in 1..comments|length if comments|length > 0%}
-        <p> {{ comments[i-1].comment }}</p>
-{#
-        //ToDo: do form better than <a
-#}
-{#
-        <a href="/comment/remove/">Remove</a>
-#}
-        {#<form action="/comment/remove/{{ comments[i-1].id }}"  METHOD="POST" enctype="multipart/form-data">
-            {{ form_widget(form) }}
-        </form>#}
-        <a href="/comment/remove/{{ comments[i-1].id }}">Remove</a>
-        <a href="/comment/edit/{{ comments[i-1].id }}">Edit</a>
-
+        <div class=".col-md-6 .col-md-offset-3">
+            <div class="media notification">
+                <div class="media-left media-middle ">
+                <p id="mycoments"> {{ comments[i-1].comment }}</p>
+        {#
+                //ToDo: do form better than <a
+        #}
+        {#
+                <a href="/comment/remove/">Remove</a>
+        #}
+                {#<form action="/comment/remove/{{ comments[i-1].id }}"  METHOD="POST" enctype="multipart/form-data">
+                    {{ form_widget(form) }}
+                </form>#}
+                <a id="edit_coment" href="/comment/remove/{{ comments[i-1].id }}">Remove</a>
+                <a id="edit_coment" href="/comment/edit/{{ comments[i-1].id }}">Edit</a>
+                </div>
+            </div>
+        </div>
     {% endfor %}
-    <h2>Comments</h2>
 
 {% endblock %}

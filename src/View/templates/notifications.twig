@@ -3,11 +3,27 @@
 {#{% block title %}User info{% endblock %}#}
 
 {% block content %}
-    <h1> NOTIFICATIONS</h1>
+    <h1 class="text-center"> Notifications</h1>
     {% for i in 1..notifications|length if notifications|length > 0 %}
-        <img src="/assets/uploads/{{ notifications[i-1].img_path }}">
-        <p>El usuario <a href="/profile/{{ notifications[i-1].user_id }}">{{ notifications[i-1].username }}</a> te ha comentado en la imagen <a href="/photo/{{ notifications[i-1].img_id }}">{{ notifications[i-1].title }}</a></p>
-        <p><a href="/notification/remove/{{ notifications[i-1].id }}">Viewed</a></p>
+        <div class=".col-md-6 .col-md-offset-3">
+            <div class="media notification">
+                <div class="media-left media-middle ">
+                    {%  if notifications[i-1].type == 'c' %}
+                        <p class="media-heading"><img class="img-circle" src="/assets/uploads/{{ notifications[i-1].img_path }}">
+                            El usuario <a href="/profile/{{ notifications[i-1].user_id }}">{{ notifications[i-1].username }}
+                            </a> te ha comentado en la imagen <a href="/photo/{{ notifications[i-1].img_id }}">{{ notifications[i-1].title }}</a>
+                        </p>
+                    {% else %}
+                        <p class="media-heading"><img class="img-circle" src="/assets/uploads/{{ notifications[i-1].img_path }}">
+                            El usuario <a href="/profile/{{ notifications[i-1].user_id }}">{{ notifications[i-1].username }}
+                            </a> te ha dado like en la imagen <a href="/photo/{{ notifications[i-1].img_id }}">{{ notifications[i-1].title }}</a>
+                        </p>
+                    {% endif %}
+                    <p><a id="viewed" href="/notification/remove/{{ notifications[i-1].id }}">Viewed</a></p>
+                </div>
+            </div>
+        </div>
+
     {% endfor %}
 
 {% endblock %}

@@ -3,13 +3,11 @@
 {#{% block title %}User info{% endblock %}#}
 
 {% block content %}
-    <h1> {{ profile.username }} PROFILE</h1>
-    <p>Images {{ photos|length }}</p>
-    <p>Comments {{ comments|length }}</p>
+    <h1 class="text-center"> {{ profile.username }} Profile</h1>
+    <p class="text-center">{{ count|length }} images      |      {{ comments|length }} comments</p>
 
-    <h1>Photos</h1>
     <form action="/profile/{{ profile.id }}" method = "POST">
-        <select name="options" class="orderSort">
+        <select name="options" class="comment" id="selector">
             {% if option == 1 %}
                 <option value="1" selected >Creation date</option>
                 <option value="2">Likes</option>
@@ -33,15 +31,15 @@
             {% endif %}
 
         </select>
-        <input type="submit" value="Send">
+        <input type="submit" value="Send" id="orden">
     </form>
     {% for i in 1..photos|length if photos|length > 0%}
-            <img src="/assets/uploads/{{ photos[i-1].img_path }}">
-            <h3>Title <a href="/photo/{{ photos[i-1].id }}">{{ photos[i-1].title }}</a></h3>
+        <img src="/assets/uploads/{{ photos[i-1].img_path }}" class="img-responsive img-thumbnail" alt="Responsive image">
+        <p class="text-center"><a href="/photo/{{ photos[i-1].id }}">{{ photos[i-1].title }}</a></p>
     {% endfor %}
     {% for i in 1..photos1|length if photos1|length > 0%}
-        <img src="/assets/uploads/{{ photos1[i-1].img_path }}">
-        <h3>Title <a href="">{{ photos1[i-1].title }}</a></h3>
+        <img src="/assets/uploads/{{ photos1[i-1].img_path }}" class="img-responsive img-thumbnail" alt="Responsive image">
+        <p class="text-center"><a href="">{{ photos1[i-1].title }}</a></p>
     {% endfor %}
 
 {% endblock %}

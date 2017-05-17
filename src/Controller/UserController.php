@@ -58,14 +58,17 @@ class UserController extends BaseController
                 case 1:
                     $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
                     $photos1 = NULL;
+                    $countphotos = $photos;
                     break;
 
                 case 2:
                     $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY likes DESC");
                     $photos1 = NULL;
+                    $countphotos = $photos;
                     break;
 
                 case 3:
+                    $countphotos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id");
                     $photos = $app['db']->fetchAll("SELECT images.id, images.title, images.img_path, count(comments.id) FROM images, comments WHERE images.id = image_id and images.user_id = $id GROUP BY image_id ORDER BY count(comments.id) DESC");
                     $photos1 = $app['db']->fetchAll("SELECT * FROM images WHERE images.user_id = $id and id NOT IN (SELECT image_id FROM comments, images WHERE image_id = images.id)");
                     break;
@@ -73,10 +76,12 @@ class UserController extends BaseController
                 case 4:
                     $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY visits DESC");
                     $photos1 = NULL;
+                    $countphotos = $photos;
             }
         } else {
             $photos = $app['db']->fetchAll("SELECT * FROM images WHERE user_id = $id ORDER BY created_at ASC");
             $photos1 = NULL;
+            $countphotos = $photos;
             $_POST['options'] = '1';
         }
 
@@ -89,6 +94,7 @@ class UserController extends BaseController
             'profile' => $profile,
             'photos' => $photos,
             'photos1' => $photos1,
+            'count' => $countphotos,
             'comments' => $userComments,
             'option' => $_POST['options']
         ));
@@ -418,12 +424,12 @@ class UserController extends BaseController
         $response = new Response();
         $match = true;
         $data = array(
-            'username-email' => 'Yourname',
+            'user-email' => 'Yourname',
         );
 
         /** @var Form $form */
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
-            ->add('username-email', TextType::class, array(
+            ->add('user-email', TextType::class, array(
                 'constraints' => array(
                     'constraints' => new CorrectLogin(
                         array(
@@ -449,7 +455,7 @@ class UserController extends BaseController
         if($form->isValid()){
             $data = $form->getData();
             try{
-                $login = $data['username-email'];
+                $login = $data['user-email'];
                 $pass = md5($data['password']);
 
                 $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");

@@ -3,11 +3,18 @@
 {#{% block title %}User info{% endblock %}#}
 
 {% block content %}
-    <h1>PROFILE</h1>
-    <form action="/users/get" METHOD="POST" enctype="multipart/form-data">
-        <img id="thumbnail" src="/assets/uploads/{{ photo }}" width="200" height="200"  />
-        {{ form_widget(form, {'attr': {'id': 'src'}} ) }}
-    </form>
+    <h1 class="text-center">Profile</h1>
+    <div class="login-container">
+        <div class="media notification">
+            <div class="media-left media-middle ">
+                <form class="navbar-form1" action="/users/get" METHOD="POST" enctype="multipart/form-data">
+                    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+                    {{ form_widget(form, {'attr': {'id': 'src'}} ) }}
+                    <img id="thumbnail" src="/assets/uploads/{{ photo }}"/>
+                </form>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 

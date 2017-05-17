@@ -30,7 +30,7 @@ $app->get('/log', 'SilexApp\Controller\BaseController::logSession'); //Logeja, s
 $app->match('/users/get', 'SilexApp\Controller\UserController::editProfile')->before($before);
 $app->match('/users/register', 'SilexApp\Controller\UserController::registerUser');
 $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
-$app->match('/profile/{id}', 'SilexApp\Controller\UserController::publicProfile')->before($before);
+$app->match('/profile/{id}', 'SilexApp\Controller\UserController::publicProfile');
 $app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos')->before($before);
 $app->match('/allComments', 'SilexApp\Controller\UserController::allComments')->before($before);
 $app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
@@ -52,6 +52,6 @@ $app->match('/add/top5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreT
 $app->match('/photo/add/last5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreLast5');
 
 //Likes - Notificatinos
-$app->match('/like/{id_image}/{id_user}', 'SilexApp\Controller\LikeController::like');
+$app->match('/like/{status}/{id_image}', 'SilexApp\Controller\LikeController::like')->before($before);
 $app->match('/notifications', 'SilexApp\Controller\LikeController::showNotifications')->before($before);
 $app->match('/notification/remove/{id}', 'SilexApp\Controller\LikeController::removeNotification')->before($before);
