@@ -216,4 +216,23 @@ class CommentController extends BaseController
         }
 
     }
+
+    public function allComments(Application $app, Request $request)
+    {
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
+
+        //Get all user comments
+        $idUser = $app['session']->get('id');
+        $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE user_id='$idUser'");
+
+        $content = $app['twig']->render('/allComments.twig',array(
+            //'form'=> $form->createView(),
+            'comments' => $userComments
+        ));
+        $response->setContent($content);
+
+        return $response;
+    }
+
 }

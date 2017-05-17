@@ -597,39 +597,6 @@ class UserController extends BaseController
 
         return $response;
     }
-/*
-    public function resizeAndCopy($filename,$dir,$nuevo_ancho,$nuevo_alto){
-        $imgFilename = $filename->getClientOriginalName();
-        $nombreFichero = $dir.'/'.$imgFilename;
 
-        $thumb = imagecreatetruecolor($nuevo_ancho,$nuevo_alto);
-        $origen = imagecreatefromjpeg($nombreFichero); //ToDo: better from string?
-
-        $width = imagesx($origen);
-        $height = imagesy($origen);
-
-        imagecopyresized($thumb,$origen,0,0,0,0,$nuevo_ancho,$nuevo_alto,$width,$height);
-        $newNameFile = $nombreFichero.$nuevo_ancho.'x'.$nuevo_alto.'.jpeg';
-        imagejpeg($thumb,$newNameFile);
-        return $newNameFile;
-    }*/
-
-    public function allComments(Application $app, Request $request)
-    {
-        $response = new Response();
-        $response->setStatusCode(Response::HTTP_OK);
-
-        //Get all user comments
-        $idUser = $app['session']->get('id');
-        $userComments = $app['db']->fetchAll("SELECT * FROM comments WHERE user_id='$idUser'");
-
-        $content = $app['twig']->render('/allComments.twig',array(
-            //'form'=> $form->createView(),
-            'comments' => $userComments
-        ));
-        $response->setContent($content);
-
-        return $response;
-    }
 
 }

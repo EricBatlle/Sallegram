@@ -32,24 +32,23 @@ $app->match('/users/register', 'SilexApp\Controller\UserController::registerUser
 $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
 $app->match('/profile/{id}', 'SilexApp\Controller\UserController::publicProfile');
 $app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos')->before($before);
-$app->match('/allComments', 'SilexApp\Controller\UserController::allComments')->before($before);
 $app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
 
 $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailValidation');
 
 //COMMENTS
 $app->match('/addComment/{id}/{comment}', 'SilexApp\Controller\CommentController::addComment')->before($before);
-//ToDo: change match to post
 $app->match('/comment/remove/{id}', 'SilexApp\Controller\CommentController::removeComment')->before($before);
 $app->match('/comment/edit/{id}', 'SilexApp\Controller\CommentController::editComment')->before($before);
 $app->match('/comment/add/{image_id}/{clicks}', 'SilexApp\Controller\CommentController::addMoreComments');
+$app->match('/allComments', 'SilexApp\Controller\CommentController::allComments')->before($before);
 
 //Photos/Images
 $app->match('/myphotos/remove/{id}', 'SilexApp\Controller\PhotoController::removePhoto')->before($before);
 $app->match('/myphotos/edit/{id}', 'SilexApp\Controller\PhotoController::editPhoto')->before($before);
 $app->match('/photo/{id}', 'SilexApp\Controller\PhotoController::viewPhoto');
 $app->match('/add/top5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreTop5');
-$app->match('/photo/add/last5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreLast5');
+$app->match('/add/last5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreLast5');
 
 //Likes - Notificatinos
 $app->match('/like/{status}/{id_image}', 'SilexApp\Controller\LikeController::like')->before($before);

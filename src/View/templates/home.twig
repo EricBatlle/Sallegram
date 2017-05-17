@@ -38,8 +38,6 @@
         </div>
 
         {% if app.session.has('id') %}
-            {#ToDo: Comment is now not saved#}
-            {#<form action="/addComment/{{ app.session.get('id') }}" METHOD="POST" enctype="multipart/form-data">#}
             <form  id="{{ top5[i-1].id }}" class="comment_form" action="" METHOD="POST" enctype="multipart/form-data">
                 <textarea id="{{ top5[i-1].id }}" name="comment" class="comment" rows="3"></textarea>
                 <input class="boton_home" type="submit">
@@ -48,10 +46,54 @@
     {% endfor %}
     </div>
     <form  id="0" class="more_top5_form"  action="" METHOD="POST" enctype="multipart/form-data">
-        {#<input id="{{ image.id }}" class="more_comment_input" type="submit" value="Más comentarios">#}
         <input id="" class="more_top5_input" type="submit" value="Más imágenes">
     </form>
+     {#**************LAST 5*****************#}
+    <div class=".col-md-6 .col-md-offset-3" id="last5">
+        <h2 class="text-center">Last5</h2>
 
+        {% for i in 1..last5|length if last5|length > 0%}
+            {% set foo = 0 %}
+            <div>
+                <img src="assets/uploads/{{ last5[i-1].img_path }}" class="img-responsive img-thumbnail">
+                <p class="text-center">
+                    <a href="/profile/{{ last5[i-1].user_id }}">{{ last5[i-1].username }}:</a>
+                    <a href="/photo/{{ last5[i-1].id }}">{{ last5[i-1].title }}</a>
+                </p>
+                <p class="text-center">{{ last5[i-1].likes }} likes    |    {{ last5[i-1].visits }} visits</p>
+                <p class="text-center" >{{ last5[i-1].created_at }}</p>
+                {% if app.session.has('id') %}
+                    {% for j in 1..liked|length if liked|length > 0 and foo == 0 %}
+                        {% if last5[i-1].id == liked[j-1].id %}
+                            <form id="{{ last5[i-1].id }}" class="like_form" name="Dislike" action="" METHOD="POST" enctype="multipart/form-data">
+                                <input id="{{ last5[i-1].id }}" class="boton_home" type="submit" value="Dislike">
+                                {% set foo = 1 %}
+                            </form>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if foo == 0 %}
+                        <form id="{{ last5[i-1].id }}" class="like_form" name="Like" action="" METHOD="POST" enctype="multipart/form-data">
+                            <input id="{{ last5[i-1].id }}" class="boton_home" type="submit" value="Like">
+                        </form>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+
+            {% if app.session.has('id') %}
+                <form  id="{{ last5[i-1].id }}" class="comment_form" action="" METHOD="POST" enctype="multipart/form-data">
+                    <textarea id="{{ last5[i-1].id }}" name="comment" class="comment" rows="3"></textarea>
+                    <input class="boton_home" type="submit">
+                </form>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <form  id="0" class="more_last5_form"  action="" METHOD="POST" enctype="multipart/form-data">
+        <input id="" class="more_last5_input" type="submit" value="Más imágenes">
+    </form>
+
+    {#
     <div>
         <h1 class="text-center">Last5</h1>
         {% for i in 1..last5|length if last5|length > 0%}
@@ -64,7 +106,7 @@
                 <p class="text-center">Visits {{ last5[i-1].visits }}</p>
             </div>
         {% endfor %}
-    </div>
+    </div>#}
 {% endblock %}
 
 {% block scripts %}
@@ -72,4 +114,5 @@
     <script src="{{ asset('/comment.js','js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('/like_home.js','js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('/moreTop5_v6.js','js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('/moreLast5.js','js') }}" type="text/javascript" charset="utf-8"></script>
 {% endblock %}

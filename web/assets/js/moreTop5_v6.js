@@ -22,7 +22,6 @@ $(".more_top5_form").submit(function(e) {
             var array = $.map(data, function(value, index) {
                 return [value];
             });
-            console.log(array); // show response from the php script.
             //array[2] = true if logged
             for(var i = 0; i < array[1].length;i++){
                 var img = $(document.createElement("img"));
@@ -54,8 +53,6 @@ $(".more_top5_form").submit(function(e) {
                     form_like.attr('class','like_form');
                     form_like.attr('METHOD','POST');
                     form_like.attr('enctype','multipart/form-data');
-                console.log(array[1][i].id)
-                console.log(array[2])
                 if(isLiked(array[1][i].id,array[3])){
                     input.attr('value','Dislike');
                     form_like.attr('name','Dislike');
@@ -64,7 +61,6 @@ $(".more_top5_form").submit(function(e) {
                     form_like.attr('name','Like');
                 }
                     form_like.submit(function(e) {
-                        console.log('ieeeep');
                         e.preventDefault();
 
                         //Check if value is Like or Dislike
@@ -73,7 +69,6 @@ $(".more_top5_form").submit(function(e) {
 
                         //Cojer el mismo id del form para encontrar el input
                         var input_value = $('input[id='+form_id+']').attr('Value');
-                        console.log(input_value);
                         var url = "/like/"+input_value+"/"+form_id; // the script where you handle the form input.
 
                         $.ajax({
@@ -87,7 +82,6 @@ $(".more_top5_form").submit(function(e) {
                                     return [value];
                                 });
 
-                                console.log(array); // show response from the php script.
 
                                 //Si estaba en like me devuelve un dislike
                                 //Dislike = 1
@@ -120,11 +114,9 @@ $(".more_top5_form").submit(function(e) {
                         form_comment.attr('enctype','multipart/form-data');
                         form_comment.attr('action','');
                         form_comment.submit(function(e) {
-                            console.log('envio comment')
                             e.preventDefault();
                             var comment = $(this).children('.comment').val();
                             var image_id = $(this).children('.comment').attr('id');
-                            console.log(image_id);
                             var url = "/addComment/" + image_id + "/" + comment; // the script where you handle the form input.
 
                             $.ajax({
@@ -136,7 +128,6 @@ $(".more_top5_form").submit(function(e) {
                                     var array = $.map(data, function (value, index) {
                                         return [value];
                                     });
-                                    console.log(array); // show response from the php script.
                                 },
                                 error: function (error) {
                                     console.log(error);
@@ -150,11 +141,9 @@ $(".more_top5_form").submit(function(e) {
                     var input = $(document.createElement(("input")));
                         input.attr('type','submit');
                         input.submit(function(e) {
-                            console.log('envio comment')
                             e.preventDefault();
                             var comment = $(this).children('.comment').val();
                             var image_id = $(this).children('.comment').attr('id');
-                            console.log(image_id);
                             var url = "/addComment/"+image_id+"/"+comment; // the script where you handle the form input.
 
                             $.ajax({
@@ -167,7 +156,6 @@ $(".more_top5_form").submit(function(e) {
                                     var array = $.map(data, function(value, index) {
                                         return [value];
                                     });
-                                    console.log(array); // show response from the php script.
                                 },
                                 error: function(error)
                                 {
@@ -190,7 +178,6 @@ $(".more_top5_form").submit(function(e) {
                 $("#top5").after(username);
                 $("#top5").after(title);
                 $("#top5").after(img);
-
             }
             //Append
         },

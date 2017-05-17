@@ -279,8 +279,39 @@ class PhotoController extends BaseController
 
     }
 
-    public function addMoreLast5(Application $app, Request $request, $image_id, $clicks)
+    public function addMoreLast5(Application $app, Request $request, $clicks)
     {
+        $ok = false;
+
+        //Mirar si HAY más imagenes de 5
+        $match = $app['db']->fetchAll("SELECT images.*, users.username FROM images, users WHERE user_id = users.id ORDER BY visits");
+        $offset = 5*$clicks;
+
+        if(count($match) > $offset){
+            $ok = true;
+            $session = $app['session']->has('id');
+            //Mirar el valor de clicks de más imágenes
+            $offset = 5*$clicks;
+            $id = $app['session']->get('id');
+
+            //Sacar de la DB tantos comentarios de la imagen LIMIT Comentarios
+            $images = $app['db']->fetchAll("SELECT images.*, users.username  FROM images, users WHERE user_id = users.id ORDER BY created_at DESC LIMIT 5 OFFSET $offset");
+            $liked = $app['db']->fetchAll("SELECT images.id FROM (likes LEFT JOIN users ON users.id = likes.user_id) LEFT JOIN images ON likes.image_id = images.id WHERE likes.user_id = $id ");
+
+
+            //Devolverlos al javascript
+            return new JsonResponse([
+                0 => $ok,
+                1 => $images,
+                2 => $session,
+                3 => $liked
+            ]);
+        }else{//si tiene menos de 5
+            //No hacer nada y devolver un false
+            return new JsonResponse([
+                0 => $ok
+            ]);
+        }
 
     }
 
