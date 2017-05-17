@@ -210,7 +210,7 @@ button, #form_submit{
 
 }
 
-.boton_home{
+.boton_home, .like_input{
     height: 40px;
     width: 80px;
     margin-left: 47%;
