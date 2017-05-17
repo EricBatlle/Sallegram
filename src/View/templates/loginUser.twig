@@ -22,7 +22,9 @@
         </div>
     </div>
     {% if logged == false %}
-        <h3>Login and Password not match</h3>
+        <div class="alert alert-warning text-center">
+            <strong>Warning!</strong> Be sure to activate the account or enter the correct username or password
+        </div>
     {% endif %}
 
 {% endblock %}

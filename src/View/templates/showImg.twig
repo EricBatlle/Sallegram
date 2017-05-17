@@ -24,7 +24,7 @@
             {#<form action="/addComment/{{ app.session.get('id') }}" METHOD="POST" enctype="multipart/form-data">#}
             <form  id="{{ image.id }}" class="comment_form" action="" METHOD="POST" enctype="multipart/form-data">
                 <textarea id="{{ image.id }}" name="comment" class="comment"></textarea>
-                <input type="submit">
+                <input  class="boton_home" type="submit">
             </form>
         {% endif %}
     <h3 class="text-center">Comments</h3>
