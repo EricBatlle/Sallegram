@@ -4,17 +4,17 @@
 
 {% block head %}
     {{ parent() }}
-    <style type="text/css">
-        h1{ text-transform: uppercase;}
-    </style>
 {% endblock %}
 
 {% block content %}
-    <h1>Add Image </h1>
-    <form class="form_filetype" action="/addImg" METHOD="POST" enctype="multipart/form-data">
-        {{ form_widget(form, {'attr': {'id': 'src'}}) }}
-        <img id="thumbnail" src="#" width="200" height="200"  />
-    </form>
+    <h1 class="text-center">Add Image </h1>
+    <div class="login-container">
+        <form class="form_filetype" action="/addImg" METHOD="POST" enctype="multipart/form-data">
+            {{ form_widget(form, {'attr': {'id': 'src'}}) }}
+            <img id="thumbnail" src="#" class="img-responsive"/>
+        </form>
+    </div>
+
 
     {% if ok == false %}
         <h3>Something goes wrong</h3>

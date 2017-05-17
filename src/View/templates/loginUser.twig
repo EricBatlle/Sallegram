@@ -10,10 +10,17 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Login </h1>
-    <form action="/users/login" METHOD="POST">
-        {{ form_widget(form) }}
-    </form>
+    <h1 class="text-center">Login </h1>
+
+    <div class="login-container">
+        <div class="media notification">
+            <div class="media-left media-middle ">
+                <form class="navbar-form login" action="/users/login" METHOD="POST">
+                    {{ form_widget(form) }}
+                </form>
+            </div>
+        </div>
+    </div>
     {% if logged == false %}
         <h3>Login and Password not match</h3>
     {% endif %}

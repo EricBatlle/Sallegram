@@ -16,7 +16,8 @@
         "symfony/validator": "^3.2",
         "symfony/config": "^3.2",
         "symfony/security": "^3.2",
-        "imagine/imagine": "^0.7.0"
+        "imagine/imagine": "^0.7.0",
+        "twbs/bootstrap": "^3.3"
     },
     "autoload": {
         "psr-4":{

@@ -2,36 +2,42 @@
 <html>
     <head>
         {%  block styles %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap.min.css','css') }}">
             <link rel="stylesheet" type="text/css" href="{{ asset('style.css','css') }}">
+            <link rel="icon" href="{{ asset('/assets/img/favicon - copia.ico') }}">
         {% endblock %}
 
         {% block title %}
             <title> PWGRAM </title>
         {% endblock %}
 
+
+
     </head>
     <body>
-        <div id="header">
-            {% block header %}
-                <ul>
-                    {% block links %}
-                    <a href="/">Home</a>
-                    {% endblock %}
-                    {% if ( app.session.has('id') ) %}
-                        <a href="/unlog">Logout</a>
-                        <a href="/addImg">Add Image</a>
-                        <a href="/users/photos">My photos</a>
-                        <a href="/allComments">All Comments</a>
-                        <a href="/notifications">Notifications</a>
-                        <img src="/assets/uploads/{{ app.session.get('img') }}" width="100px" height="100px">
-                        <a href="/users/get">{{ app.session.get('name') }}</a>
-                    {% else  %}
-                        <a href="/users/login">Login</a>
-                        <a href="/users/register">Register</a>
-                    {% endif %}
-                </ul>
-            {% endblock %}
-        </div>
+        <nav class="navbar-default navbar-fixed-top">
+            <div class="container" id="header" >
+                {% block header %}
+                    <ul class="nav nav-tabs">
+                        {% block links %}
+                        <li role="presentation"><a href="/">Home</a>
+                        {% endblock %}
+                        {% if ( app.session.has('id') ) %}
+                            <li role="presentation"><a href="/unlog">Logout</a>
+                            <li role="presentation"><a href="/addImg">Add Image</a>
+                            <li role="presentation"><a href="/users/photos">My photos</a>
+                            <li role="presentation"><a href="/allComments">All Comments</a>
+                            <li role="presentation"><a href="/notifications">Notifications</a>
+                            <li role="presentation"><a href="/users/get"><img id="profile" src="/assets/uploads/{{ app.session.get('img') }}">{{ app.session.get('name') }}</a>
+                        {% else  %}
+                            <li role="presentation"> <a href="/users/login">Login</a>
+                            <li role="presentation"> <a href="/users/register">Register</a>
+                        {% endif %}
+                    </ul>
+                {% endblock %}
+            </div>
+        </nav>
+
 
         <div id="content">
             {% block content %}
@@ -39,11 +45,14 @@
             {% endblock %}
         </div>
 
-        <div id="footer">
-            {% block footer %}
-                <p>PWGRAM - Eric Batlle Clavero · Nuria Gómez Piedrafita</p>
-                <p>Copyright 2017</p> {#{{ app.name }}#}
-            {% endblock %}
+
+        <div id="footer" class="container">
+            <nav class="navbar-default">
+                {% block footer %}
+                    <p id="footer" class="text-center">PWGRAM - Eric Batlle Clavero · Nuria Gómez Piedrafita</p>
+                    {#<p id="footer" class="text-center">Copyright 2017</p> #}{#{{ app.name }}#}
+                {% endblock %}
+            </nav>
         </div>
 
         {% block scripts %}

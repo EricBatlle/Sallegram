@@ -8,14 +8,16 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Edit Image </h1>
-    <form action="/myphotos/edit/{{ photos.id }}" METHOD="POST" enctype="multipart/form-data">
+    <h1 class="text-center">Edit Image </h1>
+    <div class="login-container">
+    <form class="navbar-form" action="/myphotos/edit/{{ photos.id }}" METHOD="POST" enctype="multipart/form-data">
         <img id="thumbnail" src="/assets/uploads/{{ photos.img_path }}" width="200" height="200"  />
         {{ form_widget(form, {'attr': {'id': 'src'}}) }}
     </form>
+    </div>
 
     {% if ok == false %}
-        <h3>Something goes wrong</h3>
+        <h3 class="text-center">Something goes wrong</h3>
     {% endif %}
 
 {% endblock %}
