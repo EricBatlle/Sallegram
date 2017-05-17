@@ -11,7 +11,7 @@
     {% for i in 1..top5|length if top5|length > 0%}
         {% set foo = 0 %}
         <div>
-            <img src="assets/uploads/{{ top5[i-1].img_path }}" class="img-responsive img-thumbnail" alt="Responsive image">
+            <img src="assets/uploads/{{ top5[i-1].img_path }}" class="img-responsive img-thumbnail">
             <p class="text-center">
                 <a href="/profile/{{ top5[i-1].user_id }}">{{ top5[i-1].username }}:</a>
                 <a href="/photo/{{ top5[i-1].id }}">{{ top5[i-1].title }}</a>
@@ -56,7 +56,7 @@
         <h1 class="text-center">Last5</h1>
         {% for i in 1..last5|length if last5|length > 0%}
             <div>
-                <img src="assets/uploads/{{ last5[i-1].img_path }}" class="img-responsive" alt="Responsive image">
+                <img src="assets/uploads/{{ last5[i-1].img_path }}" class="img-responsive">
                 <p class="text-center">Title <a href="/photo/{{ last5[i-1].id }}">{{ last5[i-1].title }}</a></p>
                 <p class="text-center">UserName <a href="/profile/{{ last5[i-1].user_id }}">{{ last5[i-1].username }}</a></p>
                 <p class="text-center">Date {{ last5[i-1].created_at }}</p>

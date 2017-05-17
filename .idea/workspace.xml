@@ -5,40 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb21f3f1-d8e3-40b4-a9bd-9cc1e96fb6cc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/assets/img/favicon - copia.ico" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/assets/form_div_layout.html.twig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/assets/js/moreTop5_v6.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web/assets/js/moreTop5_v2.js" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/web/assets/js/ajax_v3.js" afterPath="$PROJECT_DIR$/web/assets/js/ajax_v4.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/web/assets/js/like_v2.js" afterPath="$PROJECT_DIR$/web/assets/js/like_v4.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/routes.php" afterPath="$PROJECT_DIR$/app/config/routes.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Controller/BaseController.php" afterPath="$PROJECT_DIR$/src/Controller/BaseController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Controller/LikeController.php" afterPath="$PROJECT_DIR$/src/Controller/LikeController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Controller/PhotoController.php" afterPath="$PROJECT_DIR$/src/Controller/PhotoController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Controller/UserController.php" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/addImg.twig" afterPath="$PROJECT_DIR$/src/View/templates/addImg.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/addUser.twig" afterPath="$PROJECT_DIR$/src/View/templates/addUser.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/allComments.twig" afterPath="$PROJECT_DIR$/src/View/templates/allComments.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/base.twig" afterPath="$PROJECT_DIR$/src/View/templates/base.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/editComment.twig" afterPath="$PROJECT_DIR$/src/View/templates/editComment.twig" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/editImg.twig" afterPath="$PROJECT_DIR$/src/View/templates/editImg.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/emailSend.twig" afterPath="$PROJECT_DIR$/src/View/templates/emailSend.twig" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/home.twig" afterPath="$PROJECT_DIR$/src/View/templates/home.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/loginUser.twig" afterPath="$PROJECT_DIR$/src/View/templates/loginUser.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/notifications.twig" afterPath="$PROJECT_DIR$/src/View/templates/notifications.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/publicProfile.twig" afterPath="$PROJECT_DIR$/src/View/templates/publicProfile.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/showImg.twig" afterPath="$PROJECT_DIR$/src/View/templates/showImg.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/showUser.twig" afterPath="$PROJECT_DIR$/src/View/templates/showUser.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View/templates/userPhotos.twig" afterPath="$PROJECT_DIR$/src/View/templates/userPhotos.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/assets/js/moreComments_v2.js" afterPath="$PROJECT_DIR$/web/assets/js/moreComments_v2.js" />
-    </list>
-    <list id="5f899614-f86a-4250-8997-86127b9b65d9" name="Failed commit: Default" comment="-">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/assets/css/bootstrap.min.css" afterPath="$PROJECT_DIR$/web/assets/css/bootstrap.min.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/assets/css/style.css" afterPath="$PROJECT_DIR$/web/assets/css/style.css" />
     </list>
+    <list id="5f899614-f86a-4250-8997-86127b9b65d9" name="Failed commit: Default" comment="-" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <file path="$PROJECT_DIR$/web/assets/css/style.css" ignored="false" />
-    <file path="$PROJECT_DIR$/web/assets/css/bootstrap.min.css" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,8 +28,28 @@
       <file leaf-file-name="home.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/templates/home.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="7" lean-forward="false" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
+            <state relative-caret-position="39">
+              <caret line="13" column="99" lean-forward="false" selection-start-line="13" selection-start-column="99" selection-end-line="13" selection-end-column="99" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="showUser.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/templates/showUser.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="14" lean-forward="false" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="userPhotos.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/templates/userPhotos.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="7" lean-forward="false" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -64,7 +58,7 @@
       <file leaf-file-name="addImg.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/templates/addImg.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
+            <state relative-caret-position="153">
               <caret line="9" column="27" lean-forward="false" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="27" />
               <folding />
             </state>
@@ -74,18 +68,8 @@
       <file leaf-file-name="notifications.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/templates/notifications.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="26" column="12" lean-forward="true" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="editImg.twig" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/View/templates/editImg.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="10" lean-forward="false" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+            <state relative-caret-position="325">
+              <caret line="26" column="12" lean-forward="false" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -114,50 +98,28 @@
       <file leaf-file-name="UserController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Controller/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="169" column="68" lean-forward="false" selection-start-line="169" selection-start-column="68" selection-end-line="169" selection-end-column="68" />
-              <folding>
-                <element signature="e#1796#4316#0#PHP" expanded="false" />
-                <element signature="e#4322#4803#0#PHP" expanded="false" />
-                <element signature="e#4809#6358#0#PHP" expanded="false" />
-                <element signature="e#6364#11374#0#PHP" expanded="false" />
-                <marker date="1495016440545" expanded="true" signature="2181:2245" ph="SELECT * FRO... images" />
-                <marker date="1495016440545" expanded="true" signature="2434:2494" ph="SELECT * FRO... images" />
-                <marker date="1495016440545" expanded="true" signature="2688:2725" ph="SELECT * FRO... images" />
-                <marker date="1495016440545" expanded="true" signature="2688:2728" ph="SELECT * FRO... images" />
-                <marker date="1495016440545" expanded="true" signature="2784:2976" ph="SELECT image... images" />
-                <marker date="1495016440545" expanded="true" signature="3033:3161" ph="SELECT * FRO... images" />
-                <marker date="1495016440545" expanded="true" signature="3096:3160" ph="SELECT image... comments" />
-                <marker date="1495016440545" expanded="true" signature="3269:3330" ph="SELECT * FRO... images" />
-                <marker date="1495016440545" expanded="true" signature="3490:3554" ph="SELECT * FRO... images" />
-                <marker date="1495016440545" expanded="true" signature="3714:3745" ph="SELECT * FRO... users" />
-                <marker date="1495016440545" expanded="true" signature="3799:3878" ph="SELECT * FRO... comments" />
-                <marker date="1495016440545" expanded="true" signature="4465:4532" ph="SELECT * FRO... images" />
-                <marker date="1495016440545" expanded="true" signature="5043:5075" ph="SELECT * FRO... users" />
-                <marker date="1495016440545" expanded="true" signature="6488:6520" ph="SELECT * FRO... users" />
-                <marker date="1495016440545" expanded="true" signature="14898:14943" ph="SELECT id FR... users" />
-                <marker date="1495016440545" expanded="true" signature="17459:17550" ph="SELECT * FRO... users" />
-                <marker date="1495016440545" expanded="true" signature="22523:22569" ph="SELECT * FRO... comments" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="emailSend.twig" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/templates/emailSend.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="26" lean-forward="false" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="36" />
+            <state relative-caret-position="2703">
+              <caret line="167" column="68" lean-forward="false" selection-start-line="167" selection-start-column="68" selection-end-line="167" selection-end-column="68" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/assets/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2567">
-              <caret line="151" column="20" lean-forward="false" selection-start-line="151" selection-start-column="20" selection-end-line="151" selection-end-column="20" />
+            <state relative-caret-position="279">
+              <caret line="274" column="17" lean-forward="true" selection-start-line="274" selection-start-column="17" selection-end-line="274" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="editImg.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/templates/editImg.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="15" lean-forward="true" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -167,7 +129,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>users/a</find>
       <find>addUser</find>
       <find>logsession</find>
       <find>logsessi</find>
@@ -197,6 +158,7 @@
       <find>alert-link</find>
       <find>form</find>
       <find>h2</find>
+      <find>more_t</find>
     </findStrings>
     <dirStrings>
       <dir>C:\xampp\htdocs\ProjectesWeb\PW_GRUP14</dir>
@@ -231,20 +193,20 @@
         <option value="$PROJECT_DIR$/src/View/templates/showImg.twig" />
         <option value="$PROJECT_DIR$/src/View/templates/form_div_layout.html.twig" />
         <option value="$PROJECT_DIR$/src/Controller/UserController.php" />
-        <option value="$PROJECT_DIR$/src/View/templates/base.twig" />
         <option value="$PROJECT_DIR$/src/View/templates/addUser.twig" />
         <option value="$PROJECT_DIR$/src/View/templates/loginUser.twig" />
         <option value="$PROJECT_DIR$/src/View/templates/publicProfile.twig" />
         <option value="$PROJECT_DIR$/src/View/templates/emailSend.twig" />
         <option value="$PROJECT_DIR$/web/assets/css/bootstrap.min.css" />
         <option value="$PROJECT_DIR$/src/View/templates/showUser.twig" />
-        <option value="$PROJECT_DIR$/src/View/templates/home.twig" />
-        <option value="$PROJECT_DIR$/web/assets/css/style.css" />
         <option value="$PROJECT_DIR$/src/View/templates/addImg.twig" />
         <option value="$PROJECT_DIR$/src/View/templates/userPhotos.twig" />
         <option value="$PROJECT_DIR$/src/View/templates/notifications.twig" />
-        <option value="$PROJECT_DIR$/src/View/templates/editImg.twig" />
         <option value="$PROJECT_DIR$/src/View/templates/editComment.twig" />
+        <option value="$PROJECT_DIR$/src/View/templates/base.twig" />
+        <option value="$PROJECT_DIR$/src/View/templates/home.twig" />
+        <option value="$PROJECT_DIR$/src/View/templates/editImg.twig" />
+        <option value="$PROJECT_DIR$/web/assets/css/style.css" />
       </list>
     </option>
   </component>
@@ -510,8 +472,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -621,7 +583,8 @@
       <workItem from="1494950912188" duration="10820000" />
       <workItem from="1494971197796" duration="17811000" />
       <workItem from="1495012652006" duration="14781000" />
-      <workItem from="1495037627987" duration="1203000" />
+      <workItem from="1495037627987" duration="1670000" />
+      <workItem from="1495041350711" duration="4280000" />
     </task>
     <task id="LOCAL-00001" summary="Ahora funchiona">
       <created>1493749734317</created>
@@ -791,11 +754,18 @@
       <option name="project" value="LOCAL" />
       <updated>1494972392109</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="css added">
+      <created>1495043099428</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1495043099428</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="221809000" />
+    <option name="totallyTimeSpent" value="226556000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -852,7 +822,8 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;src/Controller/LikeController.php&#10;#&#9;src/View/templates/home.twig&#10;#&#9;web/assets/js/like.js&#10;#&#9;web/assets/js/like_v2.js&#10;#&#9;web/assets/js/like_v4.js&#10;" />
     <MESSAGE value="-" />
     <MESSAGE value="css done" />
-    <option name="LAST_COMMIT_MESSAGE" value="css done" />
+    <MESSAGE value="css added" />
+    <option name="LAST_COMMIT_MESSAGE" value="css added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -861,7 +832,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Model/Entity/User.php" />
     <entry file="file://$PROJECT_DIR$/web/assets/uploads/crimson-1.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -951,7 +921,6 @@
           <folding>
             <element signature="e#121#134#0#PHP" expanded="true" />
             <element signature="e#1811#2490#0#PHP" expanded="false" />
-            <element signature="e#5622#8170#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1057,9 +1026,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-102">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1067,12 +1033,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-32">
           <caret line="60" column="0" lean-forward="true" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding>
-            <marker date="1494972939089" expanded="true" signature="2103:2135" ph="SELECT * FRO... images" />
-            <marker date="1494972939089" expanded="true" signature="2310:2369" ph="DELETE FROM " />
-            <marker date="1494972939089" expanded="true" signature="3751:3788" ph="DELETE FROM " />
-            <marker date="1494972939089" expanded="true" signature="4495:4725" ph="SELECT users... users" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1094,7 +1054,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6409">
           <caret line="377" column="27" lean-forward="false" selection-start-line="377" selection-start-column="27" selection-end-line="377" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1106,19 +1065,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/templates/base.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="17" column="19" lean-forward="true" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/templates/allComments.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="48" lean-forward="true" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1126,7 +1076,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1141,15 +1090,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="17" column="37" lean-forward="false" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/templates/showUser.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="14" lean-forward="false" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1163,31 +1103,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="169" column="68" lean-forward="false" selection-start-line="169" selection-start-column="68" selection-end-line="169" selection-end-column="68" />
-          <folding>
-            <element signature="e#1796#4316#0#PHP" expanded="false" />
-            <element signature="e#4322#4803#0#PHP" expanded="false" />
-            <element signature="e#4809#6358#0#PHP" expanded="false" />
-            <element signature="e#6364#11374#0#PHP" expanded="false" />
-            <marker date="1495016440545" expanded="true" signature="2181:2245" ph="SELECT * FRO... images" />
-            <marker date="1495016440545" expanded="true" signature="2434:2494" ph="SELECT * FRO... images" />
-            <marker date="1495016440545" expanded="true" signature="2688:2725" ph="SELECT * FRO... images" />
-            <marker date="1495016440545" expanded="true" signature="2688:2728" ph="SELECT * FRO... images" />
-            <marker date="1495016440545" expanded="true" signature="2784:2976" ph="SELECT image... images" />
-            <marker date="1495016440545" expanded="true" signature="3033:3161" ph="SELECT * FRO... images" />
-            <marker date="1495016440545" expanded="true" signature="3096:3160" ph="SELECT image... comments" />
-            <marker date="1495016440545" expanded="true" signature="3269:3330" ph="SELECT * FRO... images" />
-            <marker date="1495016440545" expanded="true" signature="3490:3554" ph="SELECT * FRO... images" />
-            <marker date="1495016440545" expanded="true" signature="3714:3745" ph="SELECT * FRO... users" />
-            <marker date="1495016440545" expanded="true" signature="3799:3878" ph="SELECT * FRO... comments" />
-            <marker date="1495016440545" expanded="true" signature="4465:4532" ph="SELECT * FRO... images" />
-            <marker date="1495016440545" expanded="true" signature="5043:5075" ph="SELECT * FRO... users" />
-            <marker date="1495016440545" expanded="true" signature="6488:6520" ph="SELECT * FRO... users" />
-            <marker date="1495016440545" expanded="true" signature="14898:14943" ph="SELECT id FR... users" />
-            <marker date="1495016440545" expanded="true" signature="17459:17550" ph="SELECT * FRO... users" />
-            <marker date="1495016440545" expanded="true" signature="22523:22569" ph="SELECT * FRO... comments" />
-          </folding>
+        <state relative-caret-position="2703">
+          <caret line="167" column="68" lean-forward="false" selection-start-line="167" selection-start-column="68" selection-end-line="167" selection-end-column="68" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1199,41 +1117,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/templates/home.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="7" lean-forward="false" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/assets/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2567">
-          <caret line="151" column="20" lean-forward="false" selection-start-line="151" selection-start-column="20" selection-end-line="151" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/templates/notifications.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="26" column="12" lean-forward="true" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/templates/userPhotos.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="7" lean-forward="false" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/templates/addImg.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
+        <state relative-caret-position="153">
           <caret line="9" column="27" lean-forward="false" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="27" />
           <folding />
         </state>
@@ -1247,10 +1133,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/assets/js/moreTop5_v6.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-374">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/templates/base.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="31" column="24" lean-forward="false" selection-start-line="31" selection-start-column="24" selection-end-line="31" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/templates/notifications.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="26" column="12" lean-forward="false" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/templates/home.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39">
+          <caret line="13" column="99" lean-forward="false" selection-start-line="13" selection-start-column="99" selection-end-line="13" selection-end-column="99" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/templates/showUser.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="14" lean-forward="false" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/templates/userPhotos.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="7" lean-forward="false" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/templates/editImg.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="10" lean-forward="false" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
+        <state relative-caret-position="255">
+          <caret line="15" column="15" lean-forward="true" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/assets/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="274" column="17" lean-forward="true" selection-start-line="274" selection-start-column="17" selection-end-line="274" selection-end-column="17" />
           <folding />
         </state>
       </provider>
