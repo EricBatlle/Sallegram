@@ -44,19 +44,68 @@ $(".more_top5_form").submit(function(e) {
                     date.innerHTML = "Date "+array[1][i].created_at;
                 var likes = document.createElement("p");
                     likes.innerHTML = "Likes "+array[1][i].likes;
+                var input = $(document.createElement(("input")));
+                input.attr('type','submit');
+                input.attr('id',array[1][i].id);
+                //Mirar si la imagen esta en la lista de likes
+
                 var form_like = $(document.createElement("form"));
                     form_like.attr('id',array[1][i].id);
                     form_like.attr('class','like_form');
                     form_like.attr('METHOD','POST');
                     form_like.attr('enctype','multipart/form-data');
-                var input = $(document.createElement(("input")));
-                    input.attr('type','submit');
-                    //Mirar si la imagen esta en la lista de likes
-                    if(isLiked(array[1][i].id,array[2])){
-                        input.attr('value','Like');
-                    }else{
-                        input.attr('value','Dislike');
-                    }
+                console.log(array[1][i].id)
+                console.log(array[2])
+                if(isLiked(array[1][i].id,array[3])){
+                    input.attr('value','Dislike');
+                    form_like.attr('name','Dislike');
+                }else{
+                    input.attr('value','Like');
+                    form_like.attr('name','Like');
+                }
+                    form_like.submit(function(e) {
+                        console.log('ieeeep');
+                        e.preventDefault();
+
+                        //Check if value is Like or Dislike
+                        var form_name = $(this).attr('name');
+                        var form_id = $(this).attr('id');
+
+                        //Cojer el mismo id del form para encontrar el input
+                        var input_value = $('input[id='+form_id+']').attr('Value');
+                        console.log(input_value);
+                        var url = "/like/"+input_value+"/"+form_id; // the script where you handle the form input.
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            dataType: 'json',
+                            data: $(".comment_form").serialize(), // serializes the form's elements.
+                            success: function(data)
+                            {
+                                var array = $.map(data, function(value, index) {
+                                    return [value];
+                                });
+
+                                console.log(array); // show response from the php script.
+
+                                //Si estaba en like me devuelve un dislike
+                                //Dislike = 1
+                                if(array[0] == 1){
+                                    $('input[id='+form_id+']').attr('Value','Dislike');
+                                }else{
+                                    $('input[id='+form_id+']').attr('Value','Like');
+                                }
+                            },
+                            error: function(error)
+                            {
+                                console.log(error);
+                            }
+                        });
+
+                        e.preventDefault(); // avoid to execute the actual submit of the form.
+                    });
+
                 form_like.append(input);
 
                 var visits = document.createElement("p");
@@ -154,14 +203,12 @@ $(".more_top5_form").submit(function(e) {
     e.preventDefault(); // avoid to execute the actual submit of the form.
 });
 
-function isLiked(id, liked) {
-    itIs = false;
-
-    for(var j=0;(j<liked.length) && (liked.length > 0);j++){
-        if(id == liked[j-1].id){
-            return itIs = true;
+function isLiked(id, array_likeds) {
+    for(var j=0;(j<array_likeds.length) && (array_likeds.length > 0);j++){
+        if(id == array_likeds[j].id){
+            return true;
         }
     }
-    return itIs;
+    return false;
 }
 
