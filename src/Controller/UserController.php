@@ -454,7 +454,7 @@ class UserController extends BaseController
                 $login = $data['user-email'];
                 $pass = md5($data['password']);
 
-                $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE (username = '$login' OR email = '$login')  AND password = '$pass'");
+                $match = $app['db']->fetchAssoc("SELECT * FROM users WHERE active = 1 and (username = '$login' OR email = '$login')  AND password = '$pass'");
                 //echo var_dump($match['id']);
                 if($match == true){
                     $this->logSession($app,$match['id'],$match['username'],$match['img_path']);
