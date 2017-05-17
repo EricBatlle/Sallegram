@@ -208,7 +208,7 @@ class ProfileController extends BaseController
                 }
                 $app['session']->set('name',$data['name']);
 
-                $url = '/';
+                $url = '/users/get';
                 return new RedirectResponse($url);
 
             }catch(Exception $e){
