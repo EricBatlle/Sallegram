@@ -531,8 +531,11 @@ class UserController extends BaseController
             $filename->move($dir, $filename->getClientOriginalName());
 
             /////RESIZE//////
-            $filename_400 = $this->resizeAndCopy($filename,$dir,400,300);
-            $filename_100 = $this->resizeAndCopy($filename,$dir,100,100);
+            //$filename_400 = $this->resizeAndCopy($filename,$dir,400,300);
+            /*$filename_100 = $this->resizeAndCopy($filename,$dir,100,100);
+            */
+            $filename_100 = $app['image_manager']->resizeAndCopy($filename,$dir,100,100);
+            $filename_400 = $app['image_manager']->resizeAndCopy($filename,$dir,400,300);
 
             try{
                 $app['db']->insert('images',[
@@ -588,7 +591,7 @@ class UserController extends BaseController
 
         return $response;
     }
-
+/*
     public function resizeAndCopy($filename,$dir,$nuevo_ancho,$nuevo_alto){
         $imgFilename = $filename->getClientOriginalName();
         $nombreFichero = $dir.'/'.$imgFilename;
@@ -603,7 +606,7 @@ class UserController extends BaseController
         $newNameFile = $nombreFichero.$nuevo_ancho.'x'.$nuevo_alto.'.jpeg';
         imagejpeg($thumb,$newNameFile);
         return $newNameFile;
-    }
+    }*/
 
     public function allComments(Application $app, Request $request)
     {

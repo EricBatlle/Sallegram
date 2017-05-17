@@ -13,7 +13,11 @@ function validateForm() {
 */
 $(document).ready(function () {
     $('#form_submit').submit(function(e){
-        e.preventDefault();
+        if(valid()){
+
+        }else{
+            e.preventDefault();
+        }
         console.log("warap");
     });
 });
