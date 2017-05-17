@@ -27,14 +27,14 @@ $app->get('/unlog', 'SilexApp\Controller\BaseController::unlogSession')->before(
 $app->get('/log', 'SilexApp\Controller\BaseController::logSession'); //Logeja, si ja ho estás, deslogeja
 
 // USER - Pages
-$app->match('/users/get', 'SilexApp\Controller\UserController::editProfile')->before($before);
 $app->match('/users/register', 'SilexApp\Controller\UserController::registerUser');
 $app->match('/users/login', 'SilexApp\Controller\UserController::loginUser');
-$app->match('/profile/{id}', 'SilexApp\Controller\UserController::publicProfile');
 $app->match('/users/photos', 'SilexApp\Controller\UserController::userPhotos')->before($before);
-$app->match('/addImg', 'SilexApp\Controller\UserController::addImg')->before($before);
-
 $app->match('/users/validation/{id}', 'SilexApp\Controller\UserController::mailValidation');
+
+//PROFILE
+$app->match('/profile/{id}', 'SilexApp\Controller\ProfileController::publicProfile');
+$app->match('/users/get', 'SilexApp\Controller\ProfileController::editProfile')->before($before);
 
 //COMMENTS
 $app->match('/addComment/{id}/{comment}', 'SilexApp\Controller\CommentController::addComment')->before($before);
@@ -49,6 +49,7 @@ $app->match('/myphotos/edit/{id}', 'SilexApp\Controller\PhotoController::editPho
 $app->match('/photo/{id}', 'SilexApp\Controller\PhotoController::viewPhoto');
 $app->match('/add/top5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreTop5');
 $app->match('/add/last5/{clicks}', 'SilexApp\Controller\PhotoController::addMoreLast5');
+$app->match('/addImg', 'SilexApp\Controller\PhotoController::addImg')->before($before);
 
 //Likes - Notificatinos
 $app->match('/like/{status}/{id_image}', 'SilexApp\Controller\LikeController::like')->before($before);

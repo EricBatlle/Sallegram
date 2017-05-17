@@ -47,6 +47,108 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PhotoController extends BaseController
 {
+    public function addImg(Application $app, Request $request)
+    {
+        $response = new Response();
+        $ok = true;
+        $data = array(
+            'Private' =>  false,
+        );
+
+        /** @var Form $form */
+        $form = $app['form.factory']->createBuilder(FormType::class, $data)
+            ->add('Title', TextType::class, array(
+                'constraints' => array(
+                    'constraints' => new CorrectLogin(
+                        array(
+                            'message' => 'Invalid Title: Must contain alphanumeric values, and less than 20 characters (not HTML syntax)'
+                        )
+                    )
+                )
+            ))
+            ->add('New_Image', FileType::class, array(
+                'required' => true,
+                'attr' => ['class'=>'form_thumbnail']
+            ))
+            ->add('Private', CheckboxType::class, array(
+                'required' => false
+            ))
+            ->add('submit',SubmitType::class, [
+                'label' => 'Send',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+
+            $data = $form->getData();
+            //IMAGE
+            $dir = 'assets/uploads';
+            //ToDo: If image=null -> take default image
+            /** @var UploadedFile $filename */
+            $filename = $data['New_Image'];
+
+            $filename->move($dir, $filename->getClientOriginalName());
+
+            /////RESIZE//////
+            $filename_100 = $app['image_manager']->resizeAndCopy($filename,$dir,100,100);
+            $filename_400 = $app['image_manager']->resizeAndCopy($filename,$dir,400,300);
+
+            try{
+                $app['db']->insert('images',[
+                        'user_id' => $app['session']->get('id'),
+                        'title' => $data['Title'],
+                        'img_path' => $filename->getClientOriginalName(),
+                        'visits' => 0,
+                        'private' => $data['Private'],
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]
+                );
+                $pathMainImage = $filename->getClientOriginalName();
+                $mainImage = $app['db']->fetchAssoc("SELECT * FROM images WHERE img_path='$pathMainImage'");
+                $app['db']->insert('thumbs',[
+                        'image_id' => $mainImage['id'],
+                        'user_id' => $app['session']->get('id'),
+                        'title' => $data['Title'],
+                        'img_path' => $filename_400,
+                        'width' => 400
+                    ]
+                );
+
+                $app['db']->insert('thumbs',[
+                        'image_id' => $mainImage['id'],
+                        'user_id' => $app['session']->get('id'),
+                        'title' => $data['Title'],
+                        'img_path' => $filename_100,
+                        'width' => 100
+                    ]
+                );
+
+                $url = '/';
+                return new RedirectResponse($url);
+
+            }catch(Exception $e){
+                $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+                $content = $app['twig']->render('error.twig',[
+                    'errors' => [
+                        'unexpected' => 'An error has ocurred, please try it again later'
+                    ]
+                ]);
+                $response->setContent($content);
+                return $response;
+            }
+        }
+
+        $response->setStatusCode(Response::HTTP_OK);
+        $content = $app['twig']->render('addImg.twig',array(
+            'form'=> $form->createView(),
+            'ok' => $ok
+        ));
+        $response->setContent($content);
+
+        return $response;
+    }
 
     public function removePhoto (Application $app, $id){
 
