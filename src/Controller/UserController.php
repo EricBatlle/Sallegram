@@ -274,7 +274,7 @@ class UserController extends BaseController
                     );
                 }
 
-                $url = '/';
+                $url = '/users/get';
                 return new RedirectResponse($url);
 
             }catch(Exception $e){
