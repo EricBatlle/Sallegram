@@ -9,7 +9,6 @@
  */
 // this is the id of the form
 $(".like_form").submit(function(e) {
-    console.log('ieeeep');
     e.preventDefault();
 
     //Check if value is Like or Dislike
@@ -19,7 +18,6 @@ $(".like_form").submit(function(e) {
     //Cojer el mismo id del form para encontrar el input
     //var button = $('input[id='+form_id+']').attr('Value','Like');  --> Setear el valor del boton
     var input_value = $('input[id='+form_id+']').attr('Value');
-    console.log(input_value);
     var url = "/like/"+input_value+"/"+form_id; // the script where you handle the form input.
 
 
@@ -34,7 +32,6 @@ $(".like_form").submit(function(e) {
                 return [value];
             });
 
-            console.log(array); // show response from the php script.
 
             //Si estaba en like me devuelve un dislike
             //Dislike = 1

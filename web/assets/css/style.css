@@ -230,7 +230,7 @@ button, #form_submit{
 }
 
 
-.more_top5_input {
+.more_top5_input, .more_last5_input {
     margin-bottom: 20px;
     background-color: #122b40;
     color: white;
@@ -240,10 +240,9 @@ button, #form_submit{
     display: inline-block;
     padding-top: -30%;
     margin-left: 70%;
-
 }
 
-.more_top5_input:hover {
+.more_top5_input:hover, .more_last5_input:hover {
     background: midnightblue;
     text-decoration: none;
     color: white;

@@ -11,6 +11,7 @@ namespace SilexApp\Controller;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 use Imagine\Imagick\Imagine;
+use SilexApp\Controller\Validations\CorrectRegister;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\File\File;
@@ -118,9 +119,9 @@ class UserController extends BaseController
         /** @var Form $form */
         $form = $app['form.factory']->createBuilder(FormType::class, $data)
             ->add('name', TextType::class, array(
-                'constraints' => new CorrectLogin(
+                'constraints' => new CorrectRegister(
                     array(
-                        'message' => 'Invalid Name: Must contain one minus, one mayus, one number, and 6 to 12 characters (not HTML syntax)'
+                        'message' => 'Invalid Name: Must contain alphanumeric values, and less than 20 characters (not HTML syntax)'
                     )
                 )
             ))

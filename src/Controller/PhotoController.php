@@ -232,6 +232,8 @@ class PhotoController extends BaseController
                 } else {
                     $filename = $data['New_Image'];
                     $filename->move($dir, $filename->getClientOriginalName());
+                    $filename_100 = $app['image_manager']->resizeAndCopy($filename,$dir,100,100);
+                    $filename_400 = $app['image_manager']->resizeAndCopy($filename,$dir,400,300);
 
                     $app['db']->update('images',[
                         'title' => $data['Title'],
@@ -239,6 +241,22 @@ class PhotoController extends BaseController
                         'private' => $data['Private'],
                         'created_at' => date('Y-m-d H:i:s')],
                         array('id' => $id)
+                    );
+                    $app['db']->insert('thumbs',[
+                            'image_id' => $id,
+                            'user_id' => $app['session']->get('id'),
+                            'title' => $data['Title'],
+                            'img_path' => $filename_400,
+                            'width' => 400
+                        ]
+                    );
+                    $app['db']->insert('thumbs',[
+                            'image_id' => $id,
+                            'user_id' => $app['session']->get('id'),
+                            'title' => $data['Title'],
+                            'img_path' => $filename_100,
+                            'width' => 100
+                        ]
                     );
                 }
 
@@ -273,13 +291,8 @@ class PhotoController extends BaseController
         $response = new Response();
 
         //Check if it's public
-
-//        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id = '$id'"); //llamando al servicio
-//        $liked = $app['db']->fetchAll("SELECT images.id FROM (likes LEFT JOIN users ON users.id = likes.user_id) LEFT JOIN images ON likes.image_id = images.id WHERE likes.user_id = $id");
-
-
         $user_id = $app['session']->get('id');
-        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id='$id'"); //llamando al servicio
+        $image = $app['db']->fetchAssoc("SELECT * FROM images WHERE id=$id"); //llamando al servicio
         //ToDo: this DB call should be done up there
         $image_thumb = $app['db']->fetchAssoc("SELECT * FROM thumbs WHERE image_id='$id' AND width=400"); //llamando al servicio
         $like = $app['db']->fetchAssoc("SELECT * FROM likes WHERE image_id='$id' AND user_id='$user_id'");

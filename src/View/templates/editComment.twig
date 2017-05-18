@@ -10,8 +10,10 @@
 {% block content %}
     <h1  class="text-center">Edit Comment </h1>
     <div class="login-container">
-    <form class="navbar-form" action="/comment/edit/{{ comment.id }}" METHOD="POST" enctype="multipart/form-data">
-        {{ form_widget(form, {'attr': {'id': 'src'}}) }}
-    </form>
+        <div class="media-left media-middle">
+            <form class="navbar-form" action="/comment/edit/{{ comment.id }}" METHOD="POST" enctype="multipart/form-data">
+                {{ form_widget(form, {'attr': {'id': 'src'}}) }}
+            </form>
+        </div>
     </div>
 {% endblock %}

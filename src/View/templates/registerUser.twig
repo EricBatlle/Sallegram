@@ -16,10 +16,12 @@
     {#<form action="/users/register" METHOD="POST" onsubmit="return validateForm()" enctype="multipart/form-data">#}
     <div class="login-container">
         <div class=".col-md-6 .col-md-offset-3">
-            <form id="form_submit" class="navbar-form" action="" METHOD="POST" enctype="multipart/form-data">
-            {{ form_widget(form) }}
-                <img id="thumbnail" src="/assets/uploads/default.jpg" width="200" height="200"  />
-            </form>
+            <div class="media-left media middle">
+                <form id="form_submit" class="navbar-form" action="" METHOD="POST" enctype="multipart/form-data">
+                {{ form_widget(form) }}
+                    <img id="thumbnail" src="/assets/uploads/default.jpg" width="200" height="200"  />
+                </form>
+            </div>
         </div>
     </div>
     <p id="errorMessage"></p>
