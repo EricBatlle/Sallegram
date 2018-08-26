@@ -48,8 +48,7 @@ We used composer to install the libraries we need for the project.
 
 #### Setup
 
-In the file Database.php on the path ```./src/lib/Database/Database.php``` you can 
-uncomment the user and password to access the Database with Vagrant.
+In the file Database.php on the path ```./app/config/prod.php``` you can use your own dbname, user and password to access your own Database.
 
 ```composer install``` command **must be executed ** before start using the application
 correctly. This command will instal the Bootstrap package as well as the other project
